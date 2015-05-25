@@ -8,13 +8,14 @@ $dir = new RecursiveDirectoryIterator($currentFilePath,FilesystemIterator::SKIP_
 
 foreach(new RecursiveIteratorIterator($dir,RecursiveIteratorIterator::SELF_FIRST) as $file) {
 
-	$filename= $file->getFilename();	
+	$filename= $file->getFilename();
+	
 	if (($file->isDir())&&(substr( $filename ,0,1) != ".")) {
-	  // Is a directory:
-    echo "<p>".realpath($file))."</p>";
+		// Is a directory:
+    		echo "<p>".realpath($file)."</p>";
 	} else {
-	  // Is a file
-	  echo "<p>".realpath($file))."</p>";
+		// Is a file
+		echo "<p>".realpath($file)."</p>";
   }// END is Dir or File checks
     
 } // END foreach
