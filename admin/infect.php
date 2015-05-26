@@ -6,6 +6,7 @@
 // because we're normally accessing from "localhost" it may just return localhost or 127.0.0.1 which are of no use
 // alternative solution from:
 // http://stackoverflow.com/questions/1814611/how-do-i-find-my-servers-ip-address-in-phpcli
+$debug = 1;
 
 if(isset($_SERVER["SERVER_ADDR"])){
   $myIP = $_SERVER['SERVER_ADDR'];
@@ -15,6 +16,7 @@ if(isset($_SERVER["SERVER_ADDR"])){
 
 if(stristr(PHP_OS, 'WIN')) {
   //  Rather hacky way to handle windows servers
+  if ($debug) { echo "<p>Windows OS</p>";}
   exec('ipconfig /all', $catch);
   foreach($catch as $line) {
     if(eregi('IP Address', $line)) {
@@ -38,8 +40,11 @@ if(stristr(PHP_OS, 'WIN')) {
   } // END foreach
 } else {
   // Linux
+  if ($debug) { echo "<p>Linux OS</p>";}
   $ifconfig = shell_exec('/sbin/ifconfig eth0');
+  
   if ($ifconfig) {
+    if ($debug) { echo "<p>IFCONFIG: $ifconfig</p>";}
     preg_match('/addr:([\d\.]+)/', $ifconfig, $match);
     $myIP2 = $match[1];
   } else {
