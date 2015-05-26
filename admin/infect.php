@@ -6,6 +6,10 @@
 // because we're normally accessing from "localhost" it may just return localhost or 127.0.0.1 which are of no use
 // alternative solution from:
 // http://stackoverflow.com/questions/1814611/how-do-i-find-my-servers-ip-address-in-phpcli
+// doesn't work though
+
+// May have to do this functionality via native Android?
+
 $debug = 1;
 
 if(isset($_SERVER["SERVER_ADDR"])){
