@@ -39,9 +39,13 @@ if(stristr(PHP_OS, 'WIN')) {
 } else {
   // Linux
   $ifconfig = shell_exec('/sbin/ifconfig eth0');
-  preg_match('/addr:([\d\.]+)/', $ifconfig, $match);
-  $myIP2 = $match[1];
-}
+  if ($ifconfig) {
+    preg_match('/addr:([\d\.]+)/', $ifconfig, $match);
+    $myIP2 = $match[1];
+  } else {
+    $myIP2 = "ifconfig failed";
+  } // END check ifconfig worked
+} // END win or linux check
 
 // Alternative from http://stackoverflow.com/questions/3219178/php-how-to-get-local-ip-of-system
 $myIP3 = getHostByName(getHostName());
