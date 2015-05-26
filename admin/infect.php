@@ -37,12 +37,10 @@ if(stristr(PHP_OS, 'WIN')) {
     } // END eregi  
   } // END foreach
 } else {
-    // Linux
-    $ifconfig = shell_exec('/sbin/ifconfig eth0');
-    preg_match('/addr:([\d\.]+)/', $ifconfig, $match);
-    $myIP2 = $match[1];
-    }
-  }
+  // Linux
+  $ifconfig = shell_exec('/sbin/ifconfig eth0');
+  preg_match('/addr:([\d\.]+)/', $ifconfig, $match);
+  $myIP2 = $match[1];
 }
 
 // Alternative from http://stackoverflow.com/questions/3219178/php-how-to-get-local-ip-of-system
