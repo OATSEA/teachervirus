@@ -40,7 +40,7 @@ if(stristr(PHP_OS, 'WIN')) {
     // Linux
     $ifconfig = shell_exec('/sbin/ifconfig eth0');
     preg_match('/addr:([\d\.]+)/', $ifconfig, $match);
-    $myIP2 = n $match[1];
+    $myIP2 = $match[1];
     }
   }
 }
