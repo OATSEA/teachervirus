@@ -11,7 +11,7 @@ if(isset($_SERVER["SERVER_ADDR"])){
   $myIP = $_SERVER['SERVER_ADDR'];
 } else {
   $myIP = "SERVER_ADDR not SET";
-}
+} // END isset
 
 if(stristr(PHP_OS, 'WIN')) {
   //  Rather hacky way to handle windows servers
@@ -34,8 +34,9 @@ if(stristr(PHP_OS, 'WIN')) {
       } else {
             // ; // TODO: Handle this failure condition.
       } // END ip2long
-    } // END foreach
-  } else {
+    } // END eregi  
+  } // END foreach
+} else {
     // Linux
     $ifconfig = shell_exec('/sbin/ifconfig eth0');
     preg_match('/addr:([\d\.]+)/', $ifconfig, $match);
@@ -43,8 +44,6 @@ if(stristr(PHP_OS, 'WIN')) {
     }
   }
 }
-
-
 
 // Alternative from http://stackoverflow.com/questions/3219178/php-how-to-get-local-ip-of-system
 $myIP3 = getHostByName(getHostName());
