@@ -13,9 +13,10 @@ if(isset($_SERVER["SERVER_ADDR"])){
 } else {
   $myIP = "SERVER_ADDR not SET";
 } // END isset
-
+/*
 if(stristr(PHP_OS, 'WIN')) {
   //  Rather hacky way to handle windows servers
+  // ISSUE: MAC is detected as windows??
   if ($debug) { echo "<p>Windows OS</p>";}
   exec('ipconfig /all', $catch);
   foreach($catch as $line) {
@@ -39,7 +40,8 @@ if(stristr(PHP_OS, 'WIN')) {
     } // END eregi  
   } // END foreach
 } else {
-  // Linux
+*/
+  // ASSUME Linux only
   if ($debug) { echo "<p>Linux OS</p>";}
   $ifconfig = shell_exec('/sbin/ifconfig eth0');
   
@@ -50,7 +52,7 @@ if(stristr(PHP_OS, 'WIN')) {
   } else {
     $myIP2 = "ifconfig failed";
   } // END check ifconfig worked
-} // END win or linux check
+// } // END win or linux check
 
 // Alternative from http://stackoverflow.com/questions/3219178/php-how-to-get-local-ip-of-system
 $myIP3 = getHostByName(getHostName());
