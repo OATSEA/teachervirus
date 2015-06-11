@@ -18,6 +18,7 @@ $rootdir = preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getc
 // echo $rootdir."<br>";
 
 $payloadsDir = str_replace("play", 'payloads', $rootdir);
+$payloadsPath = str_replace("play", 'payloads',preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) ));
 
 $thisURL = $_SERVER['REQUEST_URI'];
 
@@ -27,9 +28,10 @@ $adminURL =  str_replace("play", 'admin', $thisURL);
 foreach(glob($payloadsDir, GLOB_ONLYDIR) as $dir) { 
 	$dir = basename($dir); 
 	$imgText = $dir."/icon.png";
-	$imgTest = file_exists( $imgText);
+    
+	$imgTest = file_exists( $payloadsPath.$imgText);
 	if ($imgTest) {
-		echo '<a href="'.$payloadsURL.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$imgText.'" /></a>';
+		echo '<a href="'.$payloadsURL.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.$imgText.'" /></a>';
 		// <span class="pluscap"><br>'.$dir.'</span>
     } else {
         // Icon provided so use the default
