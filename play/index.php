@@ -28,14 +28,21 @@ $adminURL =  str_replace("play", 'admin', $thisURL);
 foreach(glob($payloadsDir, GLOB_ONLYDIR) as $dir) { 
 	$dir = basename($dir); 
 	$imgText = $dir."/icon.png";
+    $svgText = $dir."/icon.svg";
     
+    $svgTest = file_exists( $payloadsPath.$svgText);
 	$imgTest = file_exists( $payloadsPath.$imgText);
-	if ($imgTest) {
+    
+    // need to add check for support of SVG!
+    
+    if ($svgTest) {
+        echo '<a href="'.$payloadsURL.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.$svgText.'" /></a>';
+    } else if ($imgTest) {
 		echo '<a href="'.$payloadsURL.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.$imgText.'" /></a>';
 		// <span class="pluscap"><br>'.$dir.'</span>
     } else {
         // Icon provided so use the default
-        echo '<a href="'.$payloadsURL.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.png" /></a>';
+        echo '<a href="'.$payloadsURL.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.svg" /></a>';
     }
 } 
 
