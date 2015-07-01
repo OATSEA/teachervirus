@@ -64,3 +64,19 @@ img {
 a { color: #fff;}
 a:hover {  color:blue;}
 
+.admin_img
+{
+    float: right;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-right: 20px;
+}
+.color-white{
+    color: #fff;
+    display: inline-block;
+    line-height: 15px;
+    width: 100%;
+}
+.mainNav:hover {
+    color: blue;
+}

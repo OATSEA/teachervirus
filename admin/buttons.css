@@ -1,12 +1,13 @@
 
 * { 
 	
-  background-color: black;
-  color: white;
+  background-color: #ffff;
+  color: #fff;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);  
 }
 
 body {
+        background-color: black;
 	text-align: center;
 	min-height:800px;
 	padding: 0px;
@@ -64,3 +65,32 @@ img {
 a { color: #fff;}
 a:hover {  color:blue;}
 
+#text_style
+{
+    color: #F76767;
+}
+.play_img
+{
+    float: left;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 10px;
+}
+.logout_img{
+    float: right;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-right: 10px;
+}
+.invalid_pattern{
+    color: #fff;
+}
+.color-white{
+    color: #fff;
+    display: inline-block;
+    line-height: 15px;
+    width: 100%;
+}
+.mainNav:hover {
+    color: blue;
+}
