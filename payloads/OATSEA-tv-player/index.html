@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>movies</title>
+	<link href="movies.css" rel="stylesheet">
+	<link href="css/font-awesome.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <script src="jquery.js"></script>
+	<script src='jquery.imagefit.js'></script>
+    <script src="movies.js"></script>
+	<script>$(document).ready(function() { setup(); }); </script>	
+</head>
+<body class="main">
+
+	  <div id="menubar">
+		  <div id="lefticon" onTouchStart="history.go(-1)" onClick="history.go(-1)"><i class="mainNav fa fa-arrow-circle-left fa-3x"></i></div>
+	      <div id="moviecat">movies</div>
+		  <div id="righticon" onTouchStart="toggleView();" onClick="toggleView();"><i class="mainNav fa fa-cog fa-3x"></i></div>
+	  </div>
+<hr>
+	  
+<img class="mybutton" id="All_nav" alt="All" src="icons.png" onTouchStart="location.reload();" onclick="location.reload();" /><img class="mybutton" id="test_nav" alt="test" src="defaultnav.jpg" onTouchStart="catToggle('test')" onclick="catToggle('test')" />
+			<hr><div id='maincontent'/><div class="myfig content movies test "><img onClick="playvid('test');" class="videoicon" id="test_icon" width="320" height="240" src="defaultnav.jpg" /><p class="imgtitle">test</p><video onClick="playvid('test');" class="videoclip" id="test" width="1" height="1" controls preload="none" onended="videoEnded('test')">
+			  <source src="/content/movies/test/test.mp4" type="video/mp4"> 
+				  Your browser does not support the video tag.
+			  </video> </div>
+		  <hr></div>
+    
+	<div id="overlay" class="hideMe" onClick="doBack()" onTouchStart="doBack()"><i class="videoBack fa fa-arrow-circle-left fa-5x"></i></div>
+<div id="update"><center><a href="index.php">Update</a></center><br><br></div>	  	
+</body>
+</html>

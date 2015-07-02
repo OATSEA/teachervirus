@@ -9,7 +9,7 @@
 // doesn't work though
 
 // May have to do this functionality via native Android?
-
+require '../checkLogin.php';
 $debug = 1;
 
 if(isset($_SERVER["SERVER_ADDR"])){
