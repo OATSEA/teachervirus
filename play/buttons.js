@@ -6,7 +6,7 @@ function setup() {
 		
 	document.ontouchmove = function(event) {
 	// prevent screen scroll / bounce for iOS devices
-	event.preventDefault();	
+	// event.preventDefault();	
 	} 
 
 } // END setup
