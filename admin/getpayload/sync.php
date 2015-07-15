@@ -2,16 +2,16 @@
 session_start();
 function listFolderFiles($dir,$sHiddenName,$sCheckId)
 {
-    $sNewDirPath = $_SERVER['DOCUMENT_ROOT'].$dir;
+    $sNewDirPath = $_SERVER['DOCUMENT_ROOT'].'/'.$dir;
     $ffs = array();
-    if(is_dir($_SERVER['DOCUMENT_ROOT'].$dir))
-    $ffs = scandir($_SERVER['DOCUMENT_ROOT'].$dir);
+    if(is_dir($_SERVER['DOCUMENT_ROOT'].'/'.$dir))
+    $ffs = scandir($_SERVER['DOCUMENT_ROOT'].'/'.$dir);
     $nHiddenCnt = 0;
     foreach($ffs as $ff)
     {
         if($dir == "payloads" || $dir == "admin")
         {
-            if(is_dir($_SERVER['DOCUMENT_ROOT'].$dir.'/'.$ff) && $ff != '.' && $ff != '..')
+            if(is_dir($_SERVER['DOCUMENT_ROOT'].'/'.$dir.'/'.$ff) && $ff != '.' && $ff != '..')
             {
     ?>
     
@@ -170,7 +170,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['delete']))
             // so try copy first and then CURL
 
             $debug=1;
-
+            
             if ($debug) {
                 ini_set('display_errors',1);
                 ini_set('display_startup_errors',1);
@@ -367,11 +367,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['delete']))
                     exit("<h3>Installation Failed!</h3>");
             }
 
-            // Github repository details for Payload core  
-            $username = $_POST['user_name'];
-            $repo = $_POST['repository'];
-
-
             // Check for IP param and set $ip if param provided
             // ** TO DO **
 
@@ -442,13 +437,13 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['delete']))
                     }
                     
                     if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
-
+                    
                     $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$download_filename);
                     if ($zipFlag === TRUE) {
                         
                         (file_exists($_SERVER['DOCUMENT_ROOT'].$oldfilename)) ? unlink($_SERVER['DOCUMENT_ROOT'].$oldfilename) : '';
                         
-                        $sPayloadUrl = $_SERVER['DOCUMENT_ROOT'].$payload;
+                        $sPayloadUrl = $_SERVER['DOCUMENT_ROOT'].'/'.$payload;
                         if(file_exists($sPayloadUrl))
                         {
                             $aExplodeZipFile = explode(".zip",$download_filename);
@@ -458,20 +453,20 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['delete']))
                             
                             foreach($ffs as $ff)
                             {
-                                    if(is_dir($sPayloadUrl.'/'.$ff) && $ff != '.' && $ff != '..')
+                                if(is_dir($sPayloadUrl.'/'.$ff) && $ff != '.' && $ff != '..')
+                                {
+                                    if (preg_match("/$aExplodeZipFile[0]/",$ff))
                                     {
-                                        if (preg_match("/$aExplodeZipFile[0]/",$ff))
-                                        {
-                                            rename($sPayloadUrl.'/'.$ff, $sPayloadUrl."/old_".$ff);
-                                        }
-                                        else
-                                        {
-                                            rename($sPayloadUrl."/old_".$ff,$sPayloadUrl.'/'.$ff);
-                                        }
+                                        (file_exists($sPayloadUrl.'/'.$ff)) ? rename($sPayloadUrl.'/'.$ff, $sPayloadUrl."/old_".$ff) : '';
                                     }
+                                    else
+                                    {
+                                        (file_exists($sPayloadUrl."/old_".$ff)) ? rename($sPayloadUrl."/old_".$ff,$sPayloadUrl.'/'.$ff) : '';
+                                    }
+                                }
                             }
                             $zip->extractTo($sPayloadUrl);
-                            rrmdir($_SERVER['DOCUMENT_ROOT']."admin/getpayload/".$payload);
+                            rrmdir($_SERVER['DOCUMENT_ROOT']."/admin/getpayload/".$payload);
                             rrmdir($sPayloadUrl."/old_".$ff);
                         }
                         else
@@ -497,7 +492,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['delete']))
                             }
                             mkdir($sPayloadUrl,0775,true);
                             $zip->extractTo($sPayloadUrl.$download_filename);
-                            rrmdir($_SERVER['DOCUMENT_ROOT']."admin/getpayload/".$payload);
+                            rrmdir($_SERVER['DOCUMENT_ROOT']."/admin/getpayload/".$payload);
                             rrmdir($sPayloadUrl."/old_".$ff);
                         }
                     }
@@ -581,7 +576,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['delete']))
                             } // END debug
 
                         } // END http_status and file exists check
-
+                        
                         curl_close($ch);
                         fclose($fp);
 
