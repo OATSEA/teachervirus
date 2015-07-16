@@ -5,57 +5,65 @@
         <link href="../../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <script src="../../js/jquery.js" type="text/javascript"></script>
         <style>
-            body {
+            body{
                     background-color: black;
                     min-height:800px;
                     padding: 0px;
                     margin: 0;
                     color: #fff;
                 }
-
             form{
-                 heigth: 60px; 
-                 width: 50%; 
-                 border: solid thin red;
-                 padding: 15px;
-                }
-                .error-message{
-                    color: red;
-                    float: right;
-                    margin-bottom: 10px;
-                    width: 250px;
-                }
-                .text-field{
-                    float: left;
-                    padding-right: 10px;
-                    width: 200px;
-                }
-                .example-text{
-                    text-align: right;
-                    width: 370px;
-                }
-                .go-button{
-                    float: right;
-                    margin-right: 88px;
-                    width: 60px;
-                }
-                .admin_img {
-                    float: right;
-                    padding-bottom: 10px;
-                    padding-right: 20px;
-                    padding-top: 10px;
-                }
-                .color-white{
-                    color: #fff;
-                    line-height: 15px;
-                }
-                input[type="text"] {
-                    float: left;
-                    width: 30%;
-                    display: block;
-                    margin-bottom: 10px;
-                    background-color: wheat;
-                }
+                border: 1px solid #fff;
+                margin-left: 25%;
+                padding: 15px;
+                width: 50%;
+            }
+            .error-message{
+                color: red;
+                float: right;
+                margin-bottom: 10px;
+                width: 250px;
+            }
+            .text-field{
+                float: left;
+                padding-right: 10px;
+                width: 200px;
+            }
+            .example-text{
+                text-align: right;
+                width: 370px;
+            }
+            .go-button{
+                float: right;
+            }
+            .admin_img {
+                color: #fff;
+                float: right;
+                padding-bottom: 10px;
+                padding-right: 20px;
+                padding-top: 10px;
+            }
+            .color-white{
+                color: #fff;
+                line-height: 15px;
+            }
+            input[type="text"] {
+                float: left;
+                width: 30%;
+                display: block;
+                margin-bottom: 10px;
+                background-color: wheat;
+            }
+            .payload-details{
+                border-bottom: 1px solid #fff;
+                margin-bottom: 20px;
+                text-align: center;
+                width: 100%;
+            }
+            .mandatory{
+                font-weight: bold;
+                font-size: 18px;
+            }
         </style>
     </head>
     <body class="main">
@@ -70,26 +78,21 @@
         $sUserName = $_POST['user_name'];
         $sRepository = $_POST['repository'];
         $sDeviceAddress = $_POST['device_address'];
-        $sPort = $_POST['port_number'];
+        $nPort = $_POST['port_number'];
         $sInfectUserName = $_POST["infect_user_name"];
         $sInfectRepository = $_POST["infect_repository"];
         $sPayloadName = $_POST['payload_name'];
         $sPayloadUrl = $_POST["payload_url"];
         $sIsAdmin = empty($_POST['ckeck_admin']) ? '' : $_POST['ckeck_admin'];
-        /*if(empty($_POST['ckeck_admin']))
-        {
-            $_SESSION['isValidation']['ckeck_admin'] = 'Please !!';
-            $_SESSION['isValidation']['flag'] = FALSE;
-        }
-        */
+        
         if($_POST['payload_source'] == 'github_payloads')
         {
-            if(empty($_POST['user_name']))
+            if(empty($sUserName))
             {
                 $_SESSION['isValidation']['user_name_required'] = 'Please enter username!!';
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
-            if(empty($_POST["repository"]))
+            if(empty($sRepository))
             {
                 $_SESSION['isValidation']['repository_required'] = 'Please enter repository!!';
                 $_SESSION['isValidation']['flag'] = FALSE;
@@ -97,12 +100,12 @@
         }
         else if($_POST['payload_source'] == 'infected_device')
         {
-            if(empty($_POST['device_address']))
+            if(empty($sDeviceAddress))
             {
                 $_SESSION['isValidation']['device_address'] = 'Please enter device address!!';
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
-            if(empty($_POST["infect_user_name"]))
+            if(empty($sInfectUserName))
             {
                 $_SESSION['isValidation']['infect_user_name'] = 'Please enter username!!';
                 $_SESSION['isValidation']['flag'] = FALSE;
@@ -110,19 +113,53 @@
         }
         else
         {
-            if(empty($_POST['payload_name']))
+            if(empty($sPayloadName))
             {
                 $_SESSION['isValidation']['payload_name'] = 'Please enter payload name!!';
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
-            if(empty($_POST["payload_url"]))
+            if(empty($sPayloadUrl))
             {
                 $_SESSION['isValidation']['payload_url'] = 'Please enter payload url!!';
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
         }
+        
         if($_SESSION['isValidation']['flag'] == 1)
         {
+            $payload = (isset($_POST['ckeck_admin']) && ($_POST['ckeck_admin'] == 1)) ? 'admin' : 'payloads';
+            
+            if(!empty($sUserName))
+            {
+                $sInfectDir = 'infect'.DIRECTORY_SEPARATOR;
+                $download_filename = $sUserName."-".$sRepository.".zip";
+                $payloaddir = $sInfectDir.$payload; // payload directory with trailing slash for URL use
+                $payloadName = $sUserName."-".$sRepository.".zip";
+                $sListContent = ($payloadName.";"."A");
+            }
+            else if(!empty($sDeviceAddress))
+            {
+                $sInfectDir = 'infect'.DIRECTORY_SEPARATOR;
+                $download_filename = empty($sInfectRepository) ? $sInfectUserName.".zip" : $sInfectUserName."-".$sInfectRepository.".zip";
+                $payloaddir = $sInfectDir.$payload; 
+            }
+            else if(!empty($sPayloadName))
+            {
+                $sInfectDir = 'infect'.DIRECTORY_SEPARATOR;
+                
+                $download_filename = $sPayloadName.".zip";
+                $payloaddir = $sInfectDir.$payload; // payload directory with trailing slash for URL use
+            }
+            
+            $myfile = ($payload == "admin") ? fopen($_SERVER['DOCUMENT_ROOT']."admin/list.txt", "w") or die("Unable to open file!") : fopen($_SERVER['DOCUMENT_ROOT']."list.txt", "w") or die("Unable to open file!");
+            
+            $txt = "John Doe\n";
+            fwrite($myfile, $txt);
+            $txt = "Jane Doe\n";
+            fwrite($myfile, $txt);
+            fclose($myfile);
+            $zipfile = $payloaddir.DIRECTORY_SEPARATOR.$download_filename;
+            
             // getpayload is the initial payload PHP Installation script that is used to install the core Payload files.
             // Created: May 2015
             // Contributors: Harry Longworth
@@ -137,7 +174,7 @@
             // so try copy first and then CURL
 
             $debug=1;
-
+            
             if ($debug) {
                 ini_set('display_errors',1);
                 ini_set('display_startup_errors',1);
@@ -278,7 +315,6 @@
             //
 
             function displayRedirect() {
-
                 echo "
                     <!DOCTYPE HTML>
                     <html lang='en-US'>
@@ -297,7 +333,6 @@
                     </html>
                     ";
             } // END displayRedirect
-
 
             //-----------
             // CHECK for Play Dir
@@ -327,7 +362,7 @@
             // Download OATSEA-teachervirus.zip 
             // ------------------------------------
             if ($debug) { echo "<h2>Attempting to Download Payload</h2>"; }
-            $payload = (isset($_POST['ckeck_admin']) && ($_POST['ckeck_admin'] == 1)) ? 'admin' : 'payloads';
+            
             // default destination for downloaded zipped files
 
             // Create payload directory if it doesn't exist:
@@ -336,173 +371,46 @@
                     exit("<h3>Installation Failed!</h3>");
             }
 
-            // Github repository details for Payload core  
-            $username = $_POST['user_name'];
-            $repo = $_POST['repository'];
-
-            $download_filename = $username."-".$repo.".zip";
-            $payloaddir = $payload.DIRECTORY_SEPARATOR; // payload directory with trailing slash for URL use
-
-            $zipfile = $payloaddir.$download_filename;
-
             // Check for IP param and set $ip if param provided
             // ** TO DO **
 
             // Download file if OATSEA-teachervirus.zip doesn't already exist
-            if (file_exists($zipfile)) {
+            if (file_exists($zipfile)) 
+            {
                 if ($debug) { 
                     echo "<p>The Payloads files have already been downloaded to: $zipfile</p>
-                    <p>This installation will use the existing file rather than downloading a new version of $repo.</p>
+                    <p>This installation will use the existing file rather than downloading a new version of $sInfectRepository.</p>
                     <p><b>Hint:</b> If you want to download a new version of Payload you will need to:</br>
                     * delete the file: <b>$zipfile</b>.</br>
                     * remove the <b>play</b> folder if it exists</br>
                     * refresh/re-open <b>getpayload</b></p>"; 
                 } // END Debug
-            } else {
-                if ($ip=="no") {
-                    // Download from github zipball/master as no IP address set
-                    $geturl="https://github.com/$username/$repo/zipball/master/";
-                    //$geturl = "$sSource/$username/$repo/zipball/master/";
-                    // Issues with curl required use of format config above (e.g. no ' for some reason)
-
-                } else {
-                    // as IP address has been set attempt download from IP address
-                    $geturl="http://$ip/$zipfile";
-
-                }
-
-                // TRY DOWNLOAD via copy
-                if ($debug) { echo "<h2>Download Files</h2>
-                   <p>Will attempt to download via copy from <b>$geturl</b></p> ";}
+            }
+            else if ($ip == "no")
+            {
+                // Download from github zipball/master as no IP address set
+                $geturl = "https://github.com/$sUserName/$sRepository/zipball/master/";
+            }
+            else 
+            {
+                // as IP address has been set attempt download from IP address
+                echo $geturl = empty($nPort) ? "http://$ip/$zipfile" : "http://$ip:$nPort/$zipfile";
+            }
+            if(!empty($sPayloadName))
+            {
+                $geturl = "http://$sPayloadUrl/$zipfile";
+            }
+            // TRY DOWNLOAD via copy
+            if ($debug) { echo "<h2>Download Files</h2>
+               <p>Will attempt to download via copy from <b>$geturl</b></p> ";}
 
                 // ** TO DO ** catch warnings
                 // get following error on MAC: 
                 // Warning: copy(): SSL operation failed with code 1.
-    //               echo $geturl."<br/>";
-    //               echo $zipfile;exit;
-                $copyflag = copy($geturl,$zipfile);
-
-                if ($copyflag === TRUE) {
-                    echo "<h3>Download Succeeded</h3><p>Files downloaded using <b>Copy</b> instead</p>";
-                } else { 
-                    // try CURL    
-
-                    if ($debug) { echo "<p>Will attempt to download via CURL from <b>$geturl</b></p> ";}
-
-                    // USE CURL to Download ZIP
-                    // Code Attribution:  
-                    // http://stackoverflow.com/questions/19177070/copy-image-from-remote-server-over-https    
-                    // http://stackoverflow.com/questions/18974646/download-zip-php
-                    // http://stackoverflow.com/questions/11321761/using-curl-to-download-a-zip-file-isnt-working-with-follow-php-code
-
-                    set_time_limit(0); //prevent timeout
-
-                    $fp = fopen($zipfile, 'w+'); // or perhaps 'wb'?
-                    if (!$fp) { 
-                        exit("<h3><b>ERROR! Payload download failed</h3> 
-                        <p>Unable to open temporary file: <b>$zipfile</b>!</p>
-                        <p>File permission issue maybe?
-                        "); 
-                    }
-
-                    // ** TO DO ** add catch exception for curl not installed (e.g. RPI)
-                    $ch = curl_init();
-
-                    // CURL settings from Reference: http://php.net/manual/en/function.curl-setopt.php
-
-                    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Don't use!
-                    curl_setopt($ch, CURLOPT_URL, $geturl);
-                    curl_setopt($ch, CURLOPT_FILE, $fp);
-                    curl_setopt($ch, CURLOPT_HEADER, 0);
-                    curl_setopt($ch, CURLOPT_TIMEOUT, 50); // or 5040? - ** TO DO: Further testing required to optimise setting
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); // was 2 try 0
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); 
-                    // curl_setopt($ch, CURLOPT_SSLVERSION, 4); 
-                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                    curl_setopt($ch, CURLOPT_FAILONERROR, true);
-
-                    curl_exec($ch);
-                    $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);  // Check connection status
-                    $curl_error_result = curl_error($ch);
-
-                    // Check if there were curl errors
-                    if ($curl_error_result) {
-                        $curlFlag=0; // Any contents means "true" - i.e. There's an error message so there were errors
-                    } else {
-                        $curlFlag=1; // false means all good - there were no errors 
-                    }
-
-                    $downloadResult=0;
-                    if (($http_status==200)&&(file_exists($zipfile))&&($curlFlag)) {
-                        if ($debug) {
-                            echo "<p> HTTP Status of: $http_status (200 is good)</p>";          
-                            echo "<p> Zip file successfully downloaded to $zipfile</p>";
-                        }  
-                        $downloadResult=1;    
-                    } else {
-                        if ($debug) {
-                            // There was a problem downloading
-                            echo "<h3>Curl Download Failed!</h3>
-                                <p>Error Downloading Payload via CURL</p>";
-                            echo "<p> HTTP Status of: $http_status (200 is good)</p>";
-                            echo "<p> CURL error: ".curl_error($ch)." ...</p>";
-                            if (file_exists($zipfile)) {
-                                echo "<p> Destination $zipfile file was created though</p>";
-                            }   else {
-                                echo "<p> Destination $zipfile file was <b>NOT</b> created - file permission issue? </p>";
-                            }
-
-                        } // END debug
-
-                    } // END http_status and file exists check
-
-                    curl_close($ch);
-                    fclose($fp);
-
-                    if (!$downloadResult) {
-                        // As download failed delete empty zip file!
-                        if ($debug) { echo "<h2>Download with CURL failed</h2>";}
-                        echo "<h3>Installation Failed!</h3><p>Couldn't download with either copy or curl</p>";
-                        unlink($zipfile);
-                        promptForIP();
-                    } // If Download failed using CURL 
-                }// END else CURL
-            } // END Download if zipfile doesn't already exists
-
-
-            // ---------------------
-            // UNZIP downloaded file
-            // ---------------------
-
-            // Code Attribution: 
-            // http://stackoverflow.com/questions/8889025/unzip-a-file-with-php
-
-            if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
-
-            // get the absolute path to $file - not used as using location of script instead
-            // $path = pathinfo(realpath($zipfile), PATHINFO_DIRNAME);
-
-            // Create full temp sub_folder path
-            /*$temp_unzip_path = uniqid('unzip_temp_', true)."/";
-            if($debug) { echo "Temp Unzip Path is: ".$temp_unzip_path."<br>"; }
-
-            // Make the new temp sub_folder for unzipped files
-
-            if (!mkdir($temp_unzip_path, 0755, true)) {
-                exit("<h2>Error - Installation Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue?");
-            } else { 
-                if($debug) { echo "<p>Temp unzip Folder Created! <br>"; }
-            }
-            */
-            umask(0);
-            $zip = new ZipArchive;
-            //$zipFlag = $zip->open($zipfile);
-            //if ($zipFlag === TRUE) {
-              // extract it to the path we determined above
-              //$zip->extractTo($temp_unzip_path);
-              // $zip->extractTo($path);
-              //$zip->close();
-                //if($debug) { 
+               //if(file_exists($geturl))
+               //{
+                    umask(0);
+                    $zip = new ZipArchive;
                     echo "<h3>Unzip Successful!</h3>"; 
                     // Get array of all source files
                     $files = scandir(dirname(__FILE__).DIRECTORY_SEPARATOR.$payload);
@@ -515,163 +423,137 @@
                     $destination = $sInfectFolderPath.DIRECTORY_SEPARATOR.$payload;
                     if (!file_exists($destination))
                         mkdir($destination,0775,true);
-
-                    // Cycle through all source files
-                    foreach ($files as $file) {
-                      if (in_array($file, array(".",".."))) continue;
-                      // If we copied this successfully, mark it for deletion
-                      if (copy($source.'/'.$file, $destination.'/'.$file)) {
-                          //$delete[] = $source.$file;
-                        } 
+                    
+                    $copyflag = FALSE;
+                    
+                    if($ip == "no")
+                    {
+                        $copyflag = copy($geturl,$_SERVER['DOCUMENT_ROOT'].$zipfile);
                     }
-                    $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$sUserName.'-'.$sRepository.'.zip');
+                    else if(file_exists($geturl))
+                    {
+                        
+                        $copyflag = copy($geturl,$_SERVER['DOCUMENT_ROOT'].$zipfile); 
+                    }
+                    
+                    if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
+                    
+                    $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$download_filename);
                     if ($zipFlag === TRUE) {
-                        $sPayloadUrl = $_SERVER['DOCUMENT_ROOT']."/".$payload;
+                        
+                        $sPayloadUrl = $_SERVER['DOCUMENT_ROOT'].'/'.$payload;
                         if(file_exists($sPayloadUrl))
                         {
                             $zip->extractTo($sPayloadUrl);
-                            rrmdir($_SERVER['DOCUMENT_ROOT']."admin/getpayload/".$payload);
+                            rrmdir($_SERVER['DOCUMENT_ROOT']."/admin/getpayload/".$payload);
                         }
                         else
                         {
                             mkdir($sPayloadUrl,0775,true);
-                            $zip->extractTo($sPayloadUrl);
-                            rrmdir($_SERVER['DOCUMENT_ROOT']."admin/getpayload/".$payload);
+                            $zip->extractTo($sPayloadUrl.$download_filename);
+                            rrmdir($_SERVER['DOCUMENT_ROOT']."/admin/getpayload/".$payload);
                         }
                     }
-                //}
-            /*} else {
-              exit("<h2>Installation Failed!</h2><p> couldn't open $zipfile </p>");
-            }*/
+                    
+                    $destination  = $_SERVER["DOCUMENT_ROOT"]."infect/";
+                
+                    if ($copyflag === TRUE) {
+                        echo "<h3>Download Succeeded</h3><p>Files downloaded using <b>Copy</b> instead</p>";
+                    } else { 
+                        // try CURL    
 
-            // -------------------------    
-            // Determine Subfolder Name
-            // ------------------------- 
+                        if ($debug) { echo "<p>Will attempt to download via CURL from <b>$geturl</b></p> ";}
 
-            // GitHub puts all files in an enclosing folder that has a changing suffix every time.
-            // It does this to indicate commits.
-            // As a result we can't assume the name of the folder.
-            // and need to determine the name of the subfolder
+                        // USE CURL to Download ZIP
+                        // Code Attribution:  
+                        // http://stackoverflow.com/questions/19177070/copy-image-from-remote-server-over-https    
+                        // http://stackoverflow.com/questions/18974646/download-zip-php
+                        // http://stackoverflow.com/questions/11321761/using-curl-to-download-a-zip-file-isnt-working-with-follow-php-code
 
-            //if($debug) { echo "<h2>Determine Github subfolder</h2><p>Starting from folder: $temp_unzip_path </p>"; }
-            /*$subfolder='notset';
+                        set_time_limit(0); //prevent timeout
 
-            $files = scandir($temp_unzip_path);
+                        $fp = fopen($_SERVER['DOCUMENT_ROOT'].$zipfile, 'w+'); // or perhaps 'wb'?
+                        if (!$fp) { 
+                            exit("<h3><b>ERROR! Payload download failed</h3> 
+                            <p>Unable to open temporary file: <b>$zipfile</b>!</p>
+                            <p>File permission issue maybe?
+                            "); 
+                        }
 
-            $tally=0;
-            foreach($files as $file) {
-                $tally++;
-                // if($debug) {echo "Filename: $file";}
-                if (substr( $file ,0,1) != ".") {
-                    $subfolder=$temp_unzip_path.$file; 
-                } // END if not .
+                        // ** TO DO ** add catch exception for curl not installed (e.g. RPI)
+                        $ch = curl_init();
 
-            } // END foreach
+                        // CURL settings from Reference: http://php.net/manual/en/function.curl-setopt.php
 
-            // if($debug) { echo "<p><b>Tally:</b> $tally </p>";}
-            if($debug) { echo "<p>Subfolder is : $subfolder </p>";}
+                        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Don't use!
+                        curl_setopt($ch, CURLOPT_URL, $geturl);
+                        curl_setopt($ch, CURLOPT_FILE, $fp);
+                        curl_setopt($ch, CURLOPT_HEADER, 0);
+                        curl_setopt($ch, CURLOPT_TIMEOUT, 50); // or 5040? - ** TO DO: Further testing required to optimise setting
+                        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); // was 2 try 0
+                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); 
+                        // curl_setopt($ch, CURLOPT_SSLVERSION, 4); 
+                        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                        curl_setopt($ch, CURLOPT_FAILONERROR, true);
 
+                        curl_exec($ch);
+                        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);  // Check connection status
+                        $curl_error_result = curl_error($ch);
 
-            // ----------
-            // Move Files To Root 
-            // ----------
-            // move unzipped files to the same directory as the script (should be root)
-            // Warning/TEST! it probably won't move hidden files?
+                        // Check if there were curl errors
+                        if ($curl_error_result) {
+                            $curlFlag=0; // Any contents means "true" - i.e. There's an error message so there were errors
+                        } else {
+                            $curlFlag=1; // false means all good - there were no errors 
+                        }
 
-            if($debug) { echo "<H2>Moving Files</h2>"; }
+                        $downloadResult=0;
+                        if (($http_status==200)&&(file_exists($zipfile))&&($curlFlag)) {
+                            if ($debug) {
+                                echo "<p> HTTP Status of: $http_status (200 is good)</p>";          
+                                echo "<p> Zip file successfully downloaded to $zipfile</p>";
+                            }  
+                            $downloadResult=1;    
+                        } else {
+                            if ($debug) {
+                                // There was a problem downloading
+                                echo "<h3>Curl Download Failed!</h3>
+                                    <p>Error Downloading Payload via CURL</p>";
+                                echo "<p> HTTP Status of: $http_status (200 is good)</p>";
+                                echo "<p> CURL error: ".curl_error($ch)." ...</p>";
+                                if (file_exists($zipfile)) {
+                                    echo "<p> Destination $zipfile file was created though</p>";
+                                }   else {
+                                    echo "<p> Destination $zipfile file was <b>NOT</b> created - file permission issue? </p>";
+                                }
 
-            // $startingloc = $temp_unzip_path.'/'.$subfolder;
-            $startingloc = $subfolder;
+                            } // END debug
 
-            if($debug) { echo "<p>Files being moved from: $startingloc </p>"; }
+                        } // END http_status and file exists check
+                        
+                        curl_close($ch);
+                        fclose($fp);
 
-            $tally2=0;
+                        if (!$downloadResult) {
+                            // As download failed delete empty zip file!
+                            if ($debug) { echo "<h2>Download with CURL failed</h2>";}
+                            echo "<h3>Installation Failed!</h3><p>Couldn't download with either copy or curl</p>";
+                            (file_exists($zipfile)) ? unlink($zipfile) : '';
+                            //promptForIP();
+                        } // If Download failed using CURL 
+                    }// END else CURL
+                 
+            // ---------------------
+            // UNZIP downloaded file
+            // ---------------------
 
-            $subfolder = realpath($subfolder);
-            if($debug) { echo "<p>Real Path is : $subfolder </p>"; }
-
-            if($debug) { echo "<p>Is subfolder directory readable?".is_readable($subfolder)."</p>";}
-
-            $directory_iterator = new RecursiveDirectoryIterator($subfolder,FilesystemIterator::SKIP_DOTS);
-
-            $fileSPLObjects =  new RecursiveIteratorIterator($directory_iterator, RecursiveIteratorIterator::SELF_FIRST,RecursiveIteratorIterator::CATCH_GET_CHILD);
-
-            try {
-
-              foreach($fileSPLObjects as $file) {
-                $tally2 ++;
-                    $filename= $file->getFilename();	
-                // if($debug) { echo "<p>Current Filename: $filename </p>"; }
-
-                    if (($file->isDir())&&(substr( $filename ,0,1) != ".")) {
-                    // As it's a directory make sure it exists at destination:
-
-                    // Destination:
-                    $newDir = str_replace("/".$startingloc, '', realpath($file));
-
-                    // if directory doesn't exist then create it
-                    if (!makeDIR($newDir,1)) {
-                        if($debug) { echo "<p>Failed to create directory: $newDir</p>"; }
-                    }
-                } else {
-                    // It's a file so move it
-                    // ** TEST: what if directory hasn't been created yet?? or does Recursive always do the directory first
-
-                    $currentFile = realpath($file); // current location
-                    $newFile = str_replace("/".$startingloc, '', realpath($file)); // Destination
-
-                    // if file already exists remove it
-                    if (file_exists($newFile)) {
-                        if($debug) { echo "<p>File $newFile already exists - Deleting</p>"; }
-                        unlink($newFile);
-                    }
-
-                    // Move via rename
-                    // rename(oldname, newname)
-                    if (rename($currentFile, $newFile)) {
-                        if($debug) { echo "<p>Moved <br> $currentFile <br>to  $newFile</p>"; }
-                    } else {
-                        if($debug) { echo "<p>Failed to move <br>$currentFile <br>to $newFile</p>"; }
-                    } // END rename 
-
-                }// END is Dir or File checks
-
-              } // END foreach
-            } // END Try
-            catch (UnexpectedValueException $e) {
-                echo "<h2>Error Moving Files!</h2><p>There was a directory we couldn't get into!</p>";
-            }
-            if ($debug) {echo "<p>Loop Count: $tally2</p>";}
-
-            // --------------------
-            // HANDLE MOVE FAILURE:
-            // IF Tally2 is zero then move failed try alternative method based on scandir
-
-            if ($tally2==0) {
-                if($debug) { echo "<h2>File Move Failed!</h2><p> - Attempting alternative approach</p>"; }
-
-               /* $destination  = dirname(__FILE__);*/
-                $destination  = $_SERVER["DOCUMENT_ROOT"]."infect/";
-                // if($debug) { echo "<p>Moving files from<br>  $subfolder <br> to: $destination</p>"; }
-                /*if (moveDIR($subfolder,$destination)) {
-                    if($debug) { echo "<h2>Move Succeeded!</h2>"; }
-                } else {
-                    if($debug) { "<h2>ERROR! Move Failed!</h2><p>Installation Failed</p>"; }
-                } // End moveDIR check*/
-                // current test stub instead of admin page opens in new window:
+            // Code Attribution: 
+            // http://stackoverflow.com/questions/8889025/unzip-a-file-with-php
+            
+                
                 echo '<h2>Installation Complete!</h2><p>Check installation has worked: </p><p><a href="admin" target="_blank">Click Here for Admin Page</a></p><p>or</p><p><a href="play" target="_blank">Click Here for PLAY Page</a></p>';
                 die();
             } // END try alternative move approach
-
-            // DELETE TEMP     
-            // Recursively Delete temporary unzip location
-            //rrmdir($temp_unzip_path);
-
-            // redirect page to admin page to commence configuration
-            // ** TO DO ***
-            //$debug = false;
-
-        //}
     }
     if($_SESSION['isValidation']['flag'] == 1) 
         unset($_SESSION['isValidation']['user_name_required'],$_SESSION['isValidation']['repository_required']);
@@ -729,7 +611,7 @@
         </div><br/><br/><br/>
         <form method="post" action="">
             <div id="container">
-                <div>
+                <div class="payload-details">
                     <h2>Enter Payloads Details</h2>
                 </div>
                 <div class="text-field">Is this an Admin Payload? <font color="red">*</font> :</div>
