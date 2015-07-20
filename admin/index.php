@@ -16,7 +16,7 @@
 <?php
     //header("Cache-Control: max-age=300, must-revalidate");
     //ini_set('session.cache_limiter', 'private');
-    $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
+    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off") ? "https" : "http";
     $protocol .= "://" . $_SERVER['HTTP_HOST'];
     //Starts session
     if (@session_id() == "") @session_start();

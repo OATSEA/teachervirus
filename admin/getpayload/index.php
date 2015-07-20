@@ -2,6 +2,7 @@
     <head>
         <title>Payloads</title>
         <meta charset="utf-8">
+        <link href="../buttons.css" rel="stylesheet">
         <link href="../../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <script src="../../js/jquery.js" type="text/javascript"></script>
         <style>
@@ -11,6 +12,7 @@
                     padding: 0px;
                     margin: 0;
                     color: #fff;
+                    text-align: left;
                 }
             form{
                 border: 1px solid #fff;
@@ -36,6 +38,9 @@
             .go-button{
                 float: right;
             }
+            .go-button > input{
+                color: #000;
+            }
             .admin_img {
                 color: #fff;
                 float: right;
@@ -48,6 +53,7 @@
                 line-height: 15px;
             }
             input[type="text"] {
+                color: #000;
                 float: left;
                 width: 30%;
                 display: block;
@@ -83,7 +89,7 @@
         $sInfectRepository = $_POST["infect_repository"];
         $sPayloadName = $_POST['payload_name'];
         $sPayloadUrl = $_POST["payload_url"];
-        $sIsAdmin = empty($_POST['ckeck_admin']) ? '' : $_POST['ckeck_admin'];
+        $sIsAdmin = empty($_POST['check_admin']) ? '' : $_POST['check_admin'];
         
         if($_POST['payload_source'] == 'github_payloads')
         {
@@ -127,37 +133,33 @@
         
         if($_SESSION['isValidation']['flag'] == 1)
         {
-            $payload = (isset($_POST['ckeck_admin']) && ($_POST['ckeck_admin'] == 1)) ? 'admin' : 'payloads';
-            
+            $payload = (isset($_POST['check_admin']) && ($_POST['check_admin'] == 1)) ? 'admin' : 'payloads';
+            $isAdmin = ($payload == 'admin') ? 'A' : 'G'; 
             if(!empty($sUserName))
             {
                 $sInfectDir = 'infect'.DIRECTORY_SEPARATOR;
                 $download_filename = $sUserName."-".$sRepository.".zip";
+                $download_unzip_filename = $sUserName."-".$sRepository;
                 $payloaddir = $sInfectDir.$payload; // payload directory with trailing slash for URL use
-                $payloadName = $sUserName."-".$sRepository.".zip";
-                $sListContent = ($payloadName.";"."A");
+                $sListContent = "$download_unzip_filename;$isAdmin;$sUserName;$sRepository";
             }
             else if(!empty($sDeviceAddress))
             {
                 $sInfectDir = 'infect'.DIRECTORY_SEPARATOR;
                 $download_filename = empty($sInfectRepository) ? $sInfectUserName.".zip" : $sInfectUserName."-".$sInfectRepository.".zip";
+                $download_unzip_filename = empty($sInfectRepository) ? $sInfectUserName.".zip" : $sInfectUserName."-".$sInfectRepository;
                 $payloaddir = $sInfectDir.$payload; 
+                $payloadName = $sInfectUserName."-".$sInfectRepository;
+                $sListContent = "$payloadName;$isAdmin;$sDeviceAddress;$nPort;$sInfectUserName;$sInfectRepository";
             }
             else if(!empty($sPayloadName))
             {
                 $sInfectDir = 'infect'.DIRECTORY_SEPARATOR;
-                
                 $download_filename = $sPayloadName.".zip";
+                $download_unzip_filename = $sPayloadName;
                 $payloaddir = $sInfectDir.$payload; // payload directory with trailing slash for URL use
+                $sListContent = "$download_unzip_filename;$isAdmin;$download_unzip_filename;$sPayloadUrl";
             }
-            
-            $myfile = ($payload == "admin") ? fopen($_SERVER['DOCUMENT_ROOT']."admin/list.txt", "w") or die("Unable to open file!") : fopen($_SERVER['DOCUMENT_ROOT']."list.txt", "w") or die("Unable to open file!");
-            
-            $txt = "John Doe\n";
-            fwrite($myfile, $txt);
-            $txt = "Jane Doe\n";
-            fwrite($myfile, $txt);
-            fclose($myfile);
             $zipfile = $payloaddir.DIRECTORY_SEPARATOR.$download_filename;
             
             // getpayload is the initial payload PHP Installation script that is used to install the core Payload files.
@@ -445,12 +447,52 @@
                         if(file_exists($sPayloadUrl))
                         {
                             $zip->extractTo($sPayloadUrl);
+                            $files = scandir($sPayloadUrl,1);
+                            foreach ($files as $key => $value)
+                            {
+                               if (!in_array($value,array(".","..")))
+                               {
+                                  if (is_dir($sPayloadUrl . DIRECTORY_SEPARATOR . $value))
+                                  {
+                                    if(preg_match("/$download_unzip_filename/",$value))
+                                    {
+                                        if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
+                                        {
+                                            rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
+                                        }
+                                        rename($sPayloadUrl.'/'.$value,$sPayloadUrl.'/'.$download_unzip_filename);
+                                        $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die("Unable to open file!");
+                                        $txt = $sListContent;
+                                        fwrite($myfile, $txt);
+                                        fclose($myfile);
+                                    }
+                                  }
+                               }
+                            }
                             rrmdir($_SERVER['DOCUMENT_ROOT']."/admin/getpayload/".$payload);
                         }
                         else
                         {
                             mkdir($sPayloadUrl,0775,true);
                             $zip->extractTo($sPayloadUrl.$download_filename);
+                            $files = scandir($sPayloadUrl,1);
+                            foreach ($files as $key => $value)
+                            {
+                               if (!in_array($value,array(".","..")))
+                               {
+                                  if (is_dir($sPayloadUrl . DIRECTORY_SEPARATOR . $value))
+                                  {
+                                     if(preg_match("/$download_unzip_filename/",$value))
+                                     {
+                                        rename($sPayloadUrl.'/'.$value,$sPayloadUrl.'/'.$download_unzip_filename);
+                                        $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die("Unable to open file!");
+                                        $txt = $sListContent;
+                                        fwrite($myfile, $txt);
+                                        fclose($myfile);
+                                     }
+                                  }
+                               }
+                            } 
                             rrmdir($_SERVER['DOCUMENT_ROOT']."/admin/getpayload/".$payload);
                         }
                     }
@@ -551,7 +593,9 @@
             // http://stackoverflow.com/questions/8889025/unzip-a-file-with-php
             
                 
-                echo '<h2>Installation Complete!</h2><p>Check installation has worked: </p><p><a href="admin" target="_blank">Click Here for Admin Page</a></p><p>or</p><p><a href="play" target="_blank">Click Here for PLAY Page</a></p>';
+                echo '<h2>Installation Complete!</h2><p>Check installation has worked: </p>'
+                    . '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>'
+                    . '<div class="play_img"><a href="'.$protocol.'/play/" class="color-white"><i class="mainNav fa fa-play-circle-o fa-3x"></i></a></div>';
                 die();
             } // END try alternative move approach
     }
@@ -581,21 +625,29 @@
                 }
                 $("#"+divId).show();
             }
-            function changeValue()
+            function changeValue(eValue = '')
             {
-                //alert(checkAdmin);
-                if(checkAdmin == "")
+                var isAdmin = document.getElementById('check_admin');
+                if(eValue == '')
                 {
-                    var isAdmin = document.getElementById('ckeck_admin');
+                    if (isAdmin.checked)
+                    {
+                        isAdmin.value = 1;
+                    }
+                    else
+                    {
+                        isAdmin.value = 0;
+                    }
+                }
+                else if(eValue == 1)
+                {
+                    document.getElementById("check_admin").checked = true;
+                    isAdmin.value = eValue;
                 }
                 else
                 {
-                    var isAdmin = checkAdmin;
-                }
-                if (isAdmin.checked){
-                    isAdmin.value = 1;
-                }else{
-                    isAdmin.value = 0;
+                    document.getElementById("check_admin").checked = false;
+                    isAdmin.value = eValue;
                 }
             }
             function removePort()
@@ -604,6 +656,7 @@
             }
             $(document).ready(function(){
                 showData("<?php echo isset($_POST['payload_source']) ? $_POST['payload_source'] : 'github_payloads'; ?>");
+                changeValue(<?php echo isset($sIsAdmin) ? $sIsAdmin : '' ?>);
             });
         </script>
         <div class="color-white">
@@ -615,10 +668,7 @@
                     <h2>Enter Payloads Details</h2>
                 </div>
                 <div class="text-field">Is this an Admin Payload? <font color="red">*</font> :</div>
-                <input type="checkbox" name="ckeck_admin" id="check_admin" value="0" onclick="changeValue();"/>Admin
-                <div id="text_box_input" class="error-message">
-                  <?php //echo isset($_SESSION['isValidation']['ckeck_admin']) ? $_SESSION['isValidation']['ckeck_admin'] : '';?>
-                </div>
+                <input type="checkbox" name="check_admin" id="check_admin" value="0" onclick="changeValue('');"/>Admin
                 <br/>
                 <div class="text-field">
                     <input type="radio" name="payload_source" id="ckeck_github" value="github_payloads" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "github_payloads") ? "checked='checked'" : "checked='checked'"; ?> onclick="showData('github_payloads');">GitHub
