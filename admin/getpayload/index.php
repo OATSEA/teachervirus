@@ -439,10 +439,8 @@
                     }
                     
                     if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
-                    
                     $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$download_filename);
                     if ($zipFlag === TRUE) {
-                        
                         $sPayloadUrl = $_SERVER['DOCUMENT_ROOT'].'/'.$payload;
                         if(file_exists($sPayloadUrl))
                         {
@@ -465,6 +463,14 @@
                                         $txt = $sListContent;
                                         fwrite($myfile, $txt);
                                         fclose($myfile);
+                                        
+                                        $myfile = fopen("$destination/list.txt", "w") or die("Unable to open file!");
+                                        $txt = $sListContent;
+                                        fwrite($myfile, $txt);
+                                        fclose($myfile);
+                                        $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename."harrylongworth-tv-twine-efcedac/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
+                                        // Add current file to archive
+                                        $zip->addFile($destination."/list.txt", $relativePath);
                                     }
                                   }
                                }
@@ -484,11 +490,23 @@
                                   {
                                      if(preg_match("/$download_unzip_filename/",$value))
                                      {
+                                        if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
+                                        {
+                                            rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
+                                        }
                                         rename($sPayloadUrl.'/'.$value,$sPayloadUrl.'/'.$download_unzip_filename);
                                         $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die("Unable to open file!");
                                         $txt = $sListContent;
                                         fwrite($myfile, $txt);
                                         fclose($myfile);
+                                        
+                                        $myfile = fopen("$destination/list.txt", "w") or die("Unable to open file!");
+                                        $txt = $sListContent;
+                                        fwrite($myfile, $txt);
+                                        fclose($myfile);
+                                        $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename."harrylongworth-tv-twine-efcedac/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
+                                        // Add current file to archive
+                                        $zip->addFile($destination."/list.txt", $relativePath);
                                      }
                                   }
                                }
@@ -496,7 +514,8 @@
                             rrmdir($_SERVER['DOCUMENT_ROOT']."/admin/getpayload/".$payload);
                         }
                     }
-                    
+                    $zip->close();
+                    unlink($destination."/list.txt");
                     $destination  = $_SERVER["DOCUMENT_ROOT"]."infect/";
                 
                     if ($copyflag === TRUE) {
