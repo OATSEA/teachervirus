@@ -133,19 +133,21 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['delete']))
             {
                 $sInfectDir = 'infect'.DIRECTORY_SEPARATOR;
                 $download_filename = $sUserName."-".$sRepository.".zip";
+                $download_unzip_filename = $sUserName."-".$sRepository;
                 $payloaddir = $sInfectDir.$payload; // payload directory with trailing slash for URL use
             }
             else if(!empty($sDeviceAddress))
             {
                 $sInfectDir = 'infect'.DIRECTORY_SEPARATOR;
                 $download_filename = empty($sInfectRepository) ? $sInfectUserName.".zip" : $sInfectUserName."-".$sInfectRepository.".zip";
+                $download_unzip_filename = empty($sInfectRepository) ? $sInfectUserName.".zip" : $sInfectUserName."-".$sInfectRepository;
                 $payloaddir = $sInfectDir.$payload; 
             }
             else if(!empty($sPayloadName))
             {
                 $sInfectDir = 'infect'.DIRECTORY_SEPARATOR;
-                
                 $download_filename = $sPayloadName.".zip";
+                $download_unzip_filename = $sPayloadName;
                 $payloaddir = $sInfectDir.$payload; // payload directory with trailing slash for URL use
             }
             
@@ -466,6 +468,20 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['delete']))
                                 }
                             }
                             $zip->extractTo($sPayloadUrl);
+                            $files = scandir($sPayloadUrl,1);
+                            foreach ($files as $key => $value)
+                            {
+                               if (!in_array($value,array(".","..")))
+                               {
+                                  if (is_dir($sPayloadUrl . DIRECTORY_SEPARATOR . $value))
+                                  {
+                                     if(preg_match("/$download_unzip_filename/",$value))
+                                     {
+                                         rename($sPayloadUrl.'/'.$value,$sPayloadUrl.'/'.$download_unzip_filename);
+                                     }
+                                  }
+                               }
+                            } 
                             rrmdir($_SERVER['DOCUMENT_ROOT']."/admin/getpayload/".$payload);
                             rrmdir($sPayloadUrl."/old_".$ff);
                         }
@@ -492,6 +508,20 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['delete']))
                             }
                             mkdir($sPayloadUrl,0775,true);
                             $zip->extractTo($sPayloadUrl.$download_filename);
+                            $files = scandir($sPayloadUrl,1);
+                            foreach ($files as $key => $value)
+                            {
+                               if (!in_array($value,array(".","..")))
+                               {
+                                  if (is_dir($sPayloadUrl . DIRECTORY_SEPARATOR . $value))
+                                  {
+                                     if(preg_match("/$download_unzip_filename/",$value))
+                                     {
+                                         rename($sPayloadUrl.'/'.$value,$sPayloadUrl.'/'.$download_unzip_filename);
+                                     }
+                                  }
+                               }
+                            } 
                             rrmdir($_SERVER['DOCUMENT_ROOT']."/admin/getpayload/".$payload);
                             rrmdir($sPayloadUrl."/old_".$ff);
                         }
