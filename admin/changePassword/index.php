@@ -134,7 +134,7 @@
     }
     if(isset($_SESSION['password_changed']) && $_SESSION['password_changed'])
     {
-        $sDirName = $_SERVER['DOCUMENT_ROOT']."/admin/";
+        $sDirName = $_SERVER['DOCUMENT_ROOT']."/data/admin/";
         $username_password = 'username_password.php';
         unlink($sDirName.$username_password);
         $handle = fopen($sDirName.$username_password, 'w')or die('Cannot open file:  '.$username_password); ;

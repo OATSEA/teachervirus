@@ -21,10 +21,10 @@
     //Starts session
     if (@session_id() == "") @session_start();
 
-    //$_SESSION['password_generated'] = false;
-    if (file_exists("username_password.php")) 
+    $_SESSION['password_generated'] = false;
+    if (file_exists($_SERVER['DOCUMENT_ROOT']."/data/admin/username_password.php")) 
     {
-        require 'username_password.php';
+        require $_SERVER['DOCUMENT_ROOT']."/data/admin/username_password.php";
         //Checking for request method.
         if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['pattern_password']))
         {
@@ -138,9 +138,9 @@
             <?php
         }
 
-        if($_SESSION['password_generated'])
+        if(isset($_SESSION['password_generated']) && $_SESSION['password_generated'])
         {
-            $username_password = 'username_password.php';
+            $username_password = $_SERVER['DOCUMENT_ROOT']."/data/admin/username_password.php";
             $handle = fopen($username_password, 'w')or die('Cannot open file:  '.$username_password); ;
             $sPassword = md5($_POST['confirm_password']);
             $txt = '<?php
@@ -184,4 +184,3 @@
 ?>
 </body>
 </html>
-
