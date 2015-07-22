@@ -161,7 +161,6 @@
         }
         else if($nConfirmPasswordFlag == 0)
         {
-            var_dump($_SESSION);
     ?>
             <div id="login">
                 <link rel="stylesheet" type="text/css" href="changePassword/_style/changePassword.css"/>
