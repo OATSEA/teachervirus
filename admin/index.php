@@ -158,7 +158,7 @@
             $protocol .= "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             header("Location:".$protocol);
         }
-        else if(!isset($_SESSION['new_password']) && $_SESSION['password_generated'])
+        else if(!isset($_SESSION['new_password']) && $_SESSION['password_generated']) 
         {
     ?>
             <div id="login">
