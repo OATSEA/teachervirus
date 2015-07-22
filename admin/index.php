@@ -21,6 +21,7 @@
     if (@session_id() == "") @session_start();
 
     $_SESSION['password_generated'] = false;
+    $nConfirmPasswordFlag = 0;
     if (file_exists($_SERVER['DOCUMENT_ROOT']."/data/admin/username_password.php")) 
     {
         require $_SERVER['DOCUMENT_ROOT']."/data/admin/username_password.php";
@@ -97,7 +98,7 @@
     {
         if(($_SERVER['REQUEST_METHOD'] == "POST"  && isset($_POST['new_password'])) || ((isset($_POST['confirm_password']) && (isset($_SESSION['new_password']))) && ($_SESSION['new_password'] != $_POST['confirm_password'] || $_SESSION['new_password'] == $_POST['confirm_password'])))
         {
-            $_SESSION['new_password'] = (isset($_POST['new_password']) ? md5($_POST['new_password']) : (isset($_SESSION['new_password']) ? $_SESSION['new_password'] : false));
+            $_SESSION['new_password'] = (isset($_POST['new_password']) ? md5($_POST['new_password']) : (isset($_SESSION['new_password']) ? $_SESSION['new_password'] : true));
             if(isset($_POST['confirm_password']) && isset($_SESSION['new_password']))
             {
                 if($_SESSION['new_password'] == md5($_POST['confirm_password']))
@@ -115,6 +116,7 @@
             {
                 unset($_SESSION['password_require']);
             }
+            $nConfirmPasswordFlag = 1;
             ?>            
                 <div>
                     <link rel="stylesheet" type="text/css" href="changePassword/_style/changePassword.css"/>
@@ -157,8 +159,9 @@
             $protocol .= "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             header("Location:".$protocol);
         }
-        else if(!$_SESSION['new_password'] && !$_SESSION['password_generated'])
+        else if($nConfirmPasswordFlag == 0)
         {
+            var_dump($_SESSION);
     ?>
             <div id="login">
                 <link rel="stylesheet" type="text/css" href="changePassword/_style/changePassword.css"/>
