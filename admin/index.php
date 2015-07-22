@@ -12,7 +12,6 @@
 <script>$(document).ready(function() { setup(); }); </script>
 </head>
 <body class="main" >
-
 <?php
     //header("Cache-Control: max-age=300, must-revalidate");
     //ini_set('session.cache_limiter', 'private');
@@ -159,7 +158,7 @@
             $protocol .= "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             header("Location:".$protocol);
         }
-        else if(!isset($_SESSION['new_password']) && !$_SESSION['password_generated'])
+        else if(!isset($_SESSION['new_password']) && $_SESSION['password_generated'])
         {
     ?>
             <div id="login">
