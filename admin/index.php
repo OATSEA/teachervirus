@@ -97,7 +97,7 @@
     {
         if(($_SERVER['REQUEST_METHOD'] == "POST"  && isset($_POST['new_password'])) || ((isset($_POST['confirm_password']) && (isset($_SESSION['new_password']))) && ($_SESSION['new_password'] != $_POST['confirm_password'] || $_SESSION['new_password'] == $_POST['confirm_password'])))
         {
-            $_SESSION['new_password'] = (isset($_POST['new_password']) ? md5($_POST['new_password']) : (isset($_SESSION['new_password']) ? $_SESSION['new_password'] : ''));
+            $_SESSION['new_password'] = (isset($_POST['new_password']) ? md5($_POST['new_password']) : (isset($_SESSION['new_password']) ? $_SESSION['new_password'] : false));
             if(isset($_POST['confirm_password']) && isset($_SESSION['new_password']))
             {
                 if($_SESSION['new_password'] == md5($_POST['confirm_password']))
@@ -136,7 +136,6 @@
                 </div>
             <?php
         }
-
         if(isset($_SESSION['password_generated']) && $_SESSION['password_generated'])
         {
             mkdir($_SERVER['DOCUMENT_ROOT']."/data/admin");
@@ -158,7 +157,7 @@
             $protocol .= "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             header("Location:".$protocol);
         }
-        else if(!isset($_SESSION['new_password']) && $_SESSION['password_generated']) 
+        else if(!$_SESSION['new_password'] && !$_SESSION['password_generated'])
         {
     ?>
             <div id="login">
