@@ -67,7 +67,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['delete']))
         (empty($aPost)) ? '' :rrmdir($aPost);
     }
 }
-
     $protocol = isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
     $protocol .= "://" . $_SERVER['HTTP_HOST'];
     

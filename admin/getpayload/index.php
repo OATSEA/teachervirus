@@ -141,7 +141,7 @@
                 $download_filename = $sUserName."-".$sRepository.".zip";
                 $download_unzip_filename = $sUserName."-".$sRepository;
                 $payloaddir = $sInfectDir.$payload; // payload directory with trailing slash for URL use
-                $sListContent = "$download_unzip_filename;$isAdmin;$sUserName;$sRepository";
+                $sListContent = "github_payloads;$isAdmin;$sUserName;$sRepository";
             }
             else if(!empty($sDeviceAddress))
             {
@@ -150,7 +150,9 @@
                 $download_unzip_filename = empty($sInfectRepository) ? $sInfectUserName.".zip" : $sInfectUserName."-".$sInfectRepository;
                 $payloaddir = $sInfectDir.$payload; 
                 $payloadName = $sInfectUserName."-".$sInfectRepository;
-                $sListContent = "$payloadName;$isAdmin;$sDeviceAddress;$nPort;$sInfectUserName;$sInfectRepository";
+                $sPort = empty($nPort) ? 'none' : $nPort;
+                $sFinalInfectRepository = empty($sInfectRepository) ? 'none' : $sInfectRepository;
+                $sListContent = "infected_device;$isAdmin;$sDeviceAddress;$sPort;$sInfectUserName;$sFinalInfectRepository";
             }
             else if(!empty($sPayloadName))
             {
@@ -158,7 +160,7 @@
                 $download_filename = $sPayloadName.".zip";
                 $download_unzip_filename = $sPayloadName;
                 $payloaddir = $sInfectDir.$payload; // payload directory with trailing slash for URL use
-                $sListContent = "$download_unzip_filename;$isAdmin;$download_unzip_filename;$sPayloadUrl";
+                $sListContent = "website_url;$isAdmin;$download_unzip_filename;$sPayloadUrl;";
             }
             $zipfile = $payloaddir.DIRECTORY_SEPARATOR.$download_filename;
             
