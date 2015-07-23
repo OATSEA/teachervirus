@@ -32,8 +32,8 @@
                 width: 200px;
             }
             .example-text{
-                text-align: right;
-                width: 370px;
+                text-align: center;
+                width: 100%;
             }
             .go-button{
                 float: right;
@@ -75,6 +75,7 @@
     <body class="main">
 <?php
 //session_start();
+    $debug = isset($_POST['show_debug']) ? $_POST['show_debug'] : 0;
     $protocol = isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
     $protocol .= "://" . $_SERVER['HTTP_HOST'];
     
@@ -89,6 +90,8 @@
         $sInfectRepository = $_POST["infect_repository"];
         $sPayloadName = $_POST['payload_name'];
         $sPayloadUrl = $_POST["payload_url"];
+        $sGooglePayloadName = $_POST['google_payload_name'];
+        $sGoogleDriveLink = $_POST['google_drive_link'];
         $sIsAdmin = empty($_POST['check_admin']) ? '' : $_POST['check_admin'];
         
         if($_POST['payload_source'] == 'github_payloads')
@@ -117,7 +120,7 @@
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
         }
-        else
+        else if($_POST['payload_source'] == 'website_url')
         {
             if(empty($sPayloadName))
             {
@@ -130,6 +133,19 @@
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
         }
+        else
+        {
+            if(empty($sGooglePayloadName))
+            {
+                $_SESSION['isValidation']['google_payload_name'] = 'Please enter payload name!!';
+                $_SESSION['isValidation']['flag'] = FALSE;
+            }
+            if(empty($sGoogleDriveLink))
+            {
+                $_SESSION['isValidation']['google_drive_link'] = 'Please enter google drive payload id!!';
+                $_SESSION['isValidation']['flag'] = FALSE;
+            }
+        }
         
         if($_SESSION['isValidation']['flag'] == 1)
         {
@@ -137,18 +153,14 @@
             $isAdmin = ($payload == 'admin') ? 'A' : 'G'; 
             if(!empty($sUserName))
             {
-                $sInfectDir = 'infect'.DIRECTORY_SEPARATOR;
                 $download_filename = $sUserName."-".$sRepository.".zip";
                 $download_unzip_filename = $sUserName."-".$sRepository;
-                $payloaddir = $sInfectDir.$payload; // payload directory with trailing slash for URL use
                 $sListContent = "github_payloads;$isAdmin;$sUserName;$sRepository";
             }
             else if(!empty($sDeviceAddress))
             {
-                $sInfectDir = 'infect'.DIRECTORY_SEPARATOR;
                 $download_filename = empty($sInfectRepository) ? $sInfectUserName.".zip" : $sInfectUserName."-".$sInfectRepository.".zip";
                 $download_unzip_filename = empty($sInfectRepository) ? $sInfectUserName.".zip" : $sInfectUserName."-".$sInfectRepository;
-                $payloaddir = $sInfectDir.$payload; 
                 $payloadName = $sInfectUserName."-".$sInfectRepository;
                 $sPort = empty($nPort) ? 'none' : $nPort;
                 $sFinalInfectRepository = empty($sInfectRepository) ? 'none' : $sInfectRepository;
@@ -156,13 +168,17 @@
             }
             else if(!empty($sPayloadName))
             {
-                $sInfectDir = 'infect'.DIRECTORY_SEPARATOR;
                 $download_filename = $sPayloadName.".zip";
                 $download_unzip_filename = $sPayloadName;
-                $payloaddir = $sInfectDir.$payload; // payload directory with trailing slash for URL use
-                $sListContent = "website_url;$isAdmin;$download_unzip_filename;$sPayloadUrl;";
+                $sListContent = "website_url;$isAdmin;$download_unzip_filename;$sPayloadUrl";
             }
-            $zipfile = $payloaddir.DIRECTORY_SEPARATOR.$download_filename;
+            else if(!empty($sGooglePayloadName))
+            {
+                $download_filename = $sGooglePayloadName.".zip";
+                $download_unzip_filename = $sGooglePayloadName;
+                $sListContent = "google_drive;$isAdmin;$download_unzip_filename;$sGoogleDriveLink";
+            }
+            $zipfile = $payload.DIRECTORY_SEPARATOR.$download_filename;
             
             // getpayload is the initial payload PHP Installation script that is used to install the core Payload files.
             // Created: May 2015
@@ -177,8 +193,6 @@
             // - file permissions not set
             // so try copy first and then CURL
 
-            $debug=1;
-            
             if ($debug) {
                 ini_set('display_errors',1);
                 ini_set('display_startup_errors',1);
@@ -337,7 +351,7 @@
                     </html>
                     ";
             } // END displayRedirect
-
+            
             //-----------
             // CHECK for Play Dir
             // -----------
@@ -404,6 +418,10 @@
             {
                 $geturl = "http://$sPayloadUrl/$zipfile";
             }
+            if(!empty($sGooglePayloadName))
+            {
+                $geturl = "https://docs.google.com/uc?id=$sGoogleDriveLink&export=download";
+            }
             // TRY DOWNLOAD via copy
             if ($debug) { echo "<h2>Download Files</h2>
                <p>Will attempt to download via copy from <b>$geturl</b></p> ";}
@@ -420,11 +438,9 @@
                     $files = scandir(dirname(__FILE__).DIRECTORY_SEPARATOR.$payload);
                     // Identify directories
                     $source = dirname(__FILE__).DIRECTORY_SEPARATOR.$payload;
-                    $sInfectFolderPath = $_SERVER['DOCUMENT_ROOT'].'infect';
-                    if (!file_exists($sInfectFolderPath))
-                        mkdir($sInfectFolderPath,0775,true);
-
-                    $destination = $sInfectFolderPath.DIRECTORY_SEPARATOR.$payload;
+                    $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
+                    
+                    $destination = $sFolderPath.DIRECTORY_SEPARATOR.$payload;
                     if (!file_exists($destination))
                         mkdir($destination,0775,true);
                     
@@ -439,7 +455,7 @@
                         
                         $copyflag = copy($geturl,$_SERVER['DOCUMENT_ROOT'].$zipfile); 
                     }
-                    
+                    echo $geturl;
                     if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
                     $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$download_filename);
                     if ($zipFlag === TRUE) {
@@ -633,16 +649,25 @@
                 {
                     $("#infected_device").hide();
                     $("#website_url").hide();
+                    $("#google_drive").hide();
                 }
                 else if(divId == "infected_device")
                 {
                     $("#github_payloads").hide();
                     $("#website_url").hide();
+                    $("#google_drive").hide();
                 }
                 else if(divId == "website_url")
                 {
                     $("#github_payloads").hide();
                     $("#infected_device").hide();
+                    $("#google_drive").hide();
+                }
+                else if(divId == "google_drive")
+                {
+                    $("#github_payloads").hide();
+                    $("#infected_device").hide();
+                    $("#website_url").hide();
                 }
                 $("#"+divId).show();
             }
@@ -681,49 +706,57 @@
             });
         </script>
         <div class="color-white">
-            <a class="admin_img" href="<?php echo $protocol.'/admin'; ?>"><i class="mainNav fa fa-cog fa-3x"></i></a>
-        </div><br/><br/><br/>
+            <a class="play_img" href="<?php echo $protocol; ?>">
+                <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
+            </a>
+        </div><br/><br/>
         <form method="post" action="">
             <div id="container">
                 <div class="payload-details">
                     <h2>Enter Payloads Details</h2>
                 </div>
-                <div class="text-field">Is this an Admin Payload? <font color="red">*</font> :</div>
-                <input type="checkbox" name="check_admin" id="check_admin" value="0" onclick="changeValue('');"/>Admin
-                <br/>
+                <div class="text-field">Is this an Admin Payload? :</div>
+                <input type="checkbox" name="check_admin" id="check_admin" value="0" onclick="changeValue('');"/>
+                <br/><br/>
+                <div class="text-field">Show debug text</div>
+                <input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($_POST['show_debug']) ? $_POST['show_debug'] : '0'; ?>" <?php echo isset($_POST['show_debug']) ? "checked='checked'" : ""; ?> onclick="changeValue('show_debug');">
+                <br/><br/>
                 <div class="text-field">
                     <input type="radio" name="payload_source" id="ckeck_github" value="github_payloads" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "github_payloads") ? "checked='checked'" : "checked='checked'"; ?> onclick="showData('github_payloads');">GitHub
                     <br/><br/>
                     <input type="radio" name="payload_source" id="ckeck_infected" value="infected_device" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "infected_device" ) ? "checked='checked'" : ""; ?> onclick="showData('infected_device');">Infected Device
                     <br/><br/>
-                    <input type="radio" name="payload_source" id="ckeck_website" value="website_url" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "website_url" ) ? "checked='checked'" : ""; ?> onclick="showData('website_url');">URL/Website<br/><br/>
-                </div><br/><br/><br><br><br><br/><br/>
+                    <input type="radio" name="payload_source" id="ckeck_website" value="website_url" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "website_url" ) ? "checked='checked'" : ""; ?> onclick="showData('website_url');">URL/Website
+                    <br/><br/>
+                    <input type="radio" name="payload_source" id="ckeck_google" value="google_drive" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "google_drive" ) ? "checked='checked'" : ""; ?> onclick="showData('google_drive');">Google Drive
+                    <br/><br/>
+                </div><br/><br/><br><br><br><br/><br/><br/><br/>
                 <div id="github_payloads">
-                    <div class="text-field">GitHub Username<font color="red">*</font> :</div>
+                    <div class="text-field">GitHub Username<font style="color:red">*</font> :</div>
                     <input type="text" name="user_name">
                     <div class="error-message">
                         <?php echo isset($_SESSION['isValidation']['user_name_required']) ? $_SESSION['isValidation']['user_name_required'] : '';?>
                     </div>
                     <br/><br/>
-                    <div class="text-field">GitHub Repository<font color="red">*</font> :</div>
+                    <div class="text-field">GitHub Repository<font style="color:red">*</font> :</div>
                     <input type="text" name="repository">
                     <div class="error-message">
                         <?php echo isset($_SESSION['isValidation']['repository_required']) ? $_SESSION['isValidation']['repository_required'] : '';?>
                     </div>
                 </div>
                 <div id="infected_device" style="display:none">
-                    <div class="text-field">Device Address (IP or URL)<font color="red">*</font> :</div>
+                    <div class="text-field">Device Address (IP or URL)<font style="color:red">*</font> :</div>
                     <input type="text" name="device_address">
                     <div class="error-message">
                         <?php echo isset($_SESSION['isValidation']['device_address']) ? $_SESSION['isValidation']['device_address'] : '';?>
-                    </div>
+                    </div><br/><br/>
                     <div class="example-text">Example: 192.168.143.1</div>
                     <br/><br/>
                     <div class="text-field">Port :</div>
                     <input type="text" name="port_number" id="port_number" value="8080">
                     <a href="javascript:void(0);" onclick="removePort();"><i class="fa fa-times"></i></a>
                     <br/><br/>
-                    <div class="text-field">GitHub Username<font color="red">*</font> :</div>
+                    <div class="text-field">GitHub Username<font style="color:red">*</font> :</div>
                     <input type="text" name="infect_user_name">
                     <div id="infect_user_input" class="error-message">
                         <?php echo isset($_SESSION['isValidation']['infect_user_name']) ? $_SESSION['isValidation']['infect_user_name'] : '';?>
@@ -733,22 +766,37 @@
                     <input type="text" name="infect_repository">
                 </div>
                 <div id="website_url" style="display:none">
-                    <div class="text-field">Payload Name<font color="red">*</font> :</div>
+                    <div class="text-field">Payload Name<font style="color:red">*</font> :</div>
                     <input type="text" name="payload_name">
                     <div class="error-message">
                         <?php echo isset($_SESSION['isValidation']['payload_name']) ? $_SESSION['isValidation']['payload_name'] : '';?>
                     </div>
                     <br/><br/>
-                    <div class="text-field">URL<font color="red">*</font> :</div>
+                    <div class="text-field">URL<font style="color:red">*</font> :</div>
                     <input type="text" name="payload_url">
                     <div id="url_input" class="error-message">
                         <?php echo isset($_SESSION['isValidation']['payload_url']) ? $_SESSION['isValidation']['payload_url'] : '';?>
                     </div>
                 </div>
+                <div id="google_drive" style="display:none">
+                    <div class="text-field">Payload Name<font style="color:red">*</font> :</div>
+                    <input type="text" name="google_payload_name">
+                    <div class="error-message">
+                        <?php echo isset($_SESSION['isValidation']['google_payload_name']) ? $_SESSION['isValidation']['google_payload_name'] : '';?>
+                    </div>
+                    <br/><br/>
+                    <div class="text-field">Google Drive Payload ID<font style="color:red">*</font> :</div>
+                    <input type="text" name="google_drive_link">
+                    <div id="url_input" class="error-message">
+                        <?php echo isset($_SESSION['isValidation']['google_drive_link']) ? $_SESSION['isValidation']['google_drive_link'] : '';?>
+                    </div>
+                    <br/><br/>
+                    <div class="example-text">Note: Provide the Google Drive Link obtained from "get link" option in Drive.</div><br/>
+                </div>
                 <br/><div class="go-button">
                     <input type="submit" name="button" id="button" value="GO!" align="center">  
                 </div><br/>
-                <div><font color="red">*</font> indicates mandatory field</div>
+                <div><font style="color:red">*</font> indicates mandatory field</div>
             </div>
         </form>
 <?php
