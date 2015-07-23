@@ -412,7 +412,7 @@
             else 
             {
                 // as IP address has been set attempt download from IP address
-                echo $geturl = empty($nPort) ? "http://$ip/$zipfile" : "http://$ip:$nPort/$zipfile";
+                $geturl = empty($nPort) ? "http://$ip/$zipfile" : "http://$ip:$nPort/$zipfile";
             }
             if(!empty($sPayloadName))
             {
@@ -420,7 +420,8 @@
             }
             if(!empty($sGooglePayloadName))
             {
-                $geturl = "https://docs.google.com/uc?id=$sGoogleDriveLink&export=download";
+                $aExplodeLinkID = explode("id=", $sGoogleDriveLink);
+                $geturl = "https://docs.google.com/uc?id=$aExplodeLinkID[1]&export=download";
             }
             // TRY DOWNLOAD via copy
             if ($debug) { echo "<h2>Download Files</h2>
@@ -785,7 +786,7 @@
                         <?php echo isset($_SESSION['isValidation']['google_payload_name']) ? $_SESSION['isValidation']['google_payload_name'] : '';?>
                     </div>
                     <br/><br/>
-                    <div class="text-field">Google Drive Payload ID<font style="color:red">*</font> :</div>
+                    <div class="text-field">Google Drive Link<font style="color:red">*</font> :</div>
                     <input type="text" name="google_drive_link">
                     <div id="url_input" class="error-message">
                         <?php echo isset($_SESSION['isValidation']['google_drive_link']) ? $_SESSION['isValidation']['google_drive_link'] : '';?>
