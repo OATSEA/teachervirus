@@ -48,6 +48,7 @@
             $thisURL = $_SERVER['REQUEST_URI'];
             $playURL =  str_replace('admin', 'play', $thisURL);
             $sChangePasswordURL =  str_replace('admin', 'admin/changePassword', $thisURL);
+            $sInfectedURL =  str_replace('admin', 'admin/getinfected', $thisURL);
             require 'header.php';
             foreach(glob($rootdir, GLOB_ONLYDIR) as $dir) { 
                     $dir = basename($dir); 
@@ -61,7 +62,8 @@
                     echo '<a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.png" /></a>';
                 }
             } 
-            (isset($sChangePasswordURL) && !empty($sChangePasswordURL)) ? '<a href="'.$protocol.$sChangePasswordURL.'"><img class="mybutton" alt="Play" src="'.$sChangePasswordURL.'icon.png" /></a>' : '';
+            (isset($sChangePasswordURL) && !empty($sChangePasswordURL)) ? '<a href="'.$protocol.$sChangePasswordURL.'"><img class="mybutton" alt="Change Password" src="'.$sChangePasswordURL.'icon.png" /></a>' : '';
+            (isset($sInfectedURL) && !empty($sInfectedURL)) ? '<a href="'.$protocol.$sInfectedURL.'"><img class="mybutton" alt="Get Infected" src="'.$sInfectedURL.'icon.png" /></a>' : '';
             //echo '<a href="'.$playURL.'"><img class="mybutton" alt="Play" src="'.$playURL.'icon.png" /></a>';
         }
         else
