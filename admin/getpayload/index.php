@@ -552,10 +552,11 @@
 
                         set_time_limit(0); //prevent timeout
 
+                        
                         $fp = fopen($_SERVER['DOCUMENT_ROOT'].$zipfile, 'w+'); // or perhaps 'wb'?
                         if (!$fp) { 
                             exit("<h3><b>ERROR! Payload download failed</h3> 
-                            <p>Unable to open temporary file: <b>$zipfile</b>!</p>
+                            <p>Unable to open temporary file: <b>$_SERVER['DOCUMENT_ROOT'].$zipfile</b>!</p>
                             <p>File permission issue maybe?
                             "); 
                         }
