@@ -433,6 +433,7 @@
                //if(file_exists($geturl))
                //{
                     umask(0);
+                    echo "<h3>Unzip Successful!</h3>";
                     $zip = new ZipArchive;
                     // Get array of all source files
                     $files = scandir(dirname(__FILE__).DIRECTORY_SEPARATOR.$payload);
@@ -554,10 +555,6 @@
                             <p>Unable to open temporary file: <b>$zipfile</b>!</p>
                             <p>File permission issue maybe?
                             "); 
-                        }
-                        else
-                        {
-                            echo "<h3>Unzip Successful!</h3>";
                         }
 
                         // ** TO DO ** add catch exception for curl not installed (e.g. RPI)
