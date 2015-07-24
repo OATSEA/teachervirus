@@ -150,7 +150,7 @@
         if($_SESSION['isValidation']['flag'] == 1)
         {
             $payload = (isset($_POST['check_admin']) && ($_POST['check_admin'] == 1)) ? 'admin' : 'payloads';
-            $isAdmin = ($payload == 'admin') ? 'A' : 'G'; 
+            $isAdmin = ($payload == 'admin') ? 'A' : 'G';
             if(!empty($sUserName))
             {
                 $download_filename = $sUserName."-".$sRepository.".zip";
@@ -456,8 +456,11 @@
                         
                         $copyflag = copy($geturl,$_SERVER['DOCUMENT_ROOT'].'/'.$zipfile); 
                     }
+                    
                     if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
+                    
                     $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$download_filename);
+                    
                     if ($zipFlag === TRUE) {
                         $sPayloadUrl = $_SERVER['DOCUMENT_ROOT'].'/'.$payload;
                         if(file_exists($sPayloadUrl))
@@ -486,7 +489,7 @@
                                         $txt = $sListContent;
                                         fwrite($myfile, $txt);
                                         fclose($myfile);
-                                        $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename."harrylongworth-tv-twine-efcedac/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
+                                        $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename.$sPayloadUrl.'/'.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
                                         // Add current file to archive
                                         $zip->addFile($destination."/list.txt", $relativePath);
                                     }
@@ -522,7 +525,7 @@
                                         $txt = $sListContent;
                                         fwrite($myfile, $txt);
                                         fclose($myfile);
-                                        $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename."harrylongworth-tv-twine-efcedac/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
+                                        $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename.$sPayloadUrl.'/'.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
                                         // Add current file to archive
                                         $zip->addFile($destination."/list.txt", $relativePath);
                                      }
