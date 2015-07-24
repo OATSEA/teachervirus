@@ -705,7 +705,7 @@
             });
         </script>
         <div class="color-white">
-            <a class="play_img" href="<?php echo $protocol; ?>">
+            <a class="play_img" href="<?php echo $protocol.'/admin'; ?>">
                 <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
             </a>
         </div><br/><br/>
