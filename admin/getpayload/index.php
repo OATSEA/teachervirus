@@ -434,7 +434,6 @@
                //{
                     umask(0);
                     $zip = new ZipArchive;
-                    echo "<h3>Unzip Successful!</h3>"; 
                     // Get array of all source files
                     $files = scandir(dirname(__FILE__).DIRECTORY_SEPARATOR.$payload);
                     // Identify directories
@@ -449,14 +448,13 @@
                     
                     if($ip == "no")
                     {
-                        $copyflag = copy($geturl,$_SERVER['DOCUMENT_ROOT'].$zipfile);
+                        $copyflag = copy($geturl,$_SERVER['DOCUMENT_ROOT'].'/'.$zipfile);
                     }
                     else if(file_exists($geturl))
                     {
                         
-                        $copyflag = copy($geturl,$_SERVER['DOCUMENT_ROOT'].$zipfile); 
+                        $copyflag = copy($geturl,$_SERVER['DOCUMENT_ROOT'].'/'.$zipfile); 
                     }
-                    echo $geturl;
                     if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
                     $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$download_filename);
                     if ($zipFlag === TRUE) {
@@ -535,8 +533,7 @@
                     }
                     $zip->close();
                     unlink($destination."/list.txt");
-                    $destination  = $_SERVER["DOCUMENT_ROOT"]."infect/";
-                
+                    
                     if ($copyflag === TRUE) {
                         echo "<h3>Download Succeeded</h3><p>Files downloaded using <b>Copy</b> instead</p>";
                     } else { 
@@ -551,14 +548,16 @@
                         // http://stackoverflow.com/questions/11321761/using-curl-to-download-a-zip-file-isnt-working-with-follow-php-code
 
                         set_time_limit(0); //prevent timeout
-
-                        
-                        $fp = fopen($_SERVER['DOCUMENT_ROOT'].$zipfile, 'w+'); // or perhaps 'wb'?
+                        $fp = fopen($_SERVER['DOCUMENT_ROOT'].'/'.$zipfile, 'w+'); // or perhaps 'wb'?
                         if (!$fp) { 
                             exit("<h3><b>ERROR! Payload download failed</h3> 
-                            <p>Unable to open temporary file: <b>$_SERVER['DOCUMENT_ROOT'].$zipfile</b>!</p>
+                            <p>Unable to open temporary file: <b>$zipfile</b>!</p>
                             <p>File permission issue maybe?
                             "); 
+                        }
+                        else
+                        {
+                            echo "<h3>Unzip Successful!</h3>";
                         }
 
                         // ** TO DO ** add catch exception for curl not installed (e.g. RPI)
