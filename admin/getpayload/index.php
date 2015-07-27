@@ -386,6 +386,7 @@
             // Create payload directory if it doesn't exist:
             if (!makeDIR($payload,true)) { 
                     // failed to make directory so exit
+                    echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
                     exit("<h3>Installation Failed!</h3>");
             }
 
@@ -467,6 +468,7 @@
 
                         // Make the new temp sub_folder for unzipped files
                         if (!mkdir($temp_unzip_path, 0755, true)) {
+                            echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
                             exit("<h2>Error - Payload installation Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue?");
                         } else { 
                             if($debug) { echo "<p>Temp unzip Folder Created! <br>"; }
@@ -480,6 +482,7 @@
                             {
                                 rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
                                 if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
+                                    echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
                                     exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?");
                                 } else {
                                     if($debug) { echo "<p>Folder Created! <br>"; }
@@ -488,6 +491,7 @@
                             else
                             {
                                 if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
+                                    echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
                                     exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?");
                                 } else {
                                     if($debug) { echo "<p>Folder Created! <br>"; }
@@ -507,7 +511,7 @@
                                     fwrite($myfile, $txt);
                                     fclose($myfile);
 
-                                    $myfile = fopen("$destination/list.txt", "w") or die("Unable to open file!");
+                                    $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>');
                                     $txt = $sListContent;
                                     fwrite($myfile, $txt);
                                     fclose($myfile);
@@ -531,6 +535,7 @@
                             {
                                 rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
                                 if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
+                                    echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
                                     exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?");
                                 } else {
                                     if($debug) { echo "<p>Folder Created! <br>"; }
@@ -539,6 +544,7 @@
                             else
                             {
                                 if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
+                                    echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
                                     exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?");
                                 } else {
                                     if($debug) { echo "<p>Folder Created! <br>"; }
@@ -553,12 +559,12 @@
                                   if (is_dir($temp_unzip_path . $value))
                                   {
                                     moveDIR($temp_unzip_path . $value,$sPayloadUrl.DIRECTORY_SEPARATOR.$download_unzip_filename);
-                                    $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die("Unable to open file!");
+                                    $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>');
                                     $txt = $sListContent;
                                     fwrite($myfile, $txt);
                                     fclose($myfile);
 
-                                    $myfile = fopen("$destination/list.txt", "w") or die("Unable to open file!");
+                                    $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>');
                                     $txt = $sListContent;
                                     fwrite($myfile, $txt);
                                     fclose($myfile);
