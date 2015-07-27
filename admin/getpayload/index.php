@@ -273,7 +273,7 @@
             // Move Directory
 
             function moveDIR($dir,$dest="") {
-                $debug = 1;
+                $debug = 0;
                 $result=true;
 
                 if($debug) { echo "<h2>Moving directory</h2><p> From:<br> $dir <br>To: $dest</p>";}
@@ -460,75 +460,120 @@
                     $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$download_filename);
                     if ($zipFlag === TRUE) {
                         $sPayloadUrl = $_SERVER['DOCUMENT_ROOT'].'/'.$payload;
+                        // Create full temp sub_folder path
+                        $temp_unzip_path = $sPayloadUrl.DIRECTORY_SEPARATOR.uniqid('unzip_temp_', true)."/";
+
+                        if($debug) { echo "Temp Unzip Path is: ".$temp_unzip_path."<br>"; }
+
+                        // Make the new temp sub_folder for unzipped files
+                        if (!mkdir($temp_unzip_path, 0755, true)) {
+                            exit("<h2>Error - Payload installation Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue?");
+                        } else { 
+                            if($debug) { echo "<p>Temp unzip Folder Created! <br>"; }
+                        }
+                        
                         if(file_exists($sPayloadUrl))
                         {
-                            $zip->extractTo($sPayloadUrl);
-                            $files = scandir($sPayloadUrl,1);
+                            $zip->extractTo($temp_unzip_path);
+                            
+                            if(!is_dir($sPayloadUrl.'/'.$download_unzip_filename))
+                            {
+                            
+                                if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
+                                    exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?");
+                                } else {
+                                    if($debug) { echo "<p>Folder Created! <br>"; }
+                                }
+                            }
+                            else
+                            {
+                                rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
+                                if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
+                                    exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?");
+                                } else {
+                                    if($debug) { echo "<p>Folder Created! <br>"; }
+                                }        
+                            }
+                            
+                            $files = scandir($temp_unzip_path,1);
                             foreach ($files as $key => $value)
                             {
                                if (!in_array($value,array(".","..")))
                                {
-                                  if (is_dir($sPayloadUrl . DIRECTORY_SEPARATOR . $value))
+                                  if (is_dir($temp_unzip_path . $value))
                                   {
-                                    if(preg_match("/$download_unzip_filename/",$value))
-                                    {
-                                        if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
-                                        {
-                                            rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
-                                        }
-                                        rename($sPayloadUrl.'/'.$value,$sPayloadUrl.'/'.$download_unzip_filename);
-                                        $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die("Unable to open file!");
-                                        $txt = $sListContent;
-                                        fwrite($myfile, $txt);
-                                        fclose($myfile);
-                                        
-                                        $myfile = fopen("$destination/list.txt", "w") or die("Unable to open file!");
-                                        $txt = $sListContent;
-                                        fwrite($myfile, $txt);
-                                        fclose($myfile);
-                                        $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename."harrylongworth-tv-twine-efcedac/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
-                                        // Add current file to archive
-                                        $zip->addFile($destination."/list.txt", $relativePath);
-                                    }
+                                    moveDIR($temp_unzip_path . $value,$sPayloadUrl.DIRECTORY_SEPARATOR.$download_unzip_filename);
+                                    $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die("Unable to open file!");
+                                    $txt = $sListContent;
+                                    fwrite($myfile, $txt);
+                                    fclose($myfile);
+
+                                    $myfile = fopen("$destination/list.txt", "w") or die("Unable to open file!");
+                                    $txt = $sListContent;
+                                    fwrite($myfile, $txt);
+                                    fclose($myfile);
+                                    $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename."harrylongworth-tv-twine-efcedac/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
+                                    // Add current file to archive
+                                    $zip->addFile($destination."/list.txt", $relativePath);
                                   }
                                }
+                            }
+                            if(is_dir($temp_unzip_path))
+                            {
+                                rrmdir($temp_unzip_path);
                             }
                             rrmdir($_SERVER['DOCUMENT_ROOT']."/admin/getpayload/".$payload);
                         }
                         else
                         {
-                            mkdir($sPayloadUrl,0775,true);
-                            $zip->extractTo($sPayloadUrl.$download_filename);
-                            $files = scandir($sPayloadUrl,1);
+                            $zip->extractTo($temp_unzip_path);
+                            
+                            if(!is_dir($sPayloadUrl.'/'.$download_unzip_filename))
+                            {
+                            
+                                if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
+                                    exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?");
+                                } else {
+                                    if($debug) { echo "<p>Folder Created! <br>"; }
+                                }
+                            }
+                            else
+                            {
+                                rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
+                                if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
+                                    exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?");
+                                } else {
+                                    if($debug) { echo "<p>Folder Created! <br>"; }
+                                }        
+                            }
+                            
+                            $files = scandir($temp_unzip_path,1);
                             foreach ($files as $key => $value)
                             {
                                if (!in_array($value,array(".","..")))
                                {
-                                  if (is_dir($sPayloadUrl . DIRECTORY_SEPARATOR . $value))
+                                  if (is_dir($temp_unzip_path . $value))
                                   {
-                                     if(preg_match("/$download_unzip_filename/",$value))
-                                     {
-                                        if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
-                                        {
-                                            rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
-                                        }
-                                        rename($sPayloadUrl.'/'.$value,$sPayloadUrl.'/'.$download_unzip_filename);
-                                        $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die("Unable to open file!");
-                                        $txt = $sListContent;
-                                        fwrite($myfile, $txt);
-                                        fclose($myfile);
-                                        
-                                        $myfile = fopen("$destination/list.txt", "w") or die("Unable to open file!");
-                                        $txt = $sListContent;
-                                        fwrite($myfile, $txt);
-                                        fclose($myfile);
-                                        $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename."harrylongworth-tv-twine-efcedac/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
-                                        // Add current file to archive
-                                        $zip->addFile($destination."/list.txt", $relativePath);
-                                     }
+                                    moveDIR($temp_unzip_path . $value,$sPayloadUrl.DIRECTORY_SEPARATOR.$download_unzip_filename);
+                                    $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die("Unable to open file!");
+                                    $txt = $sListContent;
+                                    fwrite($myfile, $txt);
+                                    fclose($myfile);
+
+                                    $myfile = fopen("$destination/list.txt", "w") or die("Unable to open file!");
+                                    $txt = $sListContent;
+                                    fwrite($myfile, $txt);
+                                    fclose($myfile);
+                                    $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename."harrylongworth-tv-twine-efcedac/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
+                                    // Add current file to archive
+                                    $zip->addFile($destination."/list.txt", $relativePath);
                                   }
                                }
-                            } 
+                            }
+                            if(is_dir($temp_unzip_path))
+                            {
+                                rrmdir($temp_unzip_path);
+                            }
                             rrmdir($_SERVER['DOCUMENT_ROOT']."/admin/getpayload/".$payload);
                         }
                     }
