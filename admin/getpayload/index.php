@@ -476,9 +476,9 @@
                         {
                             $zip->extractTo($temp_unzip_path);
                             
-                            if(!is_dir($sPayloadUrl.'/'.$download_unzip_filename))
+                            if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
                             {
-                            
+                                rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
                                 if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
                                     exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?");
                                 } else {
@@ -487,7 +487,6 @@
                             }
                             else
                             {
-                                rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
                                 if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
                                     exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?");
                                 } else {
@@ -528,9 +527,9 @@
                         {
                             $zip->extractTo($temp_unzip_path);
                             
-                            if(!is_dir($sPayloadUrl.'/'.$download_unzip_filename))
+                            if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
                             {
-                            
+                                rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
                                 if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
                                     exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?");
                                 } else {
@@ -539,7 +538,6 @@
                             }
                             else
                             {
-                                rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
                                 if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
                                     exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?");
                                 } else {
@@ -715,29 +713,16 @@
                 }
                 $("#"+divId).show();
             }
-            function changeValue(eValue = '')
+            function changeValue(eValue)
             {
-                var isAdmin = document.getElementById('check_admin');
-                if(eValue == '')
+                var isChecked = document.getElementById(eValue);
+                if (isChecked.checked)
                 {
-                    if (isAdmin.checked)
-                    {
-                        isAdmin.value = 1;
-                    }
-                    else
-                    {
-                        isAdmin.value = 0;
-                    }
-                }
-                else if(eValue == 1)
-                {
-                    document.getElementById("check_admin").checked = true;
-                    isAdmin.value = eValue;
+                    isChecked.value = 1;
                 }
                 else
                 {
-                    document.getElementById("check_admin").checked = false;
-                    isAdmin.value = eValue;
+                    isChecked.value = 0;
                 }
             }
             function removePort()
@@ -746,7 +731,7 @@
             }
             $(document).ready(function(){
                 showData("<?php echo isset($_POST['payload_source']) ? $_POST['payload_source'] : 'github_payloads'; ?>");
-                changeValue(<?php echo isset($sIsAdmin) ? $sIsAdmin : '' ?>);
+                //changeValue(<?php echo isset($sIsAdmin) ? $sIsAdmin : 0 ?>);
             });
         </script>
         <div class="color-white">
@@ -760,7 +745,7 @@
                     <h2>Enter Payloads Details</h2>
                 </div>
                 <div class="text-field">Is this an Admin Payload? :</div>
-                <input type="checkbox" name="check_admin" id="check_admin" value="0" onclick="changeValue('');"/>
+                <input type="checkbox" name="check_admin" id="check_admin" value="<?php echo isset($_POST['check_admin']) ? $_POST['check_admin'] : '0'; ?>" <?php echo isset($_POST['check_admin']) ? "checked='checked'" : ""; ?> onclick="changeValue('check_admin');"/>
                 <br/><br/>
                 <div class="text-field">Show debug text</div>
                 <input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($_POST['show_debug']) ? $_POST['show_debug'] : '0'; ?>" <?php echo isset($_POST['show_debug']) ? "checked='checked'" : ""; ?> onclick="changeValue('show_debug');">
