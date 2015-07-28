@@ -70,11 +70,49 @@
                 font-size: 18px;
             }
             .sources{
-                    margin-left: 40px;
+                margin-left: 40px;
+            }
+             #loading {
+                    font-size: 70px;
+                    font-weight: bold;
+                    color: #000;
+                    width: 100%;
+                    height: 100%;
+                    top: 0px;
+                    left: 0px;
+                    position: fixed;
+                    display: block;
+                    opacity: 0.7;
+                    background-color: #fff;
+                    z-index: 99;
+                    text-align: center;
+                }
+                #loading-image {
+                   position: absolute;
+                   top: 100px;
+                   left: 240px;
+                   z-index: 100;
                 }
         </style>
+        <script type="text/javascript">
+            function checkLoaded(loaded){
+                if(loaded == true)
+                {
+                    $("#loading").show();
+                    $("#getpayload_form").submit();
+                }
+                else
+                {
+                    $("#loading").hide();
+                }
+            }
+        </script>
     </head>
-    <body class="main">
+    <body class="main" onload="checkLoaded(false);">
+    <div id="loading">Installing...</div>
+    <script>
+        checkLoaded(false);
+    </script>
 <?php
 //session_start();
     $debug = isset($_POST['show_debug']) ? $_POST['show_debug'] : 0;
@@ -385,8 +423,7 @@
             // Create payload directory if it doesn't exist:
             if (!makeDIR($payload,true)) { 
                     // failed to make directory so exit
-                    echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
-                    exit("<h3>Installation Failed!</h3>");
+                    exit('<h3>Installation Failed!</h3><div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
             }
 
             // Check for IP param and set $ip if param provided
@@ -467,8 +504,7 @@
 
                     // Make the new temp sub_folder for unzipped files
                     if (!mkdir($temp_unzip_path, 0755, true)) {
-                        echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
-                        exit("<h2>Error - Payload installation Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue?");
+                        exit("<h2>Error - Payload installation Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                     } else {
                         if($debug) { echo "<p>Temp unzip Folder Created! <br>"; }
                     }
@@ -480,8 +516,7 @@
                         {
                             rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
                             if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
-                                echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?");
+                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?".'<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }
@@ -489,8 +524,7 @@
                         else
                         {
                             if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
-                                echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?");
+                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }        
@@ -504,12 +538,12 @@
                               if (is_dir($temp_unzip_path . $value))
                               {
                                 moveDIR($temp_unzip_path . $value,$sPayloadUrl.DIRECTORY_SEPARATOR.$download_unzip_filename,$debug);
-                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die("Unable to open file!");
+                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                                 $txt = $sListContent;
                                 fwrite($myfile, $txt);
                                 fclose($myfile);
 
-                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>');
+                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                                 $txt = $sListContent;
                                 fwrite($myfile, $txt);
                                 fclose($myfile);
@@ -532,8 +566,7 @@
                         {
                             rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
                             if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
-                                echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?");
+                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?".'<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }
@@ -541,8 +574,7 @@
                         else
                         {
                             if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
-                                echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?");
+                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }        
@@ -556,12 +588,12 @@
                               if (is_dir($temp_unzip_path . $value))
                               {
                                 moveDIR($temp_unzip_path . $value,$sPayloadUrl.DIRECTORY_SEPARATOR.$download_unzip_filename,$debug);
-                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die("Unable to open file!");
+                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                                 $txt = $sListContent;
                                 fwrite($myfile, $txt);
                                 fclose($myfile);
 
-                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>');
+                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                                 $txt = $sListContent;
                                 fwrite($myfile, $txt);
                                 fclose($myfile);
@@ -597,11 +629,10 @@
                         set_time_limit(0); //prevent timeout
                         $fp = fopen($_SERVER['DOCUMENT_ROOT'].'/'.$zipfile, 'w+'); // or perhaps 'wb'?
                         if (!$fp) {
-                            echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
                             exit("<h3><b>ERROR! Payload download failed</h3>
                             <p>Unable to open temporary file: <b>$zipfile</b>!</p>
                             <p>File permission issue maybe?
-                            "); 
+                            ".'<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>'); 
                         }
 
                         // ** TO DO ** add catch exception for curl not installed (e.g. RPI)
@@ -679,7 +710,6 @@
             
                 
                 echo '<h2>Installation Complete!</h2><p>Check installation has worked: </p>'
-                    //. '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>'
                     . '<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
                     . '<div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>';
                 die();
@@ -746,12 +776,12 @@
                 <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
             </a>
         </div><br/><br/>
-        <form method="post" action="">
+        <form id="getpayload_form" method="post" action="">
             <div id="container">
                 <div class="payload-details">
                     <h2>Enter Payloads Details</h2>
                 </div>
-                <div class="text-field">Is this an Admin Payload? :</div>
+                <div class="text-field">Is this an Admin Payload? </div>
                 <input type="checkbox" name="check_admin" id="check_admin" value="<?php echo isset($_POST['check_admin']) ? $_POST['check_admin'] : '0'; ?>" <?php echo isset($_POST['check_admin']) ? "checked='checked'" : ""; ?> onclick="changeValue('check_admin');"/>
                 <br/><br/>
                 <div class="text-field">Show debug text</div>
@@ -761,33 +791,33 @@
                     <input type="radio" name="payload_source" id="ckeck_github" value="github_payloads" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "github_payloads") ? "checked='checked'" : "checked='checked'"; ?> onclick="showData('github_payloads');">GitHub
                     <br/><br/>
                     <div id="github_payloads" class="sources">
-                        <div class="text-field">GitHub Username<font style="color:red">*</font> :</div>
+                        <div class="text-field">GitHub Username<font style="color:red">*</font> </div>
                         <input type="text" name="user_name">
                         <div class="error-message">
                             <?php echo isset($_SESSION['isValidation']['user_name_required']) ? $_SESSION['isValidation']['user_name_required'] : '';?>
                         </div>
                         <br/><br/>
-                        <div class="text-field">GitHub Repository<font style="color:red">*</font> :</div>
+                        <div class="text-field">GitHub Repository<font style="color:red">*</font> </div>
                         <input type="text" name="repository">
                         <div class="error-message">
                             <?php echo isset($_SESSION['isValidation']['repository_required']) ? $_SESSION['isValidation']['repository_required'] : '';?>
                         </div>
-                        <br/><br/>
+                        <br/><br/><br/>
                     </div>
                     <input type="radio" name="payload_source" id="ckeck_infected" value="infected_device" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "infected_device" ) ? "checked='checked'" : ""; ?> onclick="showData('infected_device');">Infected Device
                     <br/><br/>
                     <div id="infected_device" style="display:none" class="sources">
-                        <div class="text-field">Device Address (IP or URL)<font style="color:red">*</font> :</div>
+                        <div class="text-field">Device Address (IP or URL)<font style="color:red">*</font> </div>
                         <input type="text" name="device_address">
                         <div class="error-message">
                             <?php echo isset($_SESSION['isValidation']['device_address']) ? $_SESSION['isValidation']['device_address'] : '';?>
                         </div><br/><br/><br/>
                         <div class="example-text">Provide an IP or URL - For Example: 192.168.143.1 or demo.teachervirus.org</div><br/>
-                        <div class="text-field">Port :</div>
+                        <div class="text-field">Port </div>
                         <input type="text" name="port_number" id="port_number" value="8080">
                         <a href="javascript:void(0);" onclick="removePort();"><i class="fa fa-times"></i></a>
                         <br/><br/><br/>
-                        <div class="text-field">Folder/Payload Name<font style="color:red">*</font> :</div>
+                        <div class="text-field">Folder/Payload Name<font style="color:red">*</font> </div>
                         <input type="text" name="infect_user_name">
                         <div id="infect_user_input" class="error-message">
                             <?php echo isset($_SESSION['isValidation']['infect_user_name']) ? $_SESSION['isValidation']['infect_user_name'] : '';?>
@@ -798,13 +828,13 @@
                     <input type="radio" name="payload_source" id="ckeck_website" value="website_url" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "website_url" ) ? "checked='checked'" : ""; ?> onclick="showData('website_url');">URL/Website
                     <br/><br/>
                     <div id="website_url" style="display:none" class="sources">
-                        <div class="text-field">Payload Name<font style="color:red">*</font> :</div>
+                        <div class="text-field">Payload Name<font style="color:red">*</font> </div>
                         <input type="text" name="payload_name">
                         <div class="error-message">
                             <?php echo isset($_SESSION['isValidation']['payload_name']) ? $_SESSION['isValidation']['payload_name'] : '';?>
                         </div>
                         <br/><br/>
-                        <div class="text-field">URL<font style="color:red">*</font> :</div>
+                        <div class="text-field">URL<font style="color:red">*</font> </div>
                         <input type="text" name="payload_url">
                         <div id="url_input" class="error-message">
                             <?php echo isset($_SESSION['isValidation']['payload_url']) ? $_SESSION['isValidation']['payload_url'] : '';?>
@@ -814,13 +844,13 @@
                     <input type="radio" name="payload_source" id="ckeck_google" value="google_drive" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "google_drive" ) ? "checked='checked'" : ""; ?> onclick="showData('google_drive');">Google Drive
                     <br/><br/>
                     <div id="google_drive" style="display:none" class="sources">
-                        <div class="text-field">Payload Name<font style="color:red">*</font> :</div>
+                        <div class="text-field">Payload Name<font style="color:red">*</font> </div>
                         <input type="text" name="google_payload_name">
                         <div class="error-message">
                             <?php echo isset($_SESSION['isValidation']['google_payload_name']) ? $_SESSION['isValidation']['google_payload_name'] : '';?>
                         </div>
                         <br/><br/>
-                        <div class="text-field">Google Drive Link<font style="color:red">*</font> :</div>
+                        <div class="text-field">Google Drive Link<font style="color:red">*</font> </div>
                         <input type="text" name="google_drive_link">
                         <div id="url_input" class="error-message">
                             <?php echo isset($_SESSION['isValidation']['google_drive_link']) ? $_SESSION['isValidation']['google_drive_link'] : '';?>
@@ -831,7 +861,7 @@
                 </div>
                 <div><font style="color:red">*</font> indicates mandatory field</div>
                 <br/><div class="go-button">
-                    <input type="submit" name="button" id="button" value="GO!" align="center">  
+                    <input type="button" name="button" id="button" value="GO!" align="center" onclick="checkLoaded(true);">  
                 </div><br/>
                 
             </div>
