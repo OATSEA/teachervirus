@@ -3,8 +3,8 @@
         <title>Payloads</title>
         <meta charset="utf-8">
         <link href="../buttons.css" rel="stylesheet">
-<!--        <link href="../../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">-->
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <script src="../../js/jquery.js" type="text/javascript"></script>
         <style>
             body{
@@ -28,6 +28,7 @@
                 float: left;
                 padding-right: 10px;
                 width: 200px;
+                text-align: right;
             }
             .example-text{
                 text-align: center;
@@ -143,7 +144,7 @@
             }
             if(empty($sGoogleDriveLink))
             {
-                $_SESSION['isValidation']['google_drive_link'] = 'Please enter google drive payload id!!';
+                $_SESSION['isValidation']['google_drive_link'] = 'Please enter google drive link!!';
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
         }
@@ -788,7 +789,7 @@
                         <div class="text-field">Port :</div>
                         <input type="text" name="port_number" id="port_number" value="8080">
                         <a href="javascript:void(0);" onclick="removePort();"><i class="fa fa-times"></i></a>
-                        <br/><br/>
+                        <br/><br/><br/>
                         <div class="text-field">GitHub Username<font style="color:red">*</font> :</div>
                         <input type="text" name="infect_user_name">
                         <div id="infect_user_input" class="error-message">
