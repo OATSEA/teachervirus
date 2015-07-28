@@ -89,7 +89,6 @@
         $sDeviceAddress = $_POST['device_address'];
         $nPort = $_POST['port_number'];
         $sInfectUserName = $_POST["infect_user_name"];
-        $sInfectRepository = $_POST["infect_repository"];
         $sPayloadName = $_POST['payload_name'];
         $sPayloadUrl = $_POST["payload_url"];
         $sGooglePayloadName = $_POST['google_payload_name'];
@@ -118,7 +117,7 @@
             }
             if(empty($sInfectUserName))
             {
-                $_SESSION['isValidation']['infect_user_name'] = 'Please enter username!!';
+                $_SESSION['isValidation']['infect_user_name'] = 'Please enter name!!';
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
         }
@@ -161,12 +160,10 @@
             }
             else if(!empty($sDeviceAddress))
             {
-                $download_filename = empty($sInfectRepository) ? $sInfectUserName.".zip" : $sInfectUserName."-".$sInfectRepository.".zip";
-                $download_unzip_filename = empty($sInfectRepository) ? $sInfectUserName.".zip" : $sInfectUserName."-".$sInfectRepository;
-                $payloadName = $sInfectUserName."-".$sInfectRepository;
+                $download_filename = $sInfectUserName.".zip";
+                $download_unzip_filename = $sInfectUserName;
                 $sPort = empty($nPort) ? 'none' : $nPort;
-                $sFinalInfectRepository = empty($sInfectRepository) ? 'none' : $sInfectRepository;
-                $sListContent = "infected_device;$isAdmin;$sDeviceAddress;$sPort;$sInfectUserName;$sFinalInfectRepository";
+                $sListContent = "infected_device;$isAdmin;$sDeviceAddress;$sPort;$download_unzip_filename";
             }
             else if(!empty($sPayloadName))
             {
@@ -400,7 +397,7 @@
             {
                 if ($debug) { 
                     echo "<p>The Payloads files have already been downloaded to: $zipfile</p>
-                    <p>This installation will use the existing file rather than downloading a new version of $sInfectRepository.</p>
+                    <p>This installation will use the existing file rather than downloading a new version of $sInfectUserName.</p>
                     <p><b>Hint:</b> If you want to download a new version of Payload you will need to:</br>
                     * delete the file: <b>$zipfile</b>.</br>
                     * remove the <b>play</b> folder if it exists</br>
@@ -790,14 +787,11 @@
                         <input type="text" name="port_number" id="port_number" value="8080">
                         <a href="javascript:void(0);" onclick="removePort();"><i class="fa fa-times"></i></a>
                         <br/><br/><br/>
-                        <div class="text-field">GitHub Username<font style="color:red">*</font> :</div>
+                        <div class="text-field">Folder/Payload Name<font style="color:red">*</font> :</div>
                         <input type="text" name="infect_user_name">
                         <div id="infect_user_input" class="error-message">
                             <?php echo isset($_SESSION['isValidation']['infect_user_name']) ? $_SESSION['isValidation']['infect_user_name'] : '';?>
                         </div>
-                        <br/><br/>
-                        <div class="text-field">GitHub Repository:</div>
-                        <input type="text" name="infect_repository">
                         <br/><br/>
                     </div>
                     
