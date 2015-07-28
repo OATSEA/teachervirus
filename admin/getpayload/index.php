@@ -414,7 +414,7 @@
             else 
             {
                 // as IP address has been set attempt download from IP address
-                echo $geturl = empty($nPort) ? "http://$ip/$zipfile" : "http://$ip:$nPort/$zipfile";
+                $geturl = empty($nPort) ? "http://$ip/$zipfile" : "http://$ip:$nPort/$zipfile";
             }
             if(!empty($sPayloadName))
             {
@@ -432,156 +432,154 @@
                 // ** TO DO ** catch warnings
                 // get following error on MAC: 
                 // Warning: copy(): SSL operation failed with code 1.
-               //if(file_exists($geturl))
-               //{
-                    umask(0);
-                    echo "<h3>Unzip Successful!</h3>";
-                    $zip = new ZipArchive;
-                    // Get array of all source files
-                    $files = scandir(dirname(__FILE__).DIRECTORY_SEPARATOR.$payload);
-                    // Identify directories
-                    $source = dirname(__FILE__).DIRECTORY_SEPARATOR.$payload;
-                    $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
-                    
-                    $destination = $sFolderPath.'/'.$payload;
-                    if (!file_exists($destination))
-                        mkdir($destination,0775,true);
-                    
-                    $copyflag = FALSE;
-                    
-                    if($ip == "no" || $_POST['payload_source'] == 'infected_device')
-                    {
-                        $copyflag = copy($geturl,$_SERVER['DOCUMENT_ROOT'].'/'.$zipfile);
-                    }
-                    else if(file_exists($geturl))
-                    {
-                        
-                        $copyflag = copy($geturl,$_SERVER['DOCUMENT_ROOT'].'/'.$zipfile);
-                    }
-                    if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
-                    $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$download_filename,true);
-                    if ($zipFlag === TRUE) 
-                    {
-                        
-                        $sPayloadUrl = $_SERVER['DOCUMENT_ROOT'].'/'.$payload;
-                        // Create full temp sub_folder path
-                        $temp_unzip_path = $sPayloadUrl.'/'.uniqid('unzip_temp_', true)."/";
+                umask(0);
+                echo "<h3>Unzip Successful!</h3>";
+                $zip = new ZipArchive;
+                // Get array of all source files
+                $files = scandir(dirname(__FILE__).DIRECTORY_SEPARATOR.$payload);
+                // Identify directories
+                $source = dirname(__FILE__).DIRECTORY_SEPARATOR.$payload;
+                $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
 
-                        if($debug) { echo "Temp Unzip Path is: ".$temp_unzip_path."<br>"; }
+                $destination = $sFolderPath.'/'.$payload;
+                if (!file_exists($destination))
+                    mkdir($destination,0775,true);
 
-                        // Make the new temp sub_folder for unzipped files
-                        if (!mkdir($temp_unzip_path, 0755, true)) {
-                            echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
-                            exit("<h2>Error - Payload installation Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue?");
-                        } else {
-                            if($debug) { echo "<p>Temp unzip Folder Created! <br>"; }
-                        }
-                        
-                        if(is_dir($sPayloadUrl))
+                $copyflag = FALSE;
+
+                if($ip == "no" || $_POST['payload_source'] == 'infected_device')
+                {
+                    $copyflag = copy($geturl,$_SERVER['DOCUMENT_ROOT'].'/'.$zipfile);
+                }
+                else if(file_exists($geturl))
+                {
+
+                    $copyflag = copy($geturl,$_SERVER['DOCUMENT_ROOT'].'/'.$zipfile);
+                }
+                if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
+                $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$download_filename,true);
+                if ($zipFlag === TRUE) 
+                {
+
+                    $sPayloadUrl = $_SERVER['DOCUMENT_ROOT'].'/'.$payload;
+                    // Create full temp sub_folder path
+                    $temp_unzip_path = $sPayloadUrl.'/'.uniqid('unzip_temp_', true)."/";
+
+                    if($debug) { echo "Temp Unzip Path is: ".$temp_unzip_path."<br>"; }
+
+                    // Make the new temp sub_folder for unzipped files
+                    if (!mkdir($temp_unzip_path, 0755, true)) {
+                        echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
+                        exit("<h2>Error - Payload installation Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue?");
+                    } else {
+                        if($debug) { echo "<p>Temp unzip Folder Created! <br>"; }
+                    }
+
+                    if(is_dir($sPayloadUrl))
+                    {
+                        $zip->extractTo($temp_unzip_path);
+                        if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
                         {
-                            $zip->extractTo($temp_unzip_path);
-                            if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
-                            {
-                                rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
-                                if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
-                                    echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
-                                    exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?");
-                                } else {
-                                    if($debug) { echo "<p>Folder Created! <br>"; }
-                                }
+                            rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
+                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
+                                echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
+                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?");
+                            } else {
+                                if($debug) { echo "<p>Folder Created! <br>"; }
                             }
-                            else
-                            {
-                                if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
-                                    echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
-                                    exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?");
-                                } else {
-                                    if($debug) { echo "<p>Folder Created! <br>"; }
-                                }        
-                            }
-                            
-                            $files = scandir($temp_unzip_path,1);
-                            foreach ($files as $key => $value)
-                            {
-                               if (!in_array($value,array(".","..")))
-                               {
-                                  if (is_dir($temp_unzip_path . $value))
-                                  {
-                                    moveDIR($temp_unzip_path . $value,$sPayloadUrl.DIRECTORY_SEPARATOR.$download_unzip_filename,$debug);
-                                    $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die("Unable to open file!");
-                                    $txt = $sListContent;
-                                    fwrite($myfile, $txt);
-                                    fclose($myfile);
-
-                                    $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>');
-                                    $txt = $sListContent;
-                                    fwrite($myfile, $txt);
-                                    fclose($myfile);
-                                    $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
-                                    // Add current file to archive
-                                    $zip->addFile($destination."/list.txt", $relativePath);
-                                  }
-                               }
-                            }
-                            if(is_dir($temp_unzip_path))
-                            {
-                                rrmdir($temp_unzip_path);
-                            }
-                            rrmdir($_SERVER['DOCUMENT_ROOT']."/admin/getpayload/".$payload);
                         }
                         else
                         {
-                            $zip->extractTo($temp_unzip_path);
-                            if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
-                            {
-                                rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
-                                if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
-                                    echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
-                                    exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?");
-                                } else {
-                                    if($debug) { echo "<p>Folder Created! <br>"; }
-                                }
-                            }
-                            else
-                            {
-                                if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
-                                    echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
-                                    exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?");
-                                } else {
-                                    if($debug) { echo "<p>Folder Created! <br>"; }
-                                }        
-                            }     
-                            
-                            $files = scandir($temp_unzip_path,1);
-                            foreach ($files as $key => $value)
-                            {
-                               if (!in_array($value,array(".","..")))
-                               {
-                                  if (is_dir($temp_unzip_path . $value))
-                                  {
-                                    moveDIR($temp_unzip_path . $value,$sPayloadUrl.DIRECTORY_SEPARATOR.$download_unzip_filename,$debug);
-                                    $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die("Unable to open file!");
-                                    $txt = $sListContent;
-                                    fwrite($myfile, $txt);
-                                    fclose($myfile);
-
-                                    $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>');
-                                    $txt = $sListContent;
-                                    fwrite($myfile, $txt);
-                                    fclose($myfile);
-                                    $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
-                                    // Add current file to archive
-                                    $zip->addFile($destination."/list.txt", $relativePath);
-                                  }
-                               }
-                            }
-                            if(is_dir($temp_unzip_path))
-                            {
-                                rrmdir($temp_unzip_path);
-                            }
-                            rrmdir($_SERVER['DOCUMENT_ROOT']."/admin/getpayload/".$payload);
+                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
+                                echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
+                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?");
+                            } else {
+                                if($debug) { echo "<p>Folder Created! <br>"; }
+                            }        
                         }
+
+                        $files = scandir($temp_unzip_path,1);
+                        foreach ($files as $key => $value)
+                        {
+                           if (!in_array($value,array(".","..")))
+                           {
+                              if (is_dir($temp_unzip_path . $value))
+                              {
+                                moveDIR($temp_unzip_path . $value,$sPayloadUrl.DIRECTORY_SEPARATOR.$download_unzip_filename,$debug);
+                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die("Unable to open file!");
+                                $txt = $sListContent;
+                                fwrite($myfile, $txt);
+                                fclose($myfile);
+
+                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>');
+                                $txt = $sListContent;
+                                fwrite($myfile, $txt);
+                                fclose($myfile);
+                                $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
+                                // Add current file to archive
+                                $zip->addFile($destination."/list.txt", $relativePath);
+                              }
+                           }
+                        }
+                        if(is_dir($temp_unzip_path))
+                        {
+                            rrmdir($temp_unzip_path);
+                        }
+                        rrmdir($_SERVER['DOCUMENT_ROOT']."/admin/getpayload/".$payload);
                     }
+                    else
+                    {
+                        $zip->extractTo($temp_unzip_path);
+                        if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
+                        {
+                            rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
+                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
+                                echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
+                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?");
+                            } else {
+                                if($debug) { echo "<p>Folder Created! <br>"; }
+                            }
+                        }
+                        else
+                        {
+                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
+                                echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>';
+                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?");
+                            } else {
+                                if($debug) { echo "<p>Folder Created! <br>"; }
+                            }        
+                        }     
+
+                        $files = scandir($temp_unzip_path,1);
+                        foreach ($files as $key => $value)
+                        {
+                           if (!in_array($value,array(".","..")))
+                           {
+                              if (is_dir($temp_unzip_path . $value))
+                              {
+                                moveDIR($temp_unzip_path . $value,$sPayloadUrl.DIRECTORY_SEPARATOR.$download_unzip_filename,$debug);
+                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die("Unable to open file!");
+                                $txt = $sListContent;
+                                fwrite($myfile, $txt);
+                                fclose($myfile);
+
+                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$protocol.'/admin" class="color-white"><i class="mainNav fa fa-cog fa-3x"></i></a></div>');
+                                $txt = $sListContent;
+                                fwrite($myfile, $txt);
+                                fclose($myfile);
+                                $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
+                                // Add current file to archive
+                                $zip->addFile($destination."/list.txt", $relativePath);
+                              }
+                           }
+                        }
+                        if(is_dir($temp_unzip_path))
+                        {
+                            rrmdir($temp_unzip_path);
+                        }
+                        rrmdir($_SERVER['DOCUMENT_ROOT']."/admin/getpayload/".$payload);
+                    }
+                }
                     $zip->close();
                     unlink($destination."/list.txt");
                     
