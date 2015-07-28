@@ -4,11 +4,13 @@
 <title>Icons Menu</title>
 <link href="buttons.css" rel="stylesheet">
 <link href="../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="changePassword/_style/changePassword.css"/>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<script src="../js/jquery.js"></script>
+<script src="changePassword/js/jquery-1.11.1.js"></script>
 <script src='../js/jquery.imagefit.js'></script>
 <script src="buttons.js"></script>
+<script src="changePassword/_script/changePassword.js"></script>
 <script>$(document).ready(function() { setup(); }); </script>
 </head>
 <body class="main" >
@@ -69,16 +71,12 @@
         else
         {
     ?>
-            <link rel="stylesheet" type="text/css" href="changePassword/_style/changePassword.css"/>
-            <script src="changePassword/js/jquery-1.11.1.js"></script>
-
             <script>
                 function submitform(){
                    return true;
                 }
             </script>
 
-            <script src="changePassword/_script/changePassword.js"></script>
             <div class="color-white">
                 <a class="play_img" href="<?php echo $protocol.'/play'; ?>">
                     <i class="mainNav fa fa-play-circle-o fa-3x"></i>
@@ -121,14 +119,11 @@
             $nConfirmPasswordFlag = 1;
             ?>            
                 <div>
-                    <link rel="stylesheet" type="text/css" href="changePassword/_style/changePassword.css"/>
-                    <script src="changePassword/js/jquery-1.11.1.js"></script>
                     <script>
                         function submitform(){
                            return true;
                         }
                     </script>
-                    <script src="changePassword/_script/changePassword.js"></script>
                     <form method="post" onsubmit="return submitform()" id="confirmPasswordForm">
                             <h2>Confirm Password</h2>
                             <div>
@@ -165,9 +160,6 @@
         {
     ?>
             <div id="login">
-                <link rel="stylesheet" type="text/css" href="changePassword/_style/changePassword.css"/>
-                <script src="changePassword/js/jquery-1.11.1.js"></script>
-                <script src="changePassword/_script/changePassword.js"></script>
                 <script>
                     function submitform(){
                        return true;
