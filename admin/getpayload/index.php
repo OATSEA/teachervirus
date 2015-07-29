@@ -28,7 +28,7 @@
             .text-field{
                 float: left;
                 padding-right: 10px;
-                width: 188px;
+                width: 200px;
             }
             .adminpayload-text{
                 float: left;
@@ -783,7 +783,7 @@
         <form id="getpayload_form" method="post" action="">
             <div id="container">
                 <div class="payload-details">
-                    <h2>Enter Payloads Details</h2>
+                    <h2>Enter Payload Details</h2>
                 </div>
                 <div class="adminpayload-text">Is this an Admin Payload? </div>
                 <input type="checkbox" name="check_admin" id="check_admin" value="<?php echo isset($_POST['check_admin']) ? $_POST['check_admin'] : '0'; ?>" <?php echo isset($_POST['check_admin']) ? "checked='checked'" : ""; ?> onclick="changeValue('check_admin');"/>
