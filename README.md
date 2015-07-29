@@ -1,9 +1,13 @@
 # teachervirus
 
 **Repo:** OATSEA/teachervirus
+
 **Version:** 0.2
+
 **Doc Author:** Harry Longworth
+
 **Contributors/Developers:** Vishal Simon, Harry Longworth and OATSEA Team
+
 **Website:** teachervirus.org
 
 ##About
@@ -15,7 +19,7 @@ The repository is installed by the **getinfected.php** script that is managed in
 
 That script fetches the core Teacher Virus files from either github or an infected device.  
 
-**NOTE: ** Teacher Virus is only viral from a philosophical perspective - it can not infect a device without the consent of the administrator/owner of the device (installation action required).
+**NOTE:** Teacher Virus is only viral from a philosophical perspective - it can not infect a device without the consent of the administrator/owner of the device (installation action required).
 
 At the heart of teachervirus is the installation and management of "payloads" which are our version of components/plugins/apps that server an educational purpose.
 
