@@ -45,7 +45,7 @@ With version 0.2 of Teacher Virus we introduce the following improvements:
 We are always looking for suggestions and feedback on each release so that we can prioritise functionality required for the next sprint.  At the moment we are looking at working on the following capabilities for the next phase of development:
 
 * ability to uninstall payloads.
-* abiliyt to find out about new versions and update payloads.
+* ability to find out about new versions and update payloads.
 * ability to find and install payloads developed and shared by the community. (Along with associated development of the online community website at teachervirus.org)
 * ability to list payloads available on a infected device and install them.
 * ability to discover infected devices on the local network.
