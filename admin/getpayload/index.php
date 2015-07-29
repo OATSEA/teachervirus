@@ -688,7 +688,7 @@
                 <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
             </a>
         </div><br/><br/>
-        <form id="getpayload_form" method="post" action="">
+        <form id="getpayload_form" method="post" action="" class="form-text">
             <div id="container">
                 <div class="payload-details">
                     <h2>Enter Payloads Details</h2>
