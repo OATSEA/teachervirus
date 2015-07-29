@@ -1,5 +1,6 @@
 <?php
     require '../checkLogin.php';
+    if(session_status()!=PHP_SESSION_ACTIVE) session_start(); 
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -20,7 +21,7 @@
         }
     </script>
     <?php
-        $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
+        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
         $protocol .= "://" . $_SERVER['HTTP_HOST']."/admin";
     ?>
 <?php
@@ -131,9 +132,9 @@
         </div>
 <?php
     }
-    if($_SESSION['password_changed'])
+    if(isset($_SESSION['password_changed']) && $_SESSION['password_changed'])
     {
-        $sDirName = $_SERVER['DOCUMENT_ROOT']."/admin/";
+        $sDirName = $_SERVER['DOCUMENT_ROOT']."/data/admin/";
         $username_password = 'username_password.php';
         unlink($sDirName.$username_password);
         $handle = fopen($sDirName.$username_password, 'w')or die('Cannot open file:  '.$username_password); ;

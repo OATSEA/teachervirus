@@ -1,3 +1,7 @@
 data/
 payloads/admin/username_password.php
 getinfected.php
+<<<<<<< HEAD
+=======
+infect/OATSEA-teachervirus.zip
+>>>>>>> dev

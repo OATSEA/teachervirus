@@ -4,27 +4,29 @@
 <title>Icons Menu</title>
 <link href="buttons.css" rel="stylesheet">
 <link href="../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="changePassword/_style/changePassword.css"/>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<script src="../js/jquery.js"></script>
+<script src="changePassword/js/jquery-1.11.1.js"></script>
 <script src='../js/jquery.imagefit.js'></script>
 <script src="buttons.js"></script>
+<script src="changePassword/_script/changePassword.js"></script>
 <script>$(document).ready(function() { setup(); }); </script>
 </head>
 <body class="main" >
-
 <?php
     //header("Cache-Control: max-age=300, must-revalidate");
     //ini_set('session.cache_limiter', 'private');
-    $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
+    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off") ? "https" : "http";
     $protocol .= "://" . $_SERVER['HTTP_HOST'];
     //Starts session
     if (@session_id() == "") @session_start();
 
-    //$_SESSION['password_generated'] = false;
-    if (file_exists("username_password.php")) 
+    $_SESSION['password_generated'] = false;
+    $nConfirmPasswordFlag = 0;
+    if (file_exists($_SERVER['DOCUMENT_ROOT']."/data/admin/username_password.php")) 
     {
-        require 'username_password.php';
+        require $_SERVER['DOCUMENT_ROOT']."/data/admin/username_password.php";
         //Checking for request method.
         if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['pattern_password']))
         {
@@ -48,6 +50,7 @@
             $thisURL = $_SERVER['REQUEST_URI'];
             $playURL =  str_replace('admin', 'play', $thisURL);
             $sChangePasswordURL =  str_replace('admin', 'admin/changePassword', $thisURL);
+            $sInfectedURL =  str_replace('admin', 'admin/getinfected', $thisURL);
             require 'header.php';
             foreach(glob($rootdir, GLOB_ONLYDIR) as $dir) { 
                     $dir = basename($dir); 
@@ -61,22 +64,19 @@
                     echo '<a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.png" /></a>';
                 }
             } 
-            (isset($sChangePasswordURL) && !empty($sChangePasswordURL)) ? '<a href="'.$protocol.$sChangePasswordURL.'"><img class="mybutton" alt="Play" src="'.$sChangePasswordURL.'icon.png" /></a>' : '';
+            (isset($sChangePasswordURL) && !empty($sChangePasswordURL)) ? '<a href="'.$protocol.$sChangePasswordURL.'"><img class="mybutton" alt="Change Password" src="'.$sChangePasswordURL.'icon.png" /></a>' : '';
+            (isset($sInfectedURL) && !empty($sInfectedURL)) ? '<a href="'.$protocol.$sInfectedURL.'"><img class="mybutton" alt="Get Infected" src="'.$sInfectedURL.'icon.png" /></a>' : '';
             //echo '<a href="'.$playURL.'"><img class="mybutton" alt="Play" src="'.$playURL.'icon.png" /></a>';
         }
         else
         {
     ?>
-            <link rel="stylesheet" type="text/css" href="changePassword/_style/changePassword.css"/>
-            <script src="changePassword/js/jquery-1.11.1.js"></script>
-
             <script>
                 function submitform(){
                    return true;
                 }
             </script>
 
-            <script src="changePassword/_script/changePassword.js"></script>
             <div class="color-white">
                 <a class="play_img" href="<?php echo $protocol.'/play'; ?>">
                     <i class="mainNav fa fa-play-circle-o fa-3x"></i>
@@ -98,7 +98,7 @@
     {
         if(($_SERVER['REQUEST_METHOD'] == "POST"  && isset($_POST['new_password'])) || ((isset($_POST['confirm_password']) && (isset($_SESSION['new_password']))) && ($_SESSION['new_password'] != $_POST['confirm_password'] || $_SESSION['new_password'] == $_POST['confirm_password'])))
         {
-            $_SESSION['new_password'] = (isset($_POST['new_password']) ? md5($_POST['new_password']) : (isset($_SESSION['new_password']) ? $_SESSION['new_password'] : ''));
+            $_SESSION['new_password'] = (isset($_POST['new_password']) ? md5($_POST['new_password']) : (isset($_SESSION['new_password']) ? $_SESSION['new_password'] : true));
             if(isset($_POST['confirm_password']) && isset($_SESSION['new_password']))
             {
                 if($_SESSION['new_password'] == md5($_POST['confirm_password']))
@@ -116,16 +116,14 @@
             {
                 unset($_SESSION['password_require']);
             }
+            $nConfirmPasswordFlag = 1;
             ?>            
                 <div>
-                    <link rel="stylesheet" type="text/css" href="changePassword/_style/changePassword.css"/>
-                    <script src="changePassword/js/jquery-1.11.1.js"></script>
                     <script>
                         function submitform(){
                            return true;
                         }
                     </script>
-                    <script src="changePassword/_script/changePassword.js"></script>
                     <form method="post" onsubmit="return submitform()" id="confirmPasswordForm">
                             <h2>Confirm Password</h2>
                             <div>
@@ -137,10 +135,10 @@
                 </div>
             <?php
         }
-
-        if($_SESSION['password_generated'])
+        if(isset($_SESSION['password_generated']) && $_SESSION['password_generated'])
         {
-            $username_password = 'username_password.php';
+            mkdir($_SERVER['DOCUMENT_ROOT']."/data/admin");
+            $username_password = $_SERVER['DOCUMENT_ROOT']."/data/admin/username_password.php";
             $handle = fopen($username_password, 'w')or die('Cannot open file:  '.$username_password); ;
             $sPassword = md5($_POST['confirm_password']);
             $txt = '<?php
@@ -158,13 +156,10 @@
             $protocol .= "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             header("Location:".$protocol);
         }
-        else if(!isset($_SESSION['new_password']) && !$_SESSION['password_generated'])
+        else if($nConfirmPasswordFlag == 0)
         {
     ?>
             <div id="login">
-                <link rel="stylesheet" type="text/css" href="changePassword/_style/changePassword.css"/>
-                <script src="changePassword/js/jquery-1.11.1.js"></script>
-                <script src="changePassword/_script/changePassword.js"></script>
                 <script>
                     function submitform(){
                        return true;
@@ -184,4 +179,3 @@
 ?>
 </body>
 </html>
-
