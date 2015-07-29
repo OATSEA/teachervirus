@@ -20,7 +20,7 @@
                 border: 1px solid #fff;
                 margin: 0 auto;
                 padding: 15px;
-                width: 70%;
+                width: 50%;
             }
             .error-message{
                 color: red; 
