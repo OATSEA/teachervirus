@@ -6,13 +6,6 @@
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);  
 }
 
-body {
-        background-color: black;
-	text-align: center;
-	min-height:800px;
-	padding: 0px;
-	margin: 0;
-}
 
 p { 
 	
@@ -75,6 +68,7 @@ a:hover {  color:blue;}
     padding-bottom: 10px;
     padding-top: 10px;
     padding-left: 10px;
+	margin-right: 20px;
 }
 .logout_img{
     float: right;
@@ -93,4 +87,98 @@ a:hover {  color:blue;}
 }
 .mainNav:hover {
     color: blue;
+}
+/* admin index  css */
+body{
+		background-color: black;
+		min-height:800px;
+		padding: 0px;
+		margin: 0;
+		color: #fff;
+		text-align: left;
+	}
+form{
+	border: 1px solid #fff;
+	margin: 0 auto;
+	padding: 15px;
+	width: 81%;
+}
+.error-message{
+	color: red;
+	width:200px; 
+}
+.text-field{
+	
+	padding-right: 5px;
+	
+}
+.adminpayload-text{
+	float: left;
+	padding-right: 10px;
+	width: 172px;
+}
+.example-text{
+	
+	width: 82%;
+}
+.go-button{
+	float: right;
+}
+.go-button > input{
+	color: #000;
+}
+.admin_img {
+	color: #fff;
+	float: right;
+	padding-bottom: 10px;
+	padding-right: 20px;
+	padding-top: 10px;
+}
+.color-white{
+	color: #fff;
+	line-height: 15px;
+}
+input[type="text"] {
+	color: #000;
+	float: left;
+	display: block;
+	margin-bottom: 10px;
+	background-color: wheat;
+}
+.payload-details{
+	border-bottom: 1px solid #fff;
+	margin-bottom: 20px;
+	text-align: center;
+	width: 100%;
+}
+.mandatory{
+	font-weight: bold;
+	font-size: 18px;
+}
+.sources{
+	margin-left: 20px;
+}
+ #loading {
+	font-size: 70px;
+	font-weight: bold;
+	color: #000;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	position: fixed;
+	display: block;
+	opacity: 0.7;
+	background-color: #fff;
+	z-index: 99;
+	text-align: center;
+}
+.debug-text{
+	float: left;
+	padding-right: 15px;
+	text-align: right;
+	width: 120px;
+}
+.color-white h2{
+	margin-left:20px;
 }
