@@ -1,3 +1,4 @@
+<?php require '../checkLogin.php'; ?>
 <html>
     <head>
         <title>Payloads</title>
