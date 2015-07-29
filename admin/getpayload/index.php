@@ -9,13 +9,13 @@
         <script src="../../js/jquery.js" type="text/javascript"></script>
         <style>
             body{
-                    background-color: black;
-                    min-height:800px;
-                    padding: 0px;
-                    margin: 0;
-                    color: #fff;
-                    text-align: left;
-                }
+                background-color: black;
+                min-height:800px;
+                padding: 0px;
+                margin: 0;
+                color: #fff;
+                text-align: left;
+            }
             form{
                 border: 1px solid #fff;
                 margin: 0 auto;
@@ -33,7 +33,13 @@
             .adminpayload-text{
                 float: left;
                 padding-right: 10px;
-                width: 172px;
+                width: 175px;
+            }
+            .debug-text{
+                float: left;
+                padding-right: 15px;
+                text-align: right;
+                width: 125px;
             }
             .example-text{
                 text-align: center;
@@ -90,12 +96,6 @@
                 background-color: #fff;
                 z-index: 99;
                 text-align: center;
-            }
-            .debug-text{
-                float: left;
-                padding-right: 15px;
-                text-align: right;
-                width: 120px;
             }
         </style>
         <script type="text/javascript">
