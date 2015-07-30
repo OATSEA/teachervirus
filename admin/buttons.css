@@ -6,13 +6,6 @@
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);  
 }
 
-body {
-        background-color: black;
-	text-align: center;
-	min-height:800px;
-	padding: 0px;
-	margin: 0;
-}
 
 p { 
 	
@@ -75,6 +68,7 @@ a:hover {  color:blue;}
     padding-bottom: 10px;
     padding-top: 10px;
     padding-left: 10px;
+	margin-right: 20px;
 }
 .logout_img{
     float: right;
@@ -94,8 +88,8 @@ a:hover {  color:blue;}
 .mainNav:hover {
     color: blue;
 }
-
-/*body{
+/* admin index  css */
+body{
 		background-color: black;
 		min-height:800px;
 		padding: 0px;
@@ -107,12 +101,9 @@ form{
 	border: 1px solid #fff;
 	margin: 0 auto;
 	padding: 15px;
-	width: 81%;
+	width: 50%;
 }
-.error-message{
-	color: red;
-	width:200px; 
-}
+
 .text-field{
 	
 	padding-right: 5px;
@@ -123,6 +114,9 @@ form{
 	padding-right: 10px;
 	width: 172px;
 }
+.col-sample {
+    width: 37.667%;
+}
 .example-text{
 	
 	width: 82%;
@@ -132,6 +126,7 @@ form{
 }
 .go-button > input{
 	color: #000;
+        margin-right: 10px; 
 }
 .admin_img {
 	color: #fff;
@@ -144,13 +139,42 @@ form{
 	color: #fff;
 	line-height: 15px;
 }
+
+@media only screen and (max-width:1366px)
+{
+    input[type="text"] {
+	color: #000;
+	float: left;
+	display: block;
+	margin-bottom: 10px;
+	background-color: wheat;
+        width: 30%;
+    }  
+}
+@media only screen and (min-width:320px) and (max-width:480px)
+{
 input[type="text"] {
 	color: #000;
 	float: left;
 	display: block;
 	margin-bottom: 10px;
 	background-color: wheat;
+        width: 100%;
 }
+}
+
+@media only screen and (min-width: 420px) and (max-width:767px)
+{
+    input[type="text"] {
+	color: #000;
+	float: left;
+	display: block;
+	margin-bottom: 10px;
+	background-color: wheat;
+        width: 70%;
+    }    
+}
+
 .payload-details{
 	border-bottom: 1px solid #fff;
 	margin-bottom: 20px;
@@ -187,4 +211,44 @@ input[type="text"] {
 }
 .color-white h2{
 	margin-left:20px;
-}*/
+}
+.error-message{
+	color: red;
+        margin-bottom: 5px;
+        width: 76%;
+}
+.error-message1{
+	color: red;
+        width: 93%;
+        margin-bottom: 5px;
+}
+.urlwebsite
+{
+    width: 100%;
+    margin-left: 14px !important;
+}
+
+.example
+{
+    margin-bottom: 10px;
+}
+.example1
+{
+    margin-bottom: 10px;
+}
+.start_payload
+{
+    margin-left: 16px;
+
+}
+.title h2 {
+ margin: auto 0px;
+ text-align: center;
+ border-bottom: 1px solid;
+ margin-bottom: 17px;
+ padding-bottom: 10px;
+}
+.extra
+{
+    margin: 10px 0px 10px 0px;
+}
