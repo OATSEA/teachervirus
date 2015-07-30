@@ -1,6 +1,7 @@
 <?php
+    if(session_status()!=PHP_SESSION_ACTIVE) session_start();
+    error_reporting(E_ALL ^ E_WARNING);
     require '../checkLogin.php';
-    if(session_status()!=PHP_SESSION_ACTIVE) session_start(); 
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
