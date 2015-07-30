@@ -1,6 +1,5 @@
 <?php
-    if(session_status()!=PHP_SESSION_ACTIVE) session_start();
-    error_reporting(E_ALL ^ E_WARNING);
+    ob_start();
     require '../checkLogin.php';
 ?>
 <!DOCTYPE html>
@@ -115,6 +114,7 @@
     else
     {
         $_SESSION['old_password_not_matched'] = isset($_POST['old_password']) ?  "Old password not matched!!" : "";
+        unset($_SESSION['not_valid_password']);
 ?>
         <div class="color-white">
             <a class="play_img" href="<?php echo $protocol; ?>">
