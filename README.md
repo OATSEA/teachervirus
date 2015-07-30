@@ -41,6 +41,9 @@ With version 0.2 of Teacher Virus we introduce the following improvements:
 * improved error handling
 * ability to control debug comments so that they can be hidden or shown via advanced options.
 
+Additional Changes and Fixes after release:
+* added the original offline website back in as an admin payload so that device to device infection works again.  Means that if you browse to the device you will now see the offline teachervirus.org website and have the ability to get infected from the device. This payload can be "updated" by reinstalling the OATSEA / teachervirus.org repository.  This payload is an example of the use of teachervirus to deliver offline websites using a php file based website solution like Staceyapp
+
 ##Wishlist / Future Development
 We are always looking for suggestions and feedback on each release so that we can prioritise functionality required for the next sprint.  At the moment we are looking at working on the following capabilities for the next phase of development:
 
