@@ -1,11 +1,103 @@
+<?php require '../checkLogin.php'; ?>
 <html>
     <head>
         <title>Payloads</title>
         <meta charset="utf-8">
-        <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../buttons.css" rel="stylesheet">
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <script src="../../js/jquery.js" type="text/javascript"></script>
+        <style>
+            body{
+                background-color: black;
+                min-height:800px;
+                padding: 0px;
+                margin: 0;
+                color: #fff;
+                text-align: left;
+            }
+            form{
+                border: 1px solid #fff;
+                margin: 0 auto;
+                padding: 15px;
+                width: 50%;
+            }
+            .error-message{
+                color: red; 
+            }
+            .text-field{
+                float: left;
+                padding-right: 10px;
+                width: 200px;
+            }
+            .adminpayload-text{
+                float: left;
+                padding-right: 10px;
+                width: 175px;
+            }
+            .debug-text{
+                float: left;
+                padding-right: 15px;
+                text-align: right;
+                width: 125px;
+            }
+            .example-text{
+                text-align: center;
+                width: 100%;
+            }
+            .go-button{
+                float: right;
+            }
+            .go-button > input{
+                color: #000;
+            }
+            .admin_img {
+                color: #fff;
+                float: right;
+                padding-bottom: 10px;
+                padding-right: 20px;
+                padding-top: 10px;
+            }
+            .color-white{
+                color: #fff;
+                line-height: 15px;
+            }
+            input[type="text"] {
+                color: #000;
+                float: left;
+                display: block;
+                margin-bottom: 10px;
+                background-color: wheat;
+            }
+            .payload-details{
+                border-bottom: 1px solid #fff;
+                margin-bottom: 20px;
+                text-align: center;
+                width: 100%;
+            }
+            .mandatory{
+                font-weight: bold;
+                font-size: 18px;
+            }
+            .sources{
+                margin-left: 20px;
+            }
+             #loading {
+                font-size: 70px;
+                font-weight: bold;
+                color: #000;
+                width: 100%;
+                height: 100%;
+                top: 0px;
+                left: 0px;
+                position: fixed;
+                display: block;
+                opacity: 0.7;
+                background-color: #fff;
+                z-index: 99;
+                text-align: center;
+            }
+        </style>
         <script type="text/javascript">
             function checkLoaded(loaded){
                 if(loaded == true)
@@ -20,15 +112,14 @@
             }
         </script>
     </head>
-    <body class="main" onLoad="checkLoaded(false);">
+    <body class="main" onload="checkLoaded(false);">
     <div id="loading">Installing...</div>
     <script>
         checkLoaded(false);
     </script>
 <?php
+//session_start();
     $debug = isset($_POST['show_debug']) ? $_POST['show_debug'] : 0;
-    $bChmod = isset($_POST['chmod']) ? $_POST['chmod'] : 0;
-    $nMode = ($bChmod) ? 0755 : '';
     $protocol = isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
     $protocol .= "://" . $_SERVER['HTTP_HOST'];
     
@@ -200,14 +291,14 @@
 
             //----------
             //Make a new directory with optional error messages
-            function makeDIR($directory,$debugtxt=0,$nMode) {
+            function makeDIR($directory,$debugtxt=0) {
                 // Create payload directory if it doesn't exist:
                 if (file_exists($directory)) {
                     //if ($debugtxt) { echo "<p>Directory <b>$directory</b> already exists </p>"; }
                     $result = true; // Return true as success is when the directory has either been created or already exists
                 } else {
                     // Make the new temp sub_folder for unzipped files
-                    if (!mkdir($directory, $nMode, true)) {
+                    if (!mkdir($directory, 0755, true)) {
                         if ($debugtxt) { echo "<p>Error: Could not create folder <b>$directory</b> - check file permissions";}
                         $result= false;
                     } else { 
@@ -252,7 +343,7 @@
                             $newFile = $dest."/".$file;
 
                             if (!file_exists($dest)) {
-                                makeDIR($dest,0,$nMode);
+                                makeDIR($dest);
                             }
                             // if file already exists remove it
                             if (file_exists($newFile)) {
@@ -334,7 +425,7 @@
             // default destination for downloaded zipped files
 
             // Create payload directory if it doesn't exist:
-            if (!makeDIR($payload,true,$nMode)) { 
+            if (!makeDIR($payload,true)) { 
                     // failed to make directory so exit
                     exit('<h3>Installation Failed!</h3><div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
             }
@@ -416,7 +507,7 @@
                     if($debug) { echo "Temp Unzip Path is: ".$temp_unzip_path."<br>"; }
 
                     // Make the new temp sub_folder for unzipped files
-                    if (!mkdir($temp_unzip_path, $nMode, true)) {
+                    if (!mkdir($temp_unzip_path, 0755, true)) {
                         exit("<h2>Error - Payload installation Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                     } else {
                         if($debug) { echo "<p>Temp unzip Folder Created! <br>"; }
@@ -428,7 +519,7 @@
                         if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
                         {
                             rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
-                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
+                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
                                 exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?".'<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
@@ -436,7 +527,7 @@
                         }
                         else
                         {
-                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
+                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
                                 exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
@@ -478,7 +569,7 @@
                         if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
                         {
                             rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
-                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
+                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
                                 exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?".'<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
@@ -486,7 +577,7 @@
                         }
                         else
                         {
-                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
+                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, 0755, true)) {
                                 exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
@@ -690,124 +781,97 @@
             </a>
         </div><br/><br/>
         <form id="getpayload_form" method="post" action="">
-            <div class="row">
-                <div class="col-sm-12 title">
+            <div id="container">
+                <div class="payload-details">
                     <h2>Enter Payload Details</h2>
                 </div>
-                <label class="start_payload">
-                 <input type="checkbox" name="check_admin" id="check_admin" value="<?php echo isset($_POST['check_admin']) ? $_POST['check_admin'] : '0'; ?>" <?php echo isset($_POST['check_admin']) ? "checked='checked'" : ""; ?> onClick="changeValue('check_admin');"/>
-                     Is this an Admin Payload? </label>
-                   <div><label class="col-sm-12 extra">
-                    <input type="radio" name="payload_source" id="ckeck_github" value="github_payloads" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "github_payloads") ? "checked='checked'" : "checked='checked'"; ?> onClick="showData('github_payloads');"> GitHub
-                     </label></div>
-                    <div id="github_payloads" style="display:none" class="sources">
-                        <div class="form-group">
-                        <label class="col-sm-12 control-label">GitHub Username<font style="color:red">*</font> </label>
-                        <div class="col-sm-12">    
-                            <input type="text" class="form-control" name="user_name">
+                <div class="adminpayload-text">Is this an Admin Payload? </div>
+                <input type="checkbox" name="check_admin" id="check_admin" value="<?php echo isset($_POST['check_admin']) ? $_POST['check_admin'] : '0'; ?>" <?php echo isset($_POST['check_admin']) ? "checked='checked'" : ""; ?> onclick="changeValue('check_admin');"/>
+                <br/><br/>
+                <div>
+                    <input type="radio" name="payload_source" id="ckeck_github" value="github_payloads" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "github_payloads") ? "checked='checked'" : "checked='checked'"; ?> onclick="showData('github_payloads');"> GitHub
+                    <br/><br/>
+                    <div id="github_payloads" class="sources">
+                        <div class="text-field">GitHub Username<font style="color:red">*</font> </div>
+                        <input type="text" name="user_name">
                         <div class="error-message">
-                         <?php echo isset($_SESSION['isValidation']['user_name_required']) ? $_SESSION['isValidation']['user_name_required'] : '';?>
+                            <?php echo isset($_SESSION['isValidation']['user_name_required']) ? $_SESSION['isValidation']['user_name_required'] : '';?>
                         </div>
-                        </div>
-                        </div>
-                        <div class="form-group">
-                        <label class="col-sm-12 control-label">GitHub Repository<font style="color:red">*</font> </label>
-                        <div class="col-sm-12">    
-                        <input type="text" class="form-control" name="repository">
+                        <br/><br/>
+                        <div class="text-field">GitHub Repository<font style="color:red">*</font> </div>
+                        <input type="text" name="repository">
                         <div class="error-message">
-                        <?php echo isset($_SESSION['isValidation']['repository_required']) ? $_SESSION['isValidation']['repository_required'] : '';?>
+                            <?php echo isset($_SESSION['isValidation']['repository_required']) ? $_SESSION['isValidation']['repository_required'] : '';?>
                         </div>
-                        </div>
-                        </div>
+                        <br/><br/>
                     </div>
-                    <label class="col-sm-12 control-label extra">
-                    <input type="radio" name="payload_source" id="ckeck_infected" value="infected_device" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "infected_device" ) ? "checked='checked'" : ""; ?> onClick="showData('infected_device');"> Infected Device
-                    </label>  
+                    <input type="radio" name="payload_source" id="ckeck_infected" value="infected_device" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "infected_device" ) ? "checked='checked'" : ""; ?> onclick="showData('infected_device');"> Infected Device
+                    <br/><br/>
                     <div id="infected_device" style="display:none" class="sources">
-                            <div class="form-group">
-                            <label class="col-sm-12 control-label">Device Address (IP or URL)<font style="color:red">*</font> </label>
-                            <div class="col-sm-12">
-                            <input type="text" class="form-control" name="device_address">
-                            <div class="error-message1">
+                        <div class="text-field">Device Address (IP or URL)<font style="color:red">*</font> </div>
+                        <input type="text" name="device_address">
+                        <div class="error-message">
                             <?php echo isset($_SESSION['isValidation']['device_address']) ? $_SESSION['isValidation']['device_address'] : '';?>
-                            </div><br/><br/>
-                            </div>
-                            <div class="col-sm-12 example">Provide an IP or URL - For Example: 192.168.143.1 or demo.teachervirus.org</div>
-                            </div>
-                            <div class="form-group">
-                            <label class="col-sm-12 control-label">Port</label>
-                            <div class="col-sm-12">    
-                            <input type="text" class="form-control" name="port_number" id="port_number" value="8080"><a href="javascript:void(0);" onClick="removePort();"><i class="fa fa-times"></i></a>
-                            </div>
-                            </div>
-                            <div class="form-group">
-                            <label class="col-sm-12 control-label">Folder/Payload Name<font style="color:red">*</font></label>
-                            <div class="col-sm-12">    
-                            <input type="text" class="form-control" name="infect_user_name">
-                            <div id="infect_user_input" class="error-message1">
+                        </div><br/><br/><br/>
+                        <div class="example-text">Provide an IP or URL - For Example: 192.168.143.1 or demo.teachervirus.org</div><br/>
+                        <div class="text-field">Port </div>
+                        <input type="text" name="port_number" id="port_number" value="8080">
+                        <a href="javascript:void(0);" onclick="removePort();"><i class="fa fa-times"></i></a>
+                        <br/><br/><br/>
+                        <div class="text-field">Folder/Payload Name<font style="color:red">*</font> </div>
+                        <input type="text" name="infect_user_name">
+                        <div id="infect_user_input" class="error-message">
                             <?php echo isset($_SESSION['isValidation']['infect_user_name']) ? $_SESSION['isValidation']['infect_user_name'] : '';?>
-                            </div>
-                            </div>
-                            </div>
+                        </div>
+                        <br/><br/>
                     </div>
-                    <label class="urlwebsite control-label extra">
-                    <input type="radio" name="payload_source" id="ckeck_website" value="website_url" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "website_url" ) ? "checked='checked'" : ""; ?> onClick="showData('website_url');"> URL/Website
-                    </label>
+                    
+                    <input type="radio" name="payload_source" id="ckeck_website" value="website_url" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "website_url" ) ? "checked='checked'" : ""; ?> onclick="showData('website_url');"> URL/Website
+                    <br/><br/>
                     <div id="website_url" style="display:none" class="sources">
-                            <div class="form-group">
-                            <label class="col-sm-12 control-label">Payload Name <font style="color:red">*</font></label>
-                            <div class="col-sm-12">  
-                            <input type="text" class="form-control" name="payload_name">
-                            <div class="error-message">
+                        <div class="text-field">Payload Name<font style="color:red">*</font> </div>
+                        <input type="text" name="payload_name">
+                        <div class="error-message">
                             <?php echo isset($_SESSION['isValidation']['payload_name']) ? $_SESSION['isValidation']['payload_name'] : '';?>
-                            </div>
-                            </div>
-                            </div>
-                            <div class="form-group">
-                            <label class="urlwebsite control-label">URL <font style="color:red">*</font></label>
-                            <div class="col-sm-12">
-                            <input type="text" class="form-control" name="payload_url">
-                            <div id="url_input" class="error-message">
+                        </div>
+                        <br/><br/>
+                        <div class="text-field">URL<font style="color:red">*</font> </div>
+                        <input type="text" name="payload_url">
+                        <div id="url_input" class="error-message">
                             <?php echo isset($_SESSION['isValidation']['payload_url']) ? $_SESSION['isValidation']['payload_url'] : '';?>
-                            </div>
-                            </div>
-                            </div>
-                      </div>
-                        <label class="col-sm-12 control-label extra">
-                        <input type="radio" name="payload_source" id="ckeck_google" value="google_drive" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "google_drive" ) ? "checked='checked'" : ""; ?> onClick="showData('google_drive');"> Google Drive
-                        </label>
-                        <div id="google_drive" style="display:none" class="sources">
-                            <div class="form-group">
-                            <label class="col-sm-12 control-label">Payload Name<font style="color:red">*</font></label>
-                            <div class="col-sm-12">
-                            <input type="text" class="form-control" name="google_payload_name">
-                            <div class="error-message">
+                        </div>
+                        <br/><br/>
+                    </div>
+                    <input type="radio" name="payload_source" id="ckeck_google" value="google_drive" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "google_drive" ) ? "checked='checked'" : ""; ?> onclick="showData('google_drive');"> Google Drive
+                    <br/><br/>
+                    <div id="google_drive" style="display:none" class="sources">
+                        <div class="text-field">Payload Name<font style="color:red">*</font> </div>
+                        <input type="text" name="google_payload_name">
+                        <div class="error-message">
                             <?php echo isset($_SESSION['isValidation']['google_payload_name']) ? $_SESSION['isValidation']['google_payload_name'] : '';?>
-                            </div>
-                            </div>
-                            </div>
-                            <div class="form-group">
-                            <label class="col-sm-12 control-label">Google Drive Link<font style="color:red">*</font> </label>  
-                            <div class="col-sm-12">
-                            <input type="text" class="form-control" name="google_drive_link">
-                            <div id="url_input" class="error-message">
+                        </div>
+                        <br/><br/>
+                        <div class="text-field">Google Drive Link<font style="color:red">*</font> </div>
+                        <input type="text" name="google_drive_link">
+                        <div id="url_input" class="error-message">
                             <?php echo isset($_SESSION['isValidation']['google_drive_link']) ? $_SESSION['isValidation']['google_drive_link'] : '';?>
-                            </div><br/><br/>
-                            </div>
-                            <div class="col-sm-12 example1">Note: Provide the Google Drive Link obtained from "get link" option in Drive.</div>
-                            </div>
                         </div>
-                        <label class="start_payload"><input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($_POST['show_debug']) ? $_POST['show_debug'] : '0'; ?>" <?php echo isset($_POST['show_debug']) ? "checked='checked'" : ""; ?> onClick="changeValue('show_debug');">  Show debug text</label>
-                        <div><label class="start_payload"><input type="checkbox" name="chmod" id="chmod" value="<?php echo isset($_POST['chmod']) ? $_POST['chmod'] : '0'; ?>" <?php echo isset($_POST['chmod']) ? "checked='checked'" : ""; ?> onclick="changeValue('chmod');">  Chmod?</label>
-                        </div>
-                        <label class="col-sm-12"><font style="color:red">*</font> Indicates mandatory field</label>
-                        <div class="go-button">
-                        <input type="button" name="button" id="button" value="GO!" align="center" onClick="checkLoaded(true);">  
-                        </div>
+                        <br/><br/><br/>
+                        <div class="example-text">Note: Provide the Google Drive Link obtained from "get link" option in Drive.</div><br/>
+                    </div>
+                </div>
+                <div class="debug-text">Show debug text</div>
+                <input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($_POST['show_debug']) ? $_POST['show_debug'] : '0'; ?>" <?php echo isset($_POST['show_debug']) ? "checked='checked'" : ""; ?> onclick="changeValue('show_debug');">
+                <br/><br/>
+                <div><font style="color:red">*</font> indicates mandatory field</div>
+                <br/><div class="go-button">
+                    <input type="button" name="button" id="button" value="GO!" align="center" onclick="checkLoaded(true);">  
+                </div><br/>
+                
             </div>
         </form>
 <?php
-    }
+}
 ?>
     </body>
 </html>
