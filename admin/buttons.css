@@ -64,11 +64,10 @@ a:hover {  color:blue;}
 }
 .play_img
 {
-    float: left;
     padding-bottom: 10px;
     padding-top: 10px;
     padding-left: 10px;
-	margin-right: 20px;
+    margin-right: 20px;
 }
 .logout_img{
     float: right;
@@ -90,24 +89,26 @@ a:hover {  color:blue;}
 }
 /* admin index  css */
 body{
-		background-color: black;
-		min-height:800px;
-		padding: 0px;
-		margin: 0;
-		color: #fff;
-		text-align: left;
-	}
-form{
-	border: 1px solid #fff;
-	margin: 0 auto;
-	padding: 15px;
-	width: 50%;
+        background-color: black;
+        padding: 0px;
+        margin: 0;
+        color: #fff;
+        text-align: left;
 }
-
+#getpayload_form{
+    border: 1px solid #fff;
+    font-size: 20px !important;
+    height: auto;
+    margin: 20px auto;
+    padding: 20px;
+    width: 70%;
+}
+label{
+    font-weight: normal;
+    line-height: 35px;
+}
 .text-field{
-	
 	padding-right: 5px;
-	
 }
 .adminpayload-text{
 	float: left;
@@ -210,7 +211,7 @@ input[type="text"] {
 	width: 120px;
 }
 .color-white h2{
-	margin-left:20px;
+	text-align: center;
 }
 .error-message{
 	color: red;
@@ -238,8 +239,7 @@ input[type="text"] {
 }
 .start_payload
 {
-    margin-left: 16px;
-
+    margin: 10px 0px 0px 16px;
 }
 .title h2 {
  margin: auto 0px;
