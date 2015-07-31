@@ -28,8 +28,8 @@
     </script>
 <?php
     $debug = isset($_POST['show_debug']) ? $_POST['show_debug'] : 0;
-    $bChmod = isset($_POST['chmod']) ? $_POST['chmod'] : 0;
-    $nMode = ($bChmod) ? 0755 : '';
+    //$bChmod = isset($_POST['chmod']) ? $_POST['chmod'] : 0;
+    $nMode = 0755;
     $protocol = isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
     $protocol .= "://" . $_SERVER['HTTP_HOST'];
     
@@ -799,8 +799,8 @@
                             </div>
                         </div>
                         <label class="start_payload"><input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($_POST['show_debug']) ? $_POST['show_debug'] : '0'; ?>" <?php echo isset($_POST['show_debug']) ? "checked='checked'" : ""; ?> onClick="changeValue('show_debug');">  Show debug text</label>
-                        <div><label class="start_payload"><input type="checkbox" name="chmod" id="chmod" value="<?php echo isset($_POST['chmod']) ? $_POST['chmod'] : '0'; ?>" <?php echo isset($_POST['chmod']) ? "checked='checked'" : ""; ?> onclick="changeValue('chmod');">  Chmod?</label>
-                        </div>
+<!--                        <div><label class="start_payload"><input type="checkbox" name="chmod" id="chmod" value="<?php echo isset($_POST['chmod']) ? $_POST['chmod'] : '0'; ?>" <?php echo isset($_POST['chmod']) ? "checked='checked'" : ""; ?> onclick="changeValue('chmod');">  Chmod?</label>
+                        </div>-->
                         <label class="col-sm-12"><font style="color:red">*</font> Indicates mandatory field</label>
                         <div class="go-button">
                         <input type="button" name="button" id="button" value="GO!" align="center" onClick="checkLoaded(true);">  

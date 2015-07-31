@@ -64,6 +64,7 @@ a:hover {  color:blue;}
 }
 .play_img
 {
+    float: left;
     padding-bottom: 10px;
     padding-top: 10px;
     padding-left: 10px;
