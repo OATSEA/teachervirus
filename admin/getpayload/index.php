@@ -209,7 +209,7 @@
                 } else {
                     // Make the new temp sub_folder for unzipped files
                     if (!mkdir($directory, $nMode, true)) {
-                        if ($debugtxt) { echo "<p>Error: Could not create folder <b>$directory</b> - check file permissions";}
+                        if ($debugtxt) { echo "<p>Error: Could not create folder <b>$directory</b> - check file permissions. Please choose Chmod option.";}
                         $result= false;
                     } else { 
                         //if ($debugtxt) { echo "Folder <b>$directory</b> Created <br>";}  
@@ -738,7 +738,7 @@
                             <div class="form-group">
                             <label class="col-sm-12 control-label">Port</label>
                             <div class="col-sm-12">    
-                            <input type="text" class="form-control" name="port_number" id="port_number" value="8080"><a href="javascript:void(0);" onClick="removePort();"><i class="fa fa-times"></i></a>
+                                <input type="text" class="form-control" name="port_number" id="port_number" value="8080"><a href="javascript:void(0);" onClick="removePort();"><input type="button" class="button" value="Clear" onClick="removePort('branch_name');"/><br/></a>
                             </div>
                             </div>
                             <div class="form-group">
@@ -788,22 +788,22 @@
                             </div>
                             </div>
                             <div class="form-group">
-                            <label class="col-sm-12 control-label">Google Drive Link<font style="color:red">*</font> </label>  
-                            <div class="col-sm-12">
-                            <input type="text" class="form-control" name="google_drive_link">
-                            <div id="url_input" class="error-message">
-                            <?php echo isset($_SESSION['isValidation']['google_drive_link']) ? $_SESSION['isValidation']['google_drive_link'] : '';?>
-                            </div><br/><br/>
-                            </div>
-                            <div class="col-sm-12 example1">Note: Provide the Google Drive Link obtained from "get link" option in Drive.</div>
+                                <label class="col-sm-12 control-label">Google Drive Link<font style="color:red">*</font> </label>  
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" name="google_drive_link">
+                                    <div id="url_input" class="error-message">
+                                        <?php echo isset($_SESSION['isValidation']['google_drive_link']) ? $_SESSION['isValidation']['google_drive_link'] : '';?>
+                                    </div><br/><br/>
+                                </div>
+                                <div class="col-sm-12 example1">Note: Provide the Google Drive Link obtained from "get link" option in Drive.</div>
                             </div>
                         </div>
                         <label class="start_payload"><input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($_POST['show_debug']) ? $_POST['show_debug'] : '0'; ?>" <?php echo isset($_POST['show_debug']) ? "checked='checked'" : ""; ?> onClick="changeValue('show_debug');">  Show debug text</label>
 <!--                        <div><label class="start_payload"><input type="checkbox" name="chmod" id="chmod" value="<?php echo isset($_POST['chmod']) ? $_POST['chmod'] : '0'; ?>" <?php echo isset($_POST['chmod']) ? "checked='checked'" : ""; ?> onclick="changeValue('chmod');">  Chmod?</label>
                         </div>-->
                         <label class="col-sm-12"><font style="color:red">*</font> Indicates mandatory field</label>
-                        <div class="go-button">
-                        <input type="button" name="button" id="button" value="GO!" align="center" onClick="checkLoaded(true);">  
+                        <div class="go-button btn btn-lg btn-primary">
+                            <input type="button" name="button" id="button" value="GO!" align="center" onClick="checkLoaded(true);">  
                         </div>
             </div>
         </form>

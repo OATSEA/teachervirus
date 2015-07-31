@@ -96,12 +96,16 @@ body{
         color: #fff;
         text-align: left;
 }
+.main-body{
+    margin-left: 50px;
+    margin-right: 50px;
+}
 #getpayload_form{
     border: 1px solid #fff;
     font-size: 20px !important;
     height: auto;
     margin: 20px auto;
-    padding: 20px;
+    padding: 10px 50px;;
     width: 70%;
 }
 label{
@@ -125,11 +129,28 @@ label{
 }
 .go-button{
 	float: right;
+        margin-right: 10px;
+        padding:3px 5px 3px 5px !important;
 }
 .go-button > input{
 	color: #000;
-        margin-right: 10px; 
+        background: none;
+        border: none;
+        color: white;
+        
 }
+.button
+{
+        color:black;
+        text-decoration: none;
+        display: inline-block;
+        padding: 5px 10px;
+        -webkit-border-radius: 5px;
+        font: normal 14px/16px Helvetica, Arial, sans-serif;
+        border-radius: 5px;
+        margin:2px 0 0 3px;
+}
+
 .admin_img {
 	color: #fff;
 	float: right;
