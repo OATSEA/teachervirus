@@ -1,0 +1,48 @@
+title: Mutate
+content: |
+    <div class="jumbotron">
+      <H1>Mutating Teacher Virus </h1>
+      <p class="lead"><b>Want to contribute your own Payloads to Teacher Virus?</b></p>
+      <p>Start Here!</p>
+      <p> We need you to help us make Teacher Virus the best source of free education on the planet<p>
+    </div>
+    
+    #Mutating Teacher Virus
+    
+    We recommend you join the Teacher Virus Mutator Forum in order to talk to the rest of the community about any challenges or issues you face with developing your own payloads.
+    
+    Teacher Virus is a brand new platform so we're still in the process of putting together guides and documentation (and building the platform!) - so please be patient.
+    
+    We are in the process of writing up documentation and advice on how to develop your own payloads and will start publishing it here. 
+    
+    But to get you started have a look at the Quick Start Guide below:
+    
+    ##Mutating Quick Start
+    
+    **Get Infected!** First you'll need to get infected with Teacher Virus on the device of your choice (we suggest Android for the moment although many of us are using Raspberry Pi).  Have a look at the Get infected menu above for this process.
+    
+    **Get a GitHub Account!** Although you don't have to have to have a GitHub account we recommend you do as our general approach is based on making it easy to deploy the community's payloads by drawing on the capabilities of GitHub.
+    
+    **Hello world!** Have a look at the tv-twine Payload for a basic example of a payload based on a Twine created content/app that results in a single html file.  <a href="https://github.com/OATSEA/tv-twine">Twine Example on GitHub</a>
+    
+    There are a couple of things to note from this example:
+    
+    **index.html** you need to have an index file - it could be either a html file or an index.php
+    
+    **icon.png** we recommend you provide an image file that will become the button for your payload.  **Note:** Although Teacher Virus does actually support .svg files DroidPHP doesn't yet support svg files by default (config file change required) so for the moment use a .png image.
+    
+    **README.md** Make sure you include this file with a good description of your Payload so that we can automatically list information about your Payload in the Payload's directory (currently under construction).
+
+    In the Twine example you'll notice we also provided our Twine "source code" file - we recommend you do the same to allow others to build on your work (Specific to Twine in this instance).
+    
+    ##Future
+    
+    For the moment the above files are all you need to have your payload deployable as a Teacher Virus Payload deployed directly from GitHub.
+    
+    In the future we will be adding additional functionality - for example admin areas, results and progress tracking to name a few.
+    
+    But no matter what features we add our goal is to always allow you to create a basic app that only requires these three initial requirements be met so that your efforts will always be compatible with Teacher Virus.
+    
+    ##Further Information
+    
+    We will be providing further advice and example payloads soon!

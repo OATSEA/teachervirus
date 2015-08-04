@@ -1,0 +1,17 @@
+<ul class="nav navbar-nav navbar-right">
+  {% for child in page.root %}
+    {% if child.children %}
+        <li class="dropdown">
+            <a href="{{ child.url }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ child.title }}<span class="caret"></span></a>
+        {% include 'partials/navigation/children.html' with { 'page' : child } %}
+             </li>
+    {% else %}
+        <li>
+      <a href="{{ child.url }}">{{ child.title }}</a>
+    </li>
+    
+    {% endif %}
+  {% endfor %}
+</ul>
+               
+               
