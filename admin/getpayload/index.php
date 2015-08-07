@@ -731,12 +731,15 @@
                 <label class="start_payload">
                     <input type="checkbox" name="check_admin" id="check_admin" value="<?php echo isset($_POST['check_admin']) ? $_POST['check_admin'] : '0'; ?>" <?php echo isset($_POST['check_admin']) ? "checked='checked'" : ""; ?> onClick="changeValue('check_admin');"/>  Is this an Admin Payload? 
                 </label>
-                <div>
-                    <label class="col-sm-12 extra">
-                         <input type="radio" name="payload_source" id="ckeck_github" value="github_payloads" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "github_payloads") ? "checked='checked'" : "checked='checked'"; ?> onClick="showData('github_payloads');"> GitHub
-                    </label>
-                </div>
-                <div id="github_payloads" style="display:none" class="sources">
+                <br>
+                <select name="payload_source" class="col-sm-3 form-control extra">
+                    <option id="ckeck_github" value="github_payloads" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "github_payloads") ? "selected='selected'" : ""; ?> onClick="showData('github_payloads');">GitHub</option>
+                    <option id="ckeck_infected" value="infected_device" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "infected_device" ) ? "selected='selected'" : ""; ?> onClick="showData('infected_device');">Infected Device</option>
+                    <option id="ckeck_website" value="website_url" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "website_url" ) ? "selected='selected'" : ""; ?> onClick="showData('website_url');">URL/Website</option>
+                    <option id="ckeck_google" value="google_drive" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "google_drive" ) ? "selected='selected'" : ""; ?> onClick="showData('google_drive');">Google Drive</option>
+                    <option value="file_browse" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "file_browse" ) ? "selected='selected'" : ""; ?> onclick="showData('file_browse');">File Upload</option>
+                </select>
+                <div id="github_payloads" style="display:none">
                     <div class="form-group">
                         <label class="col-sm-12 control-label">GitHub Username<font style="color:red">*</font> </label>
                         <div class="col-sm-12">    
@@ -756,10 +759,7 @@
                         </div>
                     </div>
                     </div>
-                    <label class="col-sm-12 control-label extra">
-                        <input type="radio" name="payload_source" id="ckeck_infected" value="infected_device" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "infected_device" ) ? "checked='checked'" : ""; ?> onClick="showData('infected_device');"> Infected Device
-                    </label>  
-                    <div id="infected_device" style="display:none" class="sources">
+                    <div id="infected_device" style="display:none">
                         <div class="form-group">
                             <label class="col-sm-12 control-label">Device Address (IP or URL)<font style="color:red">*</font> </label>
                             <div class="col-sm-12">
@@ -786,10 +786,7 @@
                             </div>
                         </div>
                     </div>
-                    <label class="urlwebsite control-label extra">
-                        <input type="radio" name="payload_source" id="ckeck_website" value="website_url" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "website_url" ) ? "checked='checked'" : ""; ?> onClick="showData('website_url');"> URL/Website
-                    </label>
-                    <div id="website_url" style="display:none" class="sources">
+                    <div id="website_url" style="display:none">
                         <div class="form-group">
                             <label class="col-sm-12 control-label">Payload Name <font style="color:red">*</font></label>
                             <div class="col-sm-12">  
@@ -809,10 +806,7 @@
                             </div>
                         </div>
                     </div>
-                    <label class="col-sm-12 control-label extra">
-                        <input type="radio" name="payload_source" id="ckeck_google" value="google_drive" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "google_drive" ) ? "checked='checked'" : ""; ?> onClick="showData('google_drive');"> Google Drive
-                    </label>
-                    <div id="google_drive" style="display:none" class="sources">
+                   <div id="google_drive" style="display:none">
                         <div class="form-group">
                             <label class="col-sm-12 control-label">Payload Name<font style="color:red">*</font></label>
                                 <div class="col-sm-12">
@@ -833,10 +827,8 @@
                             <div class="col-sm-12 example1">Note: Provide the Google Drive Link obtained from "get link" option in Drive.</div>
                         </div>
                     </div>
-                    <label class="col-sm-12 control-label extra">
-                        <input type="radio"  name="payload_source" value="file_browse" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "file_browse" ) ? "checked='checked'" : ""; ?> onclick="showData('file_browse');"> File Upload
-                    </label>
-                    <div id="file_browse" style="display:none;" class="sources">
+                    <div id="file_browse" style="display:none;">
+                        <br/>
                         <div class="col-sm-12">
                             <input type="file" name="upload_file" value="Browse">
                             <div class="error-message">

@@ -96,16 +96,12 @@ body{
         color: #fff;
         text-align: left;
 }
-.main-body{
-    margin-left: 50px;
-    margin-right: 50px;
-}
 #getpayload_form{
     border: 1px solid #fff;
     font-size: 20px !important;
     height: auto;
     margin: 20px auto;
-    padding: 10px 50px;;
+    padding: 20px;
     width: 70%;
 }
 label{
@@ -208,9 +204,6 @@ input[type="text"] {
 	font-weight: bold;
 	font-size: 18px;
 }
-.sources{
-	margin-left: 20px;
-}
  #loading {
 	font-size: 70px;
 	font-weight: bold;
@@ -272,5 +265,15 @@ input[type="text"] {
 }
 .extra
 {
-    margin: 10px 0px 10px 0px;
+    color: #000;
+    font-weight: bold;
+    margin: 10px 0 10px 15px;
+    width: auto;
+}
+.radio_class
+{
+   margin: 10px 0px; 
+}
+select.extra > option {
+    color: #000;
 }
