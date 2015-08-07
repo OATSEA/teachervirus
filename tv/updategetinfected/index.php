@@ -466,7 +466,7 @@
                 $download_unzip_filename = $aExplodeFileName[0];
             }
             $zipfile = $sUpdateinfectedDir.$download_filename;
-
+            $sUrl = (is_dir($_SERVER['DOCUMENT_ROOT']."/admin")) ? $protocol."/admin" : $_SERVER['DOCUMENT_ROOT']."/getinfected.php";
             // Check for IP param and set $ip if param provided
             // ** TO DO **
             // Download file if OATSEA-teachervirus.zip doesn't already exist
@@ -511,34 +511,34 @@
                 if ($zipFlag === TRUE) 
                 {
 
-                    $sPayloadUrl = $_SERVER['DOCUMENT_ROOT'].'/tv/updategetinfected';
+                    $sUpdateInfectUrl = $_SERVER['DOCUMENT_ROOT'].'/tv/updategetinfected';
                     // Create full temp sub_folder path
-                    $temp_unzip_path = $sPayloadUrl.'/'.uniqid('unzip_temp_', true)."/";
+                    $temp_unzip_path = $sUpdateInfectUrl.'/'.uniqid('unzip_temp_', true)."/";
 
                     if($debug) { echo "Temp Unzip Path is: ".$temp_unzip_path."<br>"; }
 
                     // Make the new temp sub_folder for unzipped files
                     if (!mkdir($temp_unzip_path, $nMode, true)) {
-                        exit("<h2>Error - Payload installation Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue? Please check Chmod On?<a href='".$protocol."/getinfected.php' class='go-back'>Go Back</a>");
+                        exit("<h2>Error - Update Get Infected Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue? Please check Chmod On?<a href='".$sUrl."' class='go-back'>Go Back</a>");
                     } else {
                         if($debug) { echo "<p>Temp unzip Folder Created! <br>"; }
                     }
-                    if(is_dir($sPayloadUrl))
+                    if(is_dir($sUpdateInfectUrl))
                     {
                         $zip->extractTo($temp_unzip_path);
-                        if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
+                        if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
                         {
-                            rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
-                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed? Please check Chmod On?<a href='".$protocol."/getinfected.php' class='go-back'>Go Back</a>");
+                            rrmdir($sUpdateInfectUrl.'/'.$download_unzip_filename);
+                            if (!mkdir($sUpdateInfectUrl.'/'.$download_unzip_filename, $nMode, true)) {
+                                exit("<h2>Error - Update Get Infected Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed? Please check Chmod On?<a href='".$sUrl."' class='go-back'>Go Back</a>");
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }
                         }
                         else
                         {
-                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue? Please check Chmod On?<a href='".$protocol."/getinfected.php' class='go-back'>Go Back</a>");
+                            if (!mkdir($sUpdateInfectUrl.'/'.$download_unzip_filename, $nMode, true)) {
+                                exit("<h2>Error - Update Get Infected Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue? Please check Chmod On?<a href='".$sUrl."' class='go-back'>Go Back</a>");
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }        
@@ -551,7 +551,7 @@
                             {
                                 if (is_dir($temp_unzip_path . $value))
                                 {
-                                    moveDIR($temp_unzip_path . $value,$sPayloadUrl.'/'.$download_unzip_filename,$debug);
+                                    moveDIR($temp_unzip_path . $value,$sUpdateInfectUrl.'/'.$download_unzip_filename,$debug);
                                 }
                             }
                         }
@@ -560,35 +560,35 @@
                             rrmdir($temp_unzip_path);
                         }
                         
-                        $files = scandir($sPayloadUrl.'/'.$download_unzip_filename,1);
+                        $files = scandir($sUpdateInfectUrl.'/'.$download_unzip_filename,1);
                         foreach ($files as $key => $value)
                         {
                            if (!in_array($value,array(".","..")))
                            {
-                                copy($sPayloadUrl.'/'.$download_unzip_filename.'/'.$value,$_SERVER['DOCUMENT_ROOT'].'/'.$value);
+                                copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,$_SERVER['DOCUMENT_ROOT'].'/'.$value);
                            }
                         }
-                        if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
+                        if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
                         {
-                            rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
+                            rrmdir($sUpdateInfectUrl.'/'.$download_unzip_filename);
                         }
                     }
                     else
                     {
                         $zip->extractTo($temp_unzip_path);
-                        if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
+                        if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
                         {
-                            rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
-                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed? Please check Chmod On?<a href='".$protocol."/getinfected.php' class='go-back'>Go Back</a>");
+                            rrmdir($sUpdateInfectUrl.'/'.$download_unzip_filename);
+                            if (!mkdir($sUpdateInfectUrl.'/'.$download_unzip_filename, $nMode, true)) {
+                                exit("<h2>Error - Update Get Infected Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed? Please check Chmod On?<a href='".$sUrl."' class='go-back'>Go Back</a>");
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }
                         }
                         else
                         {
-                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue? Please check Chmod On?<a href='".$protocol."/getinfected.php' class='go-back'>Go Back</a>");
+                            if (!mkdir($sUpdateInfectUrl.'/'.$download_unzip_filename, $nMode, true)) {
+                                exit("<h2>Error - Update Get Infected Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue? Please check Chmod On?<a href='".$sUrl."' class='go-back'>Go Back</a>");
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }        
@@ -601,7 +601,7 @@
                            {
                               if (is_dir($temp_unzip_path . $value))
                               {
-                                moveDIR($temp_unzip_path . $value,$sPayloadUrl.'/'.$download_unzip_filename,$debug);
+                                moveDIR($temp_unzip_path . $value,$sUpdateInfectUrl.'/'.$download_unzip_filename,$debug);
                               }
                            }
                         }
@@ -609,7 +609,19 @@
                         {
                             rrmdir($temp_unzip_path);
                         }
-                        //rrmdir($_SERVER['DOCUMENT_ROOT']."/admin/getpayload/".$payload);
+                        
+                        $files = scandir($sUpdateInfectUrl.'/'.$download_unzip_filename,1);
+                        foreach ($files as $key => $value)
+                        {
+                           if (!in_array($value,array(".","..")))
+                           {
+                                copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,$_SERVER['DOCUMENT_ROOT'].'/'.$value);
+                           }
+                        }
+                        if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
+                        {
+                            rrmdir($sUpdateInfectUrl.'/'.$download_unzip_filename);
+                        }
                     }
                 }
                 $zip->close();
@@ -620,7 +632,7 @@
                 {
                     echo '<link href="'.$protocol.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
                             <div class="color-white">
-                                <a class="play_img" href="'.$protocol.'/getinfected.php">
+                                <a class="play_img" href="'.$sUrl.'">
                                     <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
                                 </a>
                             </div><br/><br/>';
@@ -628,7 +640,7 @@
                 else
                 {
                     echo '<div class="color-white">
-                                <a href="'.$protocol.'"/getinfected.php" class="go-back">Go Back</a>
+                                <a href="'.$sUrl.'" class="go-back">Go Back</a>
                             </div><br/><br/>';
                 }
             }
@@ -733,7 +745,7 @@
                         echo "<h3>Update Failed!</h3><p>Couldn't download with either copy or curl</p>";
                             echo '<link href="'.$protocol.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
                                     <div class="color-white">
-                                        <a class="play_img" href="'.$protocol.'/getinfected.php">
+                                        <a class="play_img" href="'.$sUrl.'">
                                             <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
                                         </a>
                                     </div><br/><br/>';
@@ -770,34 +782,34 @@
                 if ($zipFlag === TRUE) 
                 {
 
-                    $sPayloadUrl = $_SERVER['DOCUMENT_ROOT'].'/tv/updategetinfected';
+                    $sUpdateInfectUrl = $_SERVER['DOCUMENT_ROOT'].'/tv/updategetinfected';
                     // Create full temp sub_folder path
-                    $temp_unzip_path = $sPayloadUrl.'/'.uniqid('unzip_temp_', true)."/";
+                    $temp_unzip_path = $sUpdateInfectUrl.'/'.uniqid('unzip_temp_', true)."/";
 
                     if($debug) { echo "Temp Unzip Path is: ".$temp_unzip_path."<br>"; }
 
                     // Make the new temp sub_folder for unzipped files
                     if (!mkdir($temp_unzip_path, $nMode, true)) {
-                        exit("<h2>Error - Payload installation Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue? Please check Chmod On?<a href='".$protocol."/getinfected.php' class='go-back'>Go Back</a>");
+                        exit("<h2>Error - Update Get Infected Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue? Please check Chmod On?<a href='".$sUrl."' class='go-back'>Go Back</a>");
                     } else {
                         if($debug) { echo "<p>Temp unzip Folder Created! <br>"; }
                     }
-                    if(is_dir($sPayloadUrl))
+                    if(is_dir($sUpdateInfectUrl))
                     {
                         $zip->extractTo($temp_unzip_path);
-                        if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
+                        if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
                         {
-                            rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
-                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed? Please check Chmod On?<a href='".$protocol."/getinfected.php' class='go-back'>Go Back</a>");
+                            rrmdir($sUpdateInfectUrl.'/'.$download_unzip_filename);
+                            if (!mkdir($sUpdateInfectUrl.'/'.$download_unzip_filename, $nMode, true)) {
+                                exit("<h2>Error - Update Get Infected Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed? Please check Chmod On?<a href='".$sUrl."' class='go-back'>Go Back</a>");
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }
                         }
                         else
                         {
-                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue? Please check Chmod On?<a href='".$protocol."/getinfected.php' class='go-back'>Go Back</a>");
+                            if (!mkdir($sUpdateInfectUrl.'/'.$download_unzip_filename, $nMode, true)) {
+                                exit("<h2>Error - Update Get Infected Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue? Please check Chmod On?<a href='".$sUrl."' class='go-back'>Go Back</a>");
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }        
@@ -810,7 +822,7 @@
                             {
                                 if (is_dir($temp_unzip_path . $value))
                                 {
-                                    moveDIR($temp_unzip_path . $value,$sPayloadUrl.'/'.$download_unzip_filename,$debug);
+                                    moveDIR($temp_unzip_path . $value,$sUpdateInfectUrl.'/'.$download_unzip_filename,$debug);
                                 }
                             }
                         }
@@ -819,35 +831,35 @@
                             rrmdir($temp_unzip_path);
                         }
                         
-                        $files = scandir($sPayloadUrl.'/'.$download_unzip_filename,1);
+                        $files = scandir($sUpdateInfectUrl.'/'.$download_unzip_filename,1);
                         foreach ($files as $key => $value)
                         {
                            if (!in_array($value,array(".","..")))
                            {
-                                copy($sPayloadUrl.'/'.$download_unzip_filename.'/'.$value,$_SERVER['DOCUMENT_ROOT'].'/'.$value);
+                                copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,$_SERVER['DOCUMENT_ROOT'].'/'.$value);
                            }
                         }
-                        if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
+                        if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
                         {
-                            rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
+                            rrmdir($sUpdateInfectUrl.'/'.$download_unzip_filename);
                         }
                     }
                     else
                     {
                         $zip->extractTo($temp_unzip_path);
-                        if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
+                        if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
                         {
-                            rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
-                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed? Please check Chmod On?<a href='".$protocol."/getinfected.php' class='go-back'>Go Back</a>");
+                            rrmdir($sUpdateInfectUrl.'/'.$download_unzip_filename);
+                            if (!mkdir($sUpdateInfectUrl.'/'.$download_unzip_filename, $nMode, true)) {
+                                exit("<h2>Error - Update Get Infected Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed? Please check Chmod On?<a href='".$sUrl."' class='go-back'>Go Back</a>");
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }
                         }
                         else
                         {
-                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue? Please check Chmod On?<a href='".$protocol."/getinfected.php' class='go-back'>Go Back</a>");
+                            if (!mkdir($sUpdateInfectUrl.'/'.$download_unzip_filename, $nMode, true)) {
+                                exit("<h2>Error - Update Get Infected Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue? Please check Chmod On?<a href='".$sUrl."' class='go-back'>Go Back</a>");
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }        
@@ -860,7 +872,7 @@
                            {
                               if (is_dir($temp_unzip_path . $value))
                               {
-                                moveDIR($temp_unzip_path . $value,$sPayloadUrl.'/'.$download_unzip_filename,$debug);
+                                moveDIR($temp_unzip_path . $value,$sUpdateInfectUrl.'/'.$download_unzip_filename,$debug);
                               }
                            }
                         }
@@ -868,7 +880,19 @@
                         {
                             rrmdir($temp_unzip_path);
                         }
-                        //rrmdir($_SERVER['DOCUMENT_ROOT']."/admin/getpayload/".$payload);
+                        
+                        $files = scandir($sUpdateInfectUrl.'/'.$download_unzip_filename,1);
+                        foreach ($files as $key => $value)
+                        {
+                           if (!in_array($value,array(".","..")))
+                           {
+                                copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,$_SERVER['DOCUMENT_ROOT'].'/'.$value);
+                           }
+                        }
+                        if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
+                        {
+                            rrmdir($sUpdateInfectUrl.'/'.$download_unzip_filename);
+                        }
                     }
                 }
                     $zip->close();
@@ -879,7 +903,7 @@
                     {
                         echo '<link href="'.$protocol.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
                                 <div class="color-white">
-                                    <a class="play_img" href="'.$protocol.'/getinfected.php">
+                                    <a class="play_img" href="'.$sUrl.'">
                                         <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
                                     </a>
                                 </div><br/><br/>';
@@ -887,7 +911,7 @@
                     else
                     {
                         echo '<div class="color-white">
-                                    <a href="'.$protocol.'"/getinfected.php" class="go-back">Go Back</a>
+                                    <a href="'.$sUrl.'"" class="go-back">Go Back</a>
                                 </div><br/><br/>';
                     }
             } // END Download if zipfile doesn't already exists
