@@ -277,3 +277,6 @@ input[type="text"] {
 select.extra > option {
     color: #000;
 }
+.top-space{
+    padding-top: 10px; 
+}

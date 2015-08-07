@@ -49,8 +49,12 @@
         $sGooglePayloadName = $_POST['google_payload_name'];
         $sGoogleDriveLink = $_POST['google_drive_link'];
         $sIsAdmin = empty($_POST['check_admin']) ? '' : $_POST['check_admin'];
-        $sPayloadSource=isset($_POST['payload_source'])? ($_POST['payload_source']):'';
-       
+        $sPayloadSource = isset($_POST['payload_source'])? ($_POST['payload_source']):'';
+        if($sPayloadSource == 0)
+        {
+            $_SESSION['isValidation']['check_payload'] = 'Please select payload source!!';
+            $_SESSION['isValidation']['flag'] = FALSE;
+        }
         if($sPayloadSource == 'github_payloads')
         {
             if(empty($sUserName))
@@ -660,7 +664,15 @@
         <script type="text/javascript">
             function showData(divId)
             {
-                if(divId == "github_payloads")
+                if(divId == "check_payload")
+                {
+                    $("#github_payloads").hide();
+                    $("#infected_device").hide();
+                    $("#website_url").hide();
+                    $("#google_drive").hide();
+                    $("#file_browse").hide();
+                }
+                else if(divId == "github_payloads")
                 {
                     $("#infected_device").hide();
                     $("#website_url").hide();
@@ -714,8 +726,7 @@
                 $("#port_number").val('');
             }
             $(document).ready(function(){
-                showData("<?php echo isset($_POST['payload_source']) ? $_POST['payload_source'] : 'github_payloads'; ?>");
-                //changeValue(<?php echo isset($sIsAdmin) ? $sIsAdmin : 0 ?>);
+                showData("<?php echo isset($_POST['payload_source']) ? $_POST['payload_source'] : ''; ?>");
             });
         </script>
         <div class="color-white">
@@ -733,12 +744,16 @@
                 </label>
                 <br>
                 <select name="payload_source" class="col-sm-3 form-control extra">
-                    <option id="ckeck_github" value="github_payloads" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "github_payloads") ? "selected='selected'" : ""; ?> onClick="showData('github_payloads');">GitHub</option>
-                    <option id="ckeck_infected" value="infected_device" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "infected_device" ) ? "selected='selected'" : ""; ?> onClick="showData('infected_device');">Infected Device</option>
-                    <option id="ckeck_website" value="website_url" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "website_url" ) ? "selected='selected'" : ""; ?> onClick="showData('website_url');">URL/Website</option>
-                    <option id="ckeck_google" value="google_drive" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "google_drive" ) ? "selected='selected'" : ""; ?> onClick="showData('google_drive');">Google Drive</option>
+                    <option id="check_payload" value="0" onClick="showData('check_payload');">Select Payload Source</option>
+                    <option id="check_github" value="github_payloads" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "github_payloads") ? "selected='selected'" : ""; ?> onClick="showData('github_payloads');">GitHub</option>
+                    <option id="check_infected" value="infected_device" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "infected_device" ) ? "selected='selected'" : ""; ?> onClick="showData('infected_device');">Infected Device</option>
+                    <option id="check_website" value="website_url" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "website_url" ) ? "selected='selected'" : ""; ?> onClick="showData('website_url');">URL/Website</option>
+                    <option id="check_google" value="google_drive" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "google_drive" ) ? "selected='selected'" : ""; ?> onClick="showData('google_drive');">Google Drive</option>
                     <option value="file_browse" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "file_browse" ) ? "selected='selected'" : ""; ?> onclick="showData('file_browse');">File Upload</option>
                 </select>
+                <div class="error-message top-space">
+                    <?php echo isset($_SESSION['isValidation']['check_payload']) ? $_SESSION['isValidation']['check_payload'] : '';?>
+                </div>
                 <div id="github_payloads" style="display:none">
                     <div class="form-group">
                         <label class="col-sm-12 control-label">GitHub Username<font style="color:red">*</font> </label>
@@ -828,7 +843,6 @@
                         </div>
                     </div>
                     <div id="file_browse" style="display:none;">
-                        <br/>
                         <div class="col-sm-12">
                             <input type="file" name="upload_file" value="Browse">
                             <div class="error-message">
@@ -836,6 +850,7 @@
                             </div>
                         </div>
                     </div>
+                    <br/><br/>
                     <label class="start_payload"><input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($_POST['show_debug']) ? $_POST['show_debug'] : '0'; ?>" <?php echo isset($_POST['show_debug']) ? "checked='checked'" : ""; ?> onClick="changeValue('show_debug');">  Show debug text</label>
 <!--                        <div><label class="start_payload"><input type="checkbox" name="chmod" id="chmod" value="<?php echo isset($_POST['chmod']) ? $_POST['chmod'] : '0'; ?>" <?php echo isset($_POST['chmod']) ? "checked='checked'" : ""; ?> onclick="changeValue('chmod');">  Chmod?</label>
                     </div>-->
