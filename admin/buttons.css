@@ -94,7 +94,7 @@ body{
         padding: 0px;
         margin: 0;
         color: #fff;
-        text-align: left;
+        text-align: center;
 }
 #getpayload_form{
     border: 1px solid #fff;
@@ -103,6 +103,7 @@ body{
     margin: 20px auto;
     padding: 20px;
     width: 70%;
+    text-align: left;
 }
 label{
     font-weight: normal;
@@ -225,12 +226,37 @@ input[type="text"] {
 	text-align: right;
 	width: 120px;
 }
-.color-white h2{
+.color-white{
 	text-align: center;
+}
+@media only screen and (max-width:980px)
+{
+    h2
+    {
+        text-align: center;
+        width:91%;
+    }
+}
+@media only screen and (min-width:320px) and (max-width:480px)
+{
+    h2
+    {
+        text-align: center;
+        width:80%;
+    }
+}
+@media only screen and (min-width:1280px)
+{
+    h2
+    {
+        text-align: center;
+        width:94%;
+    }
 }
 .error-message{
 	color: red;
         margin-bottom: 5px;
+        margin-top: 10px;
         width: 76%;
 }
 .error-message1{
@@ -269,6 +295,7 @@ input[type="text"] {
     font-weight: bold;
     margin: 10px 0 10px 15px;
     width: auto;
+    background-color: wheat;
 }
 .radio_class
 {
@@ -276,7 +303,4 @@ input[type="text"] {
 }
 select.extra > option {
     color: #000;
-}
-.top-space{
-    padding-top: 10px; 
 }

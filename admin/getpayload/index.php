@@ -39,8 +39,8 @@
         $sUserName = $_POST['user_name'];
         $sRepository = $_POST['repository'];
         $sDeviceAddress = $_POST['device_address'];
-        $sFileName = isset($_FILES['upload_file']['name']) ? ($_FILES['upload_file']['name']):'';
-        $sTempFileName = isset($_FILES['upload_file']['tmp_name'])? ($_FILES['upload_file']['tmp_name']):'';
+        $sFileName = isset($_FILES['upload_file']['name']) ? $_FILES['upload_file']['name']:'';
+        $sTempFileName = isset($_FILES['upload_file']['tmp_name'])? $_FILES['upload_file']['tmp_name'] : '';
         $nPort = $_POST['port_number'];
         $sInfectUserName = $_POST["infect_user_name"];
         $sPayloadName = $_POST['payload_name'];
@@ -49,13 +49,14 @@
         $sGooglePayloadName = $_POST['google_payload_name'];
         $sGoogleDriveLink = $_POST['google_drive_link'];
         $sIsAdmin = empty($_POST['check_admin']) ? '' : $_POST['check_admin'];
-        $sPayloadSource = isset($_POST['payload_source'])? ($_POST['payload_source']):'';
-        if($sPayloadSource == 0)
+        $sPayloadSource = isset($_POST['payload_source'])? $_POST['payload_source'] : '';
+        
+        if($sPayloadSource == "Select Payload Source")
         {
             $_SESSION['isValidation']['check_payload'] = 'Please select payload source!!';
             $_SESSION['isValidation']['flag'] = FALSE;
         }
-        if($sPayloadSource == 'github_payloads')
+        else if($sPayloadSource == 'github_payloads')
         {
             if(empty($sUserName))
             {
@@ -656,7 +657,7 @@
             } // END try alternative move approach
     }
     if($_SESSION['isValidation']['flag'] == 1) 
-        unset($_SESSION['isValidation']['user_name_required'],$_SESSION['isValidation']['repository_required'],$_SESSION['isValidation']['device_address'],$_SESSION['isValidation']['infect_user_name'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['payload_url'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['google_payload_name'],$_SESSION['isValidation']['google_drive_link'],$_SESSION['isValidation']['upload_file']);
+        unset($_SESSION['isValidation']['user_name_required'],$_SESSION['isValidation']['repository_required'],$_SESSION['isValidation']['device_address'],$_SESSION['isValidation']['infect_user_name'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['payload_url'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['google_payload_name'],$_SESSION['isValidation']['google_drive_link'],$_SESSION['isValidation']['upload_file'],$_SESSION['isValidation']['check_payload']);
 
     if($_SESSION['isValidation']['flag'] == 1 || count($_SESSION['isValidation']) > 1)
     {
@@ -664,6 +665,7 @@
         <script type="text/javascript">
             function showData(divId)
             {
+                var divId = (divId.value == undefined) ? divId : divId.value;
                 if(divId == "check_payload")
                 {
                     $("#github_payloads").hide();
@@ -743,15 +745,15 @@
                     <input type="checkbox" name="check_admin" id="check_admin" value="<?php echo isset($_POST['check_admin']) ? $_POST['check_admin'] : '0'; ?>" <?php echo isset($_POST['check_admin']) ? "checked='checked'" : ""; ?> onClick="changeValue('check_admin');"/>  Is this an Admin Payload? 
                 </label>
                 <br>
-                <select name="payload_source" class="col-sm-3 form-control extra">
-                    <option id="check_payload" value="0" onClick="showData('check_payload');">Select Payload Source</option>
-                    <option id="check_github" value="github_payloads" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "github_payloads") ? "selected='selected'" : ""; ?> onClick="showData('github_payloads');">GitHub</option>
-                    <option id="check_infected" value="infected_device" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "infected_device" ) ? "selected='selected'" : ""; ?> onClick="showData('infected_device');">Infected Device</option>
-                    <option id="check_website" value="website_url" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "website_url" ) ? "selected='selected'" : ""; ?> onClick="showData('website_url');">URL/Website</option>
-                    <option id="check_google" value="google_drive" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "google_drive" ) ? "selected='selected'" : ""; ?> onClick="showData('google_drive');">Google Drive</option>
-                    <option value="file_browse" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "file_browse" ) ? "selected='selected'" : ""; ?> onclick="showData('file_browse');">File Upload</option>
+                <select name="payload_source" id="payload_source" class="col-sm-3 form-control extra" onChange="showData(this);">
+                    <option id="check_payload">Select Payload Source</option>
+                    <option id="check_github" value="github_payloads" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "github_payloads") ? "selected='selected'" : ""; ?>>GitHub</option>
+                    <option id="check_infected" value="infected_device" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "infected_device" ) ? "selected='selected'" : ""; ?>>Infected Device</option>
+                    <option id="check_website" value="website_url" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "website_url" ) ? "selected='selected'" : ""; ?>>URL/Website</option>
+                    <option id="check_google" value="google_drive" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "google_drive" ) ? "selected='selected'" : ""; ?>>Google Drive</option>
+                    <option value="file_browse" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "file_browse" ) ? "selected='selected'" : ""; ?>>File Upload</option>
                 </select>
-                <div class="error-message top-space">
+                <div class="error-message">
                     <?php echo isset($_SESSION['isValidation']['check_payload']) ? $_SESSION['isValidation']['check_payload'] : '';?>
                 </div>
                 <div id="github_payloads" style="display:none">
