@@ -50,8 +50,14 @@
         $sGoogleDriveLink = $_POST['google_drive_link'];
         $sIsAdmin = empty($_POST['check_admin']) ? '' : $_POST['check_admin'];
         $sPayloadSource = isset($_POST['payload_source'])? $_POST['payload_source'] : '';
+        $sFoldeSource = isset($_POST['folder_source'])? $_POST['folder_source'] : '';
         
-        if($sPayloadSource == "Select Payload Source")
+        if($sFoldeSource == "Select Payload Folder")
+        {
+            $_SESSION['isValidation']['check_folder'] = 'Please select payload folder!!';
+            $_SESSION['isValidation']['flag'] = FALSE;
+        }
+        else if($sPayloadSource == "Select Payload Source")
         {
             $_SESSION['isValidation']['check_payload'] = 'Please select payload source!!';
             $_SESSION['isValidation']['flag'] = FALSE;
@@ -119,9 +125,10 @@
         
         if($_SESSION['isValidation']['flag'] == 1)
         {
-            $payload = (isset($_POST['check_admin']) && ($_POST['check_admin'] == 1)) ? 'admin' : 'payloads';
-           //echo $payload; exit;
-            $isAdmin = ($payload == 'admin') ? 'A' : 'G'; 
+            $payload = isset($_POST['folder_source']) ? $_POST['folder_source'] : '';
+            
+           //echo $payload; exit;check_admin
+            $isAdmin = strtoupper(substr($payload,0,1));
             if(!empty($sUserName))
             {
                 $download_filename = $sUserName."-".$sRepository.".zip";
@@ -248,8 +255,7 @@
 
             //---------
             // Move Directory
-
-            function moveDIR($dir,$dest="",$debug) {
+            function moveDIR($dir,$dest="",$debug,$nMode=0755) {
                 //$debug = 1;
                 $result=true;
 
@@ -347,6 +353,7 @@
                 if(isset($sDeviceAddress)&&(!empty($sDeviceAddress))) {
                     $ip= $sDeviceAddress;
                     echo "<p>Address has been provided as: $ip</p>";
+                   
                 } else {
                     $ip="no";
                 } // end IP is set check
@@ -385,11 +392,12 @@
             {
                 // Download from github zipball/master as no IP address set
                 $geturl = "https://github.com/$sUserName/$sRepository/zipball/master/";
+                
             }
             else 
             {
                 // as IP address has been set attempt download from IP address
-                $geturl = empty($nPort) ? "http://$ip/$zipfile" : "http://$ip:$nPort/$zipfile";
+                $geturl = empty($nPort) ? "http://$ip/payloads/$download_filename" : "http://$ip:$nPort/payloads/$download_filename";
             }
             if(!empty($sPayloadName))
             {
@@ -480,7 +488,7 @@
                            {
                               if (is_dir($temp_unzip_path . $value))
                               {
-                                moveDIR($temp_unzip_path . $value,$sPayloadUrl.DIRECTORY_SEPARATOR.$download_unzip_filename,$debug);
+                                moveDIR($temp_unzip_path . $value,$sPayloadUrl.'/'.$download_unzip_filename,$debug);
                                 $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                                 $txt = $sListContent;
                                 fwrite($myfile, $txt);
@@ -657,7 +665,7 @@
             } // END try alternative move approach
     }
     if($_SESSION['isValidation']['flag'] == 1) 
-        unset($_SESSION['isValidation']['user_name_required'],$_SESSION['isValidation']['repository_required'],$_SESSION['isValidation']['device_address'],$_SESSION['isValidation']['infect_user_name'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['payload_url'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['google_payload_name'],$_SESSION['isValidation']['google_drive_link'],$_SESSION['isValidation']['upload_file'],$_SESSION['isValidation']['check_payload']);
+        unset($_SESSION['isValidation']['user_name_required'],$_SESSION['isValidation']['repository_required'],$_SESSION['isValidation']['device_address'],$_SESSION['isValidation']['infect_user_name'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['payload_url'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['google_payload_name'],$_SESSION['isValidation']['google_drive_link'],$_SESSION['isValidation']['upload_file'],$_SESSION['isValidation']['check_payload'],$_SESSION['isValidation']['check_folder']);
 
     if($_SESSION['isValidation']['flag'] == 1 || count($_SESSION['isValidation']) > 1)
     {
@@ -741,22 +749,37 @@
                 <div class="col-sm-12 title">
                     <h2>Enter Payload Details</h2>
                 </div>
-                <label class="start_payload">
-                    <input type="checkbox" name="check_admin" id="check_admin" value="<?php echo isset($_POST['check_admin']) ? $_POST['check_admin'] : '0'; ?>" <?php echo isset($_POST['check_admin']) ? "checked='checked'" : ""; ?> onClick="changeValue('check_admin');"/>  Is this an Admin Payload? 
-                </label>
-                <br>
-                <select name="payload_source" id="payload_source" class="col-sm-3 form-control extra" onChange="showData(this);">
-                    <option id="check_payload">Select Payload Source</option>
-                    <option id="check_github" value="github_payloads" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "github_payloads") ? "selected='selected'" : ""; ?>>GitHub</option>
-                    <option id="check_infected" value="infected_device" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "infected_device" ) ? "selected='selected'" : ""; ?>>Infected Device</option>
-                    <option id="check_website" value="website_url" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "website_url" ) ? "selected='selected'" : ""; ?>>URL/Website</option>
-                    <option id="check_google" value="google_drive" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "google_drive" ) ? "selected='selected'" : ""; ?>>Google Drive</option>
-                    <option value="file_browse" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "file_browse" ) ? "selected='selected'" : ""; ?>>File Upload</option>
-                </select>
-                <div class="error-message">
-                    <?php echo isset($_SESSION['isValidation']['check_payload']) ? $_SESSION['isValidation']['check_payload'] : '';?>
+                <div class="col-sm-12 folder_class">
+                    <select name="folder_source" id="folder_source" class="col-sm-3 form-control extra">
+                        <option id="check_folder">Select Payload Folder</option>
+                        <option id="check_admin" value="admin" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "admin") ? "selected='selected'" : ""; ?>>Admin</option>
+                        <option id="check_payloads" value="payloads" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "payloads" ) ? "selected='selected'" : ""; ?>>Payloads</option>
+                        <option id="check_data" value="data" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "data" ) ? "selected='selected'" : ""; ?>>Data</option>
+                        <option id="check_content" value="content" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "content" ) ? "selected='selected'" : ""; ?>>Content</option>
+                    </select>
+                    <div class="error-message">
+                    <?php echo isset($_SESSION['isValidation']['check_folder']) ? $_SESSION['isValidation']['check_folder'] : '';?>
+                     </div>
                 </div>
-                <div id="github_payloads" style="display:none">
+                
+<!--                <label class="start_payload">
+                    <input type="checkbox" name="check_admin" id="check_admin" value="<?php echo isset($_POST['check_admin']) ? $_POST['check_admin'] : '0'; ?>" <?php echo isset($_POST['check_admin']) ? "checked='checked'" : ""; ?> onClick="changeValue('check_admin');"/>  Is this an Admin Payload? 
+                </label>-->
+                <div class="col-sm-12">
+                    <select name="payload_source" id="payload_source" class="col-sm-3 form-control extra" onChange="showData(this);">
+                        <option id="check_payload">Select Payload Source</option>
+                        <option id="check_github" value="github_payloads" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "github_payloads") ? "selected='selected'" : ""; ?>>GitHub</option>
+                        <option id="check_infected" value="infected_device" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "infected_device" ) ? "selected='selected'" : ""; ?>>Infected Device</option>
+                        <option id="check_website" value="website_url" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "website_url" ) ? "selected='selected'" : ""; ?>>URL/Website</option>
+                        <option id="check_google" value="google_drive" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "google_drive" ) ? "selected='selected'" : ""; ?>>Google Drive</option>
+                        <option value="file_browse" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "file_browse" ) ? "selected='selected'" : ""; ?>>File Upload</option>
+                    </select>
+                    <div class="error-message">
+                    <?php echo isset($_SESSION['isValidation']['check_payload']) ? $_SESSION['isValidation']['check_payload'] : '';?>
+                     </div>
+                </div>
+                
+                <div id="github_payloads" style="display:none" class="source" >
                     <div class="form-group">
                         <label class="col-sm-12 control-label">GitHub Username<font style="color:red">*</font> </label>
                         <div class="col-sm-12">    
@@ -775,8 +798,8 @@
                             </div>
                         </div>
                     </div>
-                    </div>
-                    <div id="infected_device" style="display:none">
+                </div>
+                    <div id="infected_device" style="display:none" class="source">
                         <div class="form-group">
                             <label class="col-sm-12 control-label">Device Address (IP or URL)<font style="color:red">*</font> </label>
                             <div class="col-sm-12">
@@ -803,7 +826,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="website_url" style="display:none">
+                    <div id="website_url" style="display:none" class="source">
                         <div class="form-group">
                             <label class="col-sm-12 control-label">Payload Name <font style="color:red">*</font></label>
                             <div class="col-sm-12">  
@@ -823,7 +846,7 @@
                             </div>
                         </div>
                     </div>
-                   <div id="google_drive" style="display:none">
+                   <div id="google_drive" style="display:none" class="source">
                         <div class="form-group">
                             <label class="col-sm-12 control-label">Payload Name<font style="color:red">*</font></label>
                                 <div class="col-sm-12">
@@ -844,7 +867,7 @@
                             <div class="col-sm-12 example1">Note: Provide the Google Drive Link obtained from "get link" option in Drive.</div>
                         </div>
                     </div>
-                    <div id="file_browse" style="display:none;">
+                    <div id="file_browse" style="display:none;" class="source">
                         <div class="col-sm-12">
                             <input type="file" name="upload_file" value="Browse">
                             <div class="error-message">
@@ -853,10 +876,14 @@
                         </div>
                     </div>
                     <br/><br/>
+                    <div class="col-sm-12">
                     <label class="start_payload"><input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($_POST['show_debug']) ? $_POST['show_debug'] : '0'; ?>" <?php echo isset($_POST['show_debug']) ? "checked='checked'" : ""; ?> onClick="changeValue('show_debug');">  Show debug text</label>
 <!--                        <div><label class="start_payload"><input type="checkbox" name="chmod" id="chmod" value="<?php echo isset($_POST['chmod']) ? $_POST['chmod'] : '0'; ?>" <?php echo isset($_POST['chmod']) ? "checked='checked'" : ""; ?> onclick="changeValue('chmod');">  Chmod?</label>
                     </div>-->
+                    </div>
+                    <div class="col-sm-12">
                     <label class="col-sm-12"><font style="color:red">*</font> Indicates mandatory field</label>
+                    </div>
                     <div class="go-button btn btn-lg btn-primary">
                         <input type="button" name="button" id="button" value="GO!" align="center" onClick="checkLoaded(true);">  
                     </div>
