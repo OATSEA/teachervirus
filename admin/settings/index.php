@@ -15,9 +15,9 @@
             $sLanguage = $_POST['language'];
             $bShowDebugText = isset($_POST['show_debug']) ? $_POST['show_debug'] : 0;
             $sPayloadPath = isset($_POST['folder_source'])? $_POST['folder_source'] : '';
-            if($sPayloadPath == "Select Payload Source")
+            if($sPayloadPath == "Select Payload Folder")
             {
-                $_SESSION['isValidation']['check_folder'] = 'Please select payload folder!!';
+                $_SESSION['isValidation']['folder_source'] = 'Please select payload folder!!';
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
             if(empty($sLanguage))
@@ -71,20 +71,20 @@
                     <div class="col-sm-12 title">
                         <h2>Enter settings Details</h2>
                     </div>
-                    <div id="github_payloads" class="source">
-                        <div class="col-sm-12" class="source">
-                           <select name="folder_source" id="folder_source" class="col-sm-3 form-control extra">
-                                <option id="check_folder">Select Payload Folder</option>
-                                <option id="check_admin" value="admin" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "admin") ? "selected='selected'" : ""; ?>>Admin</option>
-                                <option id="check_payloads" value="payloads" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "payloads" ) ? "selected='selected'" : ""; ?>>Payloads</option>
-                                <option id="check_data" value="data" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "data" ) ? "selected='selected'" : ""; ?>>Data</option>
-                                <option id="check_content" value="content" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "content" ) ? "selected='selected'" : ""; ?>>Content</option>
-                            </select>
-                            <div class="error-message">
-                            <?php echo isset($_SESSION['isValidation']['check_payload']) ? $_SESSION['isValidation']['check_payload'] : '';?>
-                             </div>
-                        </div>
-                        <div class="form-group" class="source">
+                    <div class="col-sm-12">
+                        <select name="folder_source" id="folder_source" class="col-sm-3 form-control extra">
+                             <option id="check_folder">Select Payload Folder</option>
+                             <option id="check_admin" value="admin" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "admin") ? "selected='selected'" : ""; ?>>Admin</option>
+                             <option id="check_payloads" value="payloads" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "payloads" ) ? "selected='selected'" : ""; ?>>Payloads</option>
+                             <option id="check_data" value="data" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "data" ) ? "selected='selected'" : ""; ?>>Data</option>
+                             <option id="check_content" value="content" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "content" ) ? "selected='selected'" : ""; ?>>Content</option>
+                         </select>
+                         <div class="error-message">
+                         <?php echo isset($_SESSION['isValidation']['folder_source']) ? $_SESSION['isValidation']['folder_source'] : '';?>
+                          </div>
+                     </div>
+                    <div class="source">
+                        <div class="form-group">
                             <label class="col-sm-12 control-label">Language<font style="color:red">*</font> </label>
                             <div class="col-sm-12">    
                                 <input type="text" class="form-control" name="language">
@@ -97,10 +97,10 @@
                     <div class="source">
                         <label class="start_payload"><input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($_POST['show_debug']) ? $_POST['show_debug'] : '0'; ?>" <?php echo isset($_POST['show_debug']) ? "checked='checked'" : ""; ?> onClick="changeValue('show_debug');">  Show debug text</label>
                     </div>    
-                        <label class="col-sm-12 source"><font style="color:red">*</font> Indicates mandatory field</label>
-                        <div class="go-button btn btn-lg btn-primary">
-                            <input type="submit" name="setting_button" id="setting_button" value="GO!" align="center">  
-                        </div>
+                    <label class="col-sm-12 source"><font style="color:red">*</font> Indicates mandatory field</label>
+                    <div class="go-button btn btn-lg btn-primary">
+                        <input type="submit" name="setting_button" id="setting_button" value="GO!" align="center">  
+                    </div>
                 </div>
             </form>    
 <?php
