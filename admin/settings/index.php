@@ -32,6 +32,7 @@
                 $sListContent = "<?php
     define('ROOT_DIR','$sDocumentRoot');
     define('SITE_URL','$sSiteUrl');
+    define('PAYLOAD_FOLDER','$sPayloadPath');
     define('PAYLOAD_PATH','$sDocumentRoot/$sPayloadPath');
     define('LANGUAGE','$sLanguage');
     define('DEBUG_TEXT','$bShowDebugText');
