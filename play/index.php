@@ -1,3 +1,8 @@
+<?php
+    $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
+    $sDestination = $sFolderPath.'/data/bootstrap.php';
+    require_once $sDestination;
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,9 +28,7 @@ $thisURL = $_SERVER['REQUEST_URI'];
 
 $payloadsURL = str_replace("play", 'payloads', $thisURL);
 $adminURL =  str_replace("play", 'admin', $thisURL);
-$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off") ? "https" : "http";
-$protocol .= "://" . $_SERVER['HTTP_HOST'];
-echo '<div class="color-white"><a class="admin_img" href="'.$protocol.$adminURL.'"><i class="mainNav fa fa-cog fa-3x"></i></a></div><br/><br/>';
+echo '<div class="color-white"><a class="admin_img" href="'.SITE_URL.'/'.$adminURL.'"><i class="mainNav fa fa-cog fa-3x"></i></a></div><br/><br/>';
 foreach(glob($payloadsDir, GLOB_ONLYDIR) as $dir) { 
 	$dir = basename($dir); 
 	$imgText = $dir."/icon.png";

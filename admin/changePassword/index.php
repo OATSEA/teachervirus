@@ -1,6 +1,10 @@
 <?php
-    ob_start();
+    $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
+    $sDestination = $sFolderPath.'/data/bootstrap.php';
+    require_once $sDestination;
+    
     require '../checkLogin.php';
+    if(session_status()!=PHP_SESSION_ACTIVE) session_start(); 
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -21,8 +25,7 @@
         }
     </script>
     <?php
-        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
-        $protocol .= "://" . $_SERVER['HTTP_HOST']."/admin";
+        $protocol .= SITE_URL."/admin";
     ?>
 <?php
     if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['old_password']) && isset($_SESSION['pattern_password']) && (md5($_POST['old_password']) == $_SESSION['pattern_password']))
@@ -31,20 +34,20 @@
         if(($_SESSION['old_password'] == $_SESSION['pattern_password']))
         {
 ?>
-        <div class="color-white">
-            <a class="play_img" href="<?php echo $protocol; ?>">
-                <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
-            </a>
-            <h2>New Password</h2>
-        </div><br/><br/>
-        <div id="login">
-            <form method="post" action="" id="newPasswordForm">
-                <div>
-                    <input type="password" id="change_new_password" name="change_new_password" class="patternlock" />
-                    <input type="submit" value="login"/>
-                </div>
-            </form>
-        </div>
+            <div class="color-white">
+                <a class="play_img" href="<?php echo $protocol; ?>">
+                    <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
+                </a>
+                <h2>New Password</h2>
+            </div><br/><br/>
+            <div id="login">
+                <form method="post" action="" id="newPasswordForm">
+                    <div>
+                        <input type="password" id="change_new_password" name="change_new_password" class="patternlock" />
+                        <input type="submit" value="login"/>
+                    </div>
+                </form>
+            </div>
 <?php
         }
         else
@@ -114,7 +117,6 @@
     else
     {
         $_SESSION['old_password_not_matched'] = isset($_POST['old_password']) ?  "Old password not matched!!" : "";
-        unset($_SESSION['not_valid_password']);
 ?>
         <div class="color-white">
             <a class="play_img" href="<?php echo $protocol; ?>">

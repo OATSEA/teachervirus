@@ -1,4 +1,9 @@
-<?php require '../checkLogin.php'; ?>
+<?php
+    $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
+    $sDestination = $sFolderPath.'/data/bootstrap.php';
+    require_once $sDestination;
+    require '../checkLogin.php';
+?>
 <html>
     <head>
         <title>Payloads</title>
@@ -30,8 +35,6 @@
     $debug = isset($_POST['show_debug']) ? $_POST['show_debug'] : 0;
     //$bChmod = isset($_POST['chmod']) ? $_POST['chmod'] : 0;
     $nMode = 0755;
-    $protocol = isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
-    $protocol .= "://" . $_SERVER['HTTP_HOST'];
     
     $_SESSION['isValidation']['flag'] = TRUE;
     if($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_SESSION['isValidation']))
@@ -52,12 +55,7 @@
         $sPayloadSource = isset($_POST['payload_source'])? $_POST['payload_source'] : '';
         $sFoldeSource = isset($_POST['folder_source'])? $_POST['folder_source'] : '';
         
-        if($sFoldeSource == "Select Payload Folder")
-        {
-            $_SESSION['isValidation']['check_folder'] = 'Please select payload folder!!';
-            $_SESSION['isValidation']['flag'] = FALSE;
-        }
-        else if($sPayloadSource == "Select Payload Source")
+        if($sPayloadSource == "Select Payload Source")
         {
             $_SESSION['isValidation']['check_payload'] = 'Please select payload source!!';
             $_SESSION['isValidation']['flag'] = FALSE;
@@ -370,7 +368,7 @@
             // Create payload directory if it doesn't exist:
             if (!makeDIR($payload,true,$nMode)) { 
                     // failed to make directory so exit
-                    exit('<h3>Installation Failed!</h3><div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                    exit('<h3>Installation Failed!</h3><div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
             }
            
              // Check for IP param and set $ip if param provided
@@ -456,7 +454,7 @@
 
                     // Make the new temp sub_folder for unzipped files
                     if (!mkdir($temp_unzip_path, $nMode, true)) {
-                        exit("<h2>Error - Payload installation Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                        exit("<h2>Error - Payload installation Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
                     } else {
                         if($debug) { echo "<p>Temp unzip Folder Created! <br>"; }
                     }
@@ -468,7 +466,7 @@
                         {
                             rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
                             if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?".'<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }
@@ -476,7 +474,7 @@
                         else
                         {
                             if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }        
@@ -489,11 +487,11 @@
                               if (is_dir($temp_unzip_path . $value))
                               {
                                 moveDIR($temp_unzip_path . $value,$sPayloadUrl.'/'.$download_unzip_filename,$debug);
-                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
                                 $txt = $sListContent;
                                 fwrite($myfile, $txt);
                                 fclose($myfile);
-                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
                                 $txt = $sListContent;
                                 fwrite($myfile, $txt);
                                 fclose($myfile);
@@ -516,7 +514,7 @@
                         {
                             rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
                             if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?".'<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }
@@ -524,7 +522,7 @@
                         else
                         {
                             if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }        
@@ -538,11 +536,11 @@
                               if (is_dir($temp_unzip_path . $value))
                               {
                                 moveDIR($temp_unzip_path . $value,$sPayloadUrl.DIRECTORY_SEPARATOR.$download_unzip_filename,$debug);
-                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
                                 $txt = $sListContent;
                                 fwrite($myfile, $txt);
                                 fclose($myfile);
-                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
                                 $txt = $sListContent;
                                 fwrite($myfile, $txt);
                                 fclose($myfile);
@@ -581,7 +579,7 @@
                             exit("<h3><b>ERROR! Payload download failed</h3>
                             <p>Unable to open temporary file: <b>$zipfile</b>!</p>
                             <p>File permission issue maybe?
-                            ".'<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>'); 
+                            ".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>'); 
                         }
 
                         // ** TO DO ** add catch exception for curl not installed (e.g. RPI)
@@ -642,8 +640,8 @@
                             // As download failed delete empty zip file!
                             if ($debug) { echo "<h2>Download with CURL failed</h2>";}
                             echo "<h3>Installation Failed!</h3><p>Couldn't download with either copy or curl</p>";
-                            echo '<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
-                                . '<div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>';
+                            echo '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
+                                . '<div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>';
                             (file_exists($zipfile)) ? unlink($zipfile) : '';
                             die();
                             //promptForIP();
@@ -659,13 +657,13 @@
             
                 
                 echo '<h2>Installation Complete!</h2><p>Check installation has worked: </p>'
-                    . '<div class="admin_img"><a href="'.$protocol.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
-                    . '<div class="play_img"><a href="'.$protocol.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>';
+                    . '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
+                    . '<div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>';
                 die();
             } // END try alternative move approach
     }
     if($_SESSION['isValidation']['flag'] == 1) 
-        unset($_SESSION['isValidation']['user_name_required'],$_SESSION['isValidation']['repository_required'],$_SESSION['isValidation']['device_address'],$_SESSION['isValidation']['infect_user_name'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['payload_url'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['google_payload_name'],$_SESSION['isValidation']['google_drive_link'],$_SESSION['isValidation']['upload_file'],$_SESSION['isValidation']['check_payload'],$_SESSION['isValidation']['check_folder']);
+        unset($_SESSION['isValidation']['user_name_required'],$_SESSION['isValidation']['repository_required'],$_SESSION['isValidation']['device_address'],$_SESSION['isValidation']['infect_user_name'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['payload_url'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['google_payload_name'],$_SESSION['isValidation']['google_drive_link'],$_SESSION['isValidation']['upload_file'],$_SESSION['isValidation']['check_payload']);
 
     if($_SESSION['isValidation']['flag'] == 1 || count($_SESSION['isValidation']) > 1)
     {
@@ -740,26 +738,23 @@
             });
         </script>
         <div class="color-white">
-            <a class="play_img" href="<?php echo $protocol.'/admin'; ?>">
+            <a class="play_img" href="<?php echo SITE_URL.'/admin'; ?>">
                 <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
             </a>
         </div><br/><br/>
-        <form id="getpayload_form" method="post" action="" enctype="multipart/form-data">
+        <form id="getpayload_form" class="common-form" method="post" action="" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-sm-12 title">
                     <h2>Enter Payload Details</h2>
                 </div>
                 <div class="col-sm-12 folder_class">
                     <select name="folder_source" id="folder_source" class="col-sm-3 form-control extra">
-                        <option id="check_folder">Select Payload Folder</option>
-                        <option id="check_admin" value="admin" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "admin") ? "selected='selected'" : ""; ?>>Admin</option>
-                        <option id="check_payloads" value="payloads" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "payloads" ) ? "selected='selected'" : ""; ?>>Payloads</option>
-                        <option id="check_data" value="data" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "data" ) ? "selected='selected'" : ""; ?>>Data</option>
-                        <option id="check_content" value="content" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "content" ) ? "selected='selected'" : ""; ?>>Content</option>
+                        <option id="check_admin" value="admin" <?php echo ((isset($_POST['folder_source']) && $_POST['folder_source'] == "admin") || PAYLOAD_FOLDER == "admin") ? "selected='selected'" : ""; ?>>Admin</option>
+                        <option id="check_payloads" value="payloads" <?php echo ((isset($_POST['folder_source']) && $_POST['folder_source'] == "payloads") || PAYLOAD_FOLDER == "payloads") ? "selected='selected'" : ""; ?>>Payloads</option>
+                        <option id="check_data" value="data" <?php echo ((isset($_POST['folder_source']) && $_POST['folder_source'] == "data" ) || PAYLOAD_FOLDER == "data") ? "selected='selected'" : ""; ?>>Data</option>
+                        <option id="check_content" value="content" <?php echo ((isset($_POST['folder_source']) && $_POST['folder_source'] == "content" ) || PAYLOAD_FOLDER == "content") ? "selected='selected'" : ""; ?>>Content</option>
+                        <option id="check_play" value="play" <?php echo ((isset($_POST['folder_source']) && $_POST['folder_source'] == "play" ) || PAYLOAD_FOLDER == "play") ? "selected='selected'" : ""; ?>>Play</option>
                     </select>
-                    <div class="error-message">
-                    <?php echo isset($_SESSION['isValidation']['check_folder']) ? $_SESSION['isValidation']['check_folder'] : '';?>
-                     </div>
                 </div>
                 
 <!--                <label class="start_payload">

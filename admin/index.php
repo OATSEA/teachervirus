@@ -22,8 +22,6 @@
 <?php
     //header("Cache-Control: max-age=300, must-revalidate");
     //ini_set('session.cache_limiter', 'private');
-    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off") ? "https" : "http";
-    $protocol .= "://" . $_SERVER['HTTP_HOST'];
     //Starts session
     if (@session_id() == "") @session_start();
 
@@ -56,6 +54,7 @@
             $playURL =  str_replace('admin', 'play', $thisURL);
             $sChangePasswordURL =  str_replace('admin', 'admin/changePassword', $thisURL);
             $sInfectedURL =  str_replace('admin', 'admin/getinfected', $thisURL);
+            $sSettingURL =  str_replace('admin', 'admin/settings', $thisURL);
             require 'header.php';
             foreach(glob($rootdir, GLOB_ONLYDIR) as $dir) { 
                     $dir = basename($dir); 
@@ -69,8 +68,9 @@
                     echo '<a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.png" /></a>';
                 }
             } 
-            (isset($sChangePasswordURL) && !empty($sChangePasswordURL)) ? '<a href="'.$protocol.$sChangePasswordURL.'"><img class="mybutton" alt="Change Password" src="'.$sChangePasswordURL.'icon.png" /></a>' : '';
-            (isset($sInfectedURL) && !empty($sInfectedURL)) ? '<a href="'.$protocol.$sInfectedURL.'"><img class="mybutton" alt="Get Infected" src="'.$sInfectedURL.'icon.png" /></a>' : '';
+            (isset($sChangePasswordURL) && !empty($sChangePasswordURL)) ? '<a href="'.SITE_URL.'/'.$sChangePasswordURL.'"><img class="mybutton" alt="Change Password" src="'.$sChangePasswordURL.'icon.png" /></a>' : '';
+            (isset($sInfectedURL) && !empty($sInfectedURL)) ? '<a href="'.SITE_URL.'/'.$sInfectedURL.'"><img class="mybutton" alt="Get Infected" src="'.$sInfectedURL.'icon.png" /></a>' : '';
+            (isset($sSettingURL) && !empty($sSettingURL)) ? '<a href="'.SITE_URL.'/'.$sSettingURL.'"><img class="mybutton" alt="Settings" src="'.$sSettingURL.'icon.png" /></a>' : '';
             //echo '<a href="'.$playURL.'"><img class="mybutton" alt="Play" src="'.$playURL.'icon.png" /></a>';
         }
         else
@@ -83,7 +83,7 @@
             </script>
 
             <div class="color-white">
-                <a class="play_img" href="<?php echo $protocol.'/play'; ?>">
+                <a class="play_img" href="<?php echo SITE_URL.'/play'; ?>">
                     <i class="mainNav fa fa-play-circle-o fa-3x"></i>
                 </a>
                 <h2>Please Login</h2>
@@ -157,9 +157,7 @@
             define("PASSWORD", $sPassword);
             ?>';
             fwrite($handle, $txt);
-            $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
-            $protocol .= "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-            header("Location:".$protocol);
+            header("Location:".SITE_URL);
         }
         else if($nConfirmPasswordFlag == 0)
         {
