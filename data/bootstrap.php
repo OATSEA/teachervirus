@@ -12,10 +12,11 @@
         $sListContent = "<?php
         define('ROOT_DIR','$sDocumentRoot');
         define('SITE_URL','$sSiteUrl');
-        define('PAYLOAD_FOLDER','payloads');
-        define('PAYLOAD_PATH','$sDocumentRoot/payloads');
-        define('LANGUAGE','en');
-        define('DEBUG_TEXT','FALSE');
+        define('ROOT_FOLDER','/');
+        define('ROOT_PATH','$sDocumentRoot');
+        define('LANGUAGE','english');
+        define('DEBUG_TEXT','0');
+        define('EXTERNAL_TEXT','0');
     ?>";
         $myfile = fopen("$sDestination", "w");
         $txt = $sListContent;

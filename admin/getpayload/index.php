@@ -1,8 +1,8 @@
-<?php
+<?php 
     $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
     $sDestination = $sFolderPath.'/data/bootstrap.php';
     require_once $sDestination;
-    require '../checkLogin.php';
+    require '../checkLogin.php'; 
 ?>
 <html>
     <head>
@@ -25,15 +25,23 @@
                 }
             }
         </script>
+        <style>
+            #loading-image {
+                position: absolute;
+                top: 100px;
+                left: 500px;
+                z-index: 100;
+             }
+        </style>
     </head>
     <body class="main" onLoad="checkLoaded(false);">
     <div id="loading">Installing...</div>
+    <div id="loading-image" style="display:none;"><img src="<?php echo SITE_URL; ?>/images/loading.gif"></div>
     <script>
         checkLoaded(false);
     </script>
 <?php
-    $debug = isset($_POST['show_debug']) ? $_POST['show_debug'] : 0;
-    //$bChmod = isset($_POST['chmod']) ? $_POST['chmod'] : 0;
+    $debug = DEBUG_TEXT;
     $nMode = 0755;
     
     $_SESSION['isValidation']['flag'] = TRUE;
@@ -47,15 +55,20 @@
         $nPort = $_POST['port_number'];
         $sInfectUserName = $_POST["infect_user_name"];
         $sPayloadName = $_POST['payload_name'];
-        //echo $sPayloadName;
         $sPayloadUrl = $_POST["payload_url"];
         $sGooglePayloadName = $_POST['google_payload_name'];
         $sGoogleDriveLink = $_POST['google_drive_link'];
         $sIsAdmin = empty($_POST['check_admin']) ? '' : $_POST['check_admin'];
         $sPayloadSource = isset($_POST['payload_source'])? $_POST['payload_source'] : '';
-        $sFoldeSource = isset($_POST['folder_source'])? $_POST['folder_source'] : '';
+        $sFolderSource = isset($_POST['folder_source'])? $_POST['folder_source'] : '';
+        $sNewFolderName = isset($_POST['new_folder'])? $_POST['new_folder'] : '';
         
-        if($sPayloadSource == "Select Payload Source")
+        if($sFolderSource == "Select Payload Type")
+        {
+            $_SESSION['isValidation']['folder_source'] = 'Please select payload type!!';
+            $_SESSION['isValidation']['flag'] = FALSE;
+        }
+        else if($sPayloadSource == "Select Payload Source")
         {
             $_SESSION['isValidation']['check_payload'] = 'Please select payload source!!';
             $_SESSION['isValidation']['flag'] = FALSE;
@@ -107,7 +120,7 @@
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
         }
-        else
+        else if($sPayloadSource == 'google_drive')
         {
             if(empty($sGooglePayloadName))
             {
@@ -120,48 +133,24 @@
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
         }
-        
+
         if($_SESSION['isValidation']['flag'] == 1)
         {
-            $payload = isset($_POST['folder_source']) ? $_POST['folder_source'] : '';
-            
-           //echo $payload; exit;check_admin
-            $isAdmin = strtoupper(substr($payload,0,1));
-            if(!empty($sUserName))
-            {
-                $download_filename = $sUserName."-".$sRepository.".zip";
-                $download_unzip_filename = $sUserName."-".$sRepository;
-                $sListContent = "github_payloads;$isAdmin;$sUserName;$sRepository";
-            }
-            else if(!empty($sDeviceAddress))
-            {
-                $download_filename = $sInfectUserName.".zip";
-                $download_unzip_filename = $sInfectUserName;
-                $sPort = empty($nPort) ? 'none' : $nPort;
-                $sListContent = "infected_device;$isAdmin;$sDeviceAddress;$sPort;$download_unzip_filename";
-            }
-            else if(!empty($sPayloadName))
-            {
-                $download_filename = $sPayloadName.".zip";
-                $download_unzip_filename = $sPayloadName;
-                $sListContent = "website_url;$isAdmin;$download_unzip_filename;$sPayloadUrl";
-            }
-            else if(!empty($sGooglePayloadName))
-            {
-                $download_filename = $sGooglePayloadName.".zip";
-                $download_unzip_filename = $sGooglePayloadName;
-                $sListContent = "google_drive;$isAdmin;$download_unzip_filename;$sGoogleDriveLink";
-            }
-            else if(!empty($sFileName))
-            {
-                $download_filename = $sFileName;
-                $aExplodeFileName = explode(".zip", $sFileName);
-                $download_unzip_filename = $aExplodeFileName[0];
-                $sListContent = "file_browse;$isAdmin;$download_unzip_filename;$sFileName";
-                move_uploaded_file($sTempFileName, $_SERVER['DOCUMENT_ROOT'].'/'.$payload.'/'.$sFileName);
-            }
-            $zipfile = $payload.'/'.$download_filename;
-            
+            // RRMDIR: Recursively remove subdirectories function 
+            // SOURCE: taken http://php.net/manual/en/function.rmdir.php 
+            function rrmdir($dir) {
+               if (is_dir($dir)) { 
+                 $objects = scandir($dir); 
+                 foreach ($objects as $object) { 
+                   if ($object != "." && $object != "..") { 
+                     if (filetype($dir."/".$object) == "dir") rrmdir($dir."/".$object); else unlink($dir."/".$object); 
+                   } 
+                 } 
+                 reset($objects);
+                 rmdir($dir); 
+               } 
+            } // END RRMDIR
+
             // getpayload is the initial payload PHP Installation script that is used to install the core Payload files.
             // Created: May 2015
             // Contributors: Harry Longworth
@@ -188,22 +177,6 @@
             // Declare Helper Functions
             // -------------------------
 
-            // RRMDIR: Recursively remove subdirectories function 
-            // SOURCE: taken http://php.net/manual/en/function.rmdir.php 
-            function rrmdir($dir) { 
-               if (is_dir($dir)) { 
-                 $objects = scandir($dir); 
-                 foreach ($objects as $object) { 
-                   if ($object != "." && $object != "..") { 
-                     if (filetype($dir."/".$object) == "dir") rrmdir($dir."/".$object); else unlink($dir."/".$object); 
-                   } 
-                 } 
-                 reset($objects);
-                 rmdir($dir); 
-               } 
-            } // END RRMDIR
-
-            //-------
             // prompt for IP address as alternative payloads
 
             function promptForIP() {
@@ -240,7 +213,10 @@
                 } else {
                     // Make the new temp sub_folder for unzipped files
                     if (!mkdir($directory, $nMode, true)) {
-                        if ($debugtxt) { echo "<p>Error: Could not create folder <b>$directory</b> - check file permissions";}
+                        if ($debugtxt) { 
+                            echo "<p>Error: Could not create folder <b>$directory</b> - check file permissions";
+                            echo '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>';
+                        }
                         $result= false;
                     } else { 
                         //if ($debugtxt) { echo "Folder <b>$directory</b> Created <br>";}  
@@ -333,10 +309,54 @@
                     ";
             } // END displayRedirect
             
+            $payload = $sFolderSource;
+            if(($sFolderSource == 'data' || $sFolderSource == 'content') && !empty($sNewFolderName))
+            {
+                $payload = $sFolderSource.'/'.$sNewFolderName;
+            }
+            $isAdmin = strtoupper(substr($payload,0,1));
+            
+            $payload = ROOT_DIR.'/'.$payload;
+            
+            if(!empty($sUserName))
+            {
+                $download_filename = $sUserName."-".$sRepository.".zip";
+                $download_unzip_filename = $sUserName."-".$sRepository;
+                $sListContent = "github_payloads;$isAdmin;$sUserName;$sRepository";
+            }
+            else if(!empty($sDeviceAddress))
+            {
+                $download_filename = $sInfectUserName.".zip";
+                $download_unzip_filename = $sInfectUserName;
+                $sPort = empty($nPort) ? 'none' : $nPort;
+                $sListContent = "infected_device;$isAdmin;$sDeviceAddress;$sPort;$download_unzip_filename";
+            }
+            else if(!empty($sPayloadName))
+            {
+                $download_filename = $sPayloadName.".zip";
+                $download_unzip_filename = $sPayloadName;
+                $sListContent = "website_url;$isAdmin;$download_unzip_filename;$sPayloadUrl";
+            }
+            else if(!empty($sGooglePayloadName))
+            {
+                $download_filename = $sGooglePayloadName.".zip";
+                $download_unzip_filename = $sGooglePayloadName;
+                $sListContent = "google_drive;$isAdmin;$download_unzip_filename;$sGoogleDriveLink";
+            }
+            else if(!empty($sFileName))
+            {
+                makeDIR($payload, 1, $nMode);
+                $download_filename = $sFileName;
+                $aExplodeFileName = explode(".zip", $sFileName);
+                $download_unzip_filename = $aExplodeFileName[0];
+                $sListContent = "file_browse;$isAdmin;$download_unzip_filename;$sFileName";
+                move_uploaded_file($sTempFileName, $payload.'/'.$sFileName);
+            }
+            $zipfile = $payload.'/'.$download_filename;
+
             //-----------
             // CHECK for Play Dir
             // -----------
-
             // Check play dir exists or not
             if (file_exists('play')) {
                 // if play folder exists then Payload is already installed and we don't want to allow script to run again so
@@ -368,7 +388,7 @@
             // Create payload directory if it doesn't exist:
             if (!makeDIR($payload,true,$nMode)) { 
                     // failed to make directory so exit
-                    exit('<h3>Installation Failed!</h3><div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                    exit('<h3>Installation Failed!</h3><div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
             }
            
              // Check for IP param and set $ip if param provided
@@ -406,6 +426,10 @@
                 $aExplodeLinkID = explode("id=", $sGoogleDriveLink);
                 $geturl = "https://docs.google.com/uc?id=$aExplodeLinkID[1]&export=download";
             }
+            else
+            {
+                $geturl = $sTempFileName;
+            }
             // TRY DOWNLOAD via copy
             if ($debug) { echo "<h2>Download Files</h2>
                <p>Will attempt to download via copy from <b>$geturl</b></p> ";}
@@ -417,12 +441,12 @@
                 echo "<h3>Unzip Successful!</h3>";
                 $zip = new ZipArchive;
                 // Get array of all source files
-                $files = scandir(dirname(__FILE__).DIRECTORY_SEPARATOR.$payload);
+                $files = scandir($payload);
                 // Identify directories
-                $source = dirname(__FILE__).DIRECTORY_SEPARATOR.$payload;
+                $source = $payload;
                 $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
 
-                $destination = $sFolderPath.'/'.$payload;
+                $destination = $payload;
                 if (!file_exists($destination))
                     mkdir($destination,0775,true);
 
@@ -430,7 +454,7 @@
 
                 if(($ip == "no" || $sPayloadSource == 'infected_device') && $sPayloadSource != 'file_browse')
                 {
-                    $copyflag = copy($geturl,$_SERVER['DOCUMENT_ROOT'].'/'.$zipfile);
+                    $copyflag = copy($geturl,$zipfile);
                 }
                 else if($sPayloadSource == 'file_browse')
                 {
@@ -439,14 +463,14 @@
                 else if(file_exists($geturl))
                 {
 
-                    $copyflag = copy($geturl,$_SERVER['DOCUMENT_ROOT'].'/'.$zipfile);
+                    $copyflag = copy($geturl,$zipfile);
                 }
                 if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
                 $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$download_filename,true);
                 if ($zipFlag === TRUE) 
                 {
 
-                    $sPayloadUrl = $_SERVER['DOCUMENT_ROOT'].'/'.$payload;
+                    $sPayloadUrl = $payload;
                     // Create full temp sub_folder path
                     $temp_unzip_path = $sPayloadUrl.'/'.uniqid('unzip_temp_', true)."/";
 
@@ -454,7 +478,7 @@
 
                     // Make the new temp sub_folder for unzipped files
                     if (!mkdir($temp_unzip_path, $nMode, true)) {
-                        exit("<h2>Error - Payload installation Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                        exit("<h2>Error - Payload installation Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                     } else {
                         if($debug) { echo "<p>Temp unzip Folder Created! <br>"; }
                     }
@@ -466,7 +490,7 @@
                         {
                             rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
                             if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }
@@ -474,7 +498,7 @@
                         else
                         {
                             if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }        
@@ -487,11 +511,11 @@
                               if (is_dir($temp_unzip_path . $value))
                               {
                                 moveDIR($temp_unzip_path . $value,$sPayloadUrl.'/'.$download_unzip_filename,$debug);
-                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                                 $txt = $sListContent;
                                 fwrite($myfile, $txt);
                                 fclose($myfile);
-                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                                 $txt = $sListContent;
                                 fwrite($myfile, $txt);
                                 fclose($myfile);
@@ -514,7 +538,7 @@
                         {
                             rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
                             if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }
@@ -522,7 +546,7 @@
                         else
                         {
                             if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             } else {
                                 if($debug) { echo "<p>Folder Created! <br>"; }
                             }        
@@ -536,11 +560,11 @@
                               if (is_dir($temp_unzip_path . $value))
                               {
                                 moveDIR($temp_unzip_path . $value,$sPayloadUrl.DIRECTORY_SEPARATOR.$download_unzip_filename,$debug);
-                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                                 $txt = $sListContent;
                                 fwrite($myfile, $txt);
                                 fclose($myfile);
-                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                                 $txt = $sListContent;
                                 fwrite($myfile, $txt);
                                 fclose($myfile);
@@ -579,7 +603,7 @@
                             exit("<h3><b>ERROR! Payload download failed</h3>
                             <p>Unable to open temporary file: <b>$zipfile</b>!</p>
                             <p>File permission issue maybe?
-                            ".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>'); 
+                            ".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>'); 
                         }
 
                         // ** TO DO ** add catch exception for curl not installed (e.g. RPI)
@@ -627,6 +651,7 @@
                                     echo "<p> Destination $zipfile file was created though</p>";
                                 }   else {
                                     echo "<p> Destination $zipfile file was <b>NOT</b> created - file permission issue? </p>";
+                                    echo '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>'; 
                                 }
 
                             } // END debug
@@ -641,7 +666,7 @@
                             if ($debug) { echo "<h2>Download with CURL failed</h2>";}
                             echo "<h3>Installation Failed!</h3><p>Couldn't download with either copy or curl</p>";
                             echo '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
-                                . '<div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>';
+                                . '<div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>';
                             (file_exists($zipfile)) ? unlink($zipfile) : '';
                             die();
                             //promptForIP();
@@ -658,12 +683,12 @@
                 
                 echo '<h2>Installation Complete!</h2><p>Check installation has worked: </p>'
                     . '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
-                    . '<div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>';
+                    . '<div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>';
                 die();
             } // END try alternative move approach
     }
     if($_SESSION['isValidation']['flag'] == 1) 
-        unset($_SESSION['isValidation']['user_name_required'],$_SESSION['isValidation']['repository_required'],$_SESSION['isValidation']['device_address'],$_SESSION['isValidation']['infect_user_name'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['payload_url'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['google_payload_name'],$_SESSION['isValidation']['google_drive_link'],$_SESSION['isValidation']['upload_file'],$_SESSION['isValidation']['check_payload']);
+        unset($_SESSION['isValidation']['user_name_required'],$_SESSION['isValidation']['repository_required'],$_SESSION['isValidation']['device_address'],$_SESSION['isValidation']['infect_user_name'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['payload_url'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['google_payload_name'],$_SESSION['isValidation']['google_drive_link'],$_SESSION['isValidation']['upload_file'],$_SESSION['isValidation']['check_payload'],$_SESSION['isValidation']['folder_source'],$_SESSION['isValidation']['new_folder']);
 
     if($_SESSION['isValidation']['flag'] == 1 || count($_SESSION['isValidation']) > 1)
     {
@@ -672,7 +697,7 @@
             function showData(divId)
             {
                 var divId = (divId.value == undefined) ? divId : divId.value;
-                if(divId == "check_payload")
+                if(divId == "Select Payload Source")
                 {
                     $("#github_payloads").hide();
                     $("#infected_device").hide();
@@ -714,8 +739,42 @@
                     $("#infected_device").hide();
                     $("#website_url").hide();
                     $("#google_drive").hide();
-               }
+                }
+                else if(divId == "content" || divId == "data" || divId == "Select Payload Type")
+                {
+                    $("#loading-image").show();
+                    $.ajax({
+                        type: "POST",
+                        url: "updateFolder.php", //Relative or absolute path to response.php file
+                        data:{ 
+                            folder_name : divId,
+                            folder_val : "<?php echo empty($sNewFolderName) ? '' : $sNewFolderName; ?>",
+                            selected_val : "<?php echo isset($_POST['install_source']) ? $_POST['install_source'] : ''; ?>"
+                        },
+                        success: function(data) {
+                            $("#content_data").show();
+                            $("#folder_options").html(data);
+                            $("#loading-image").hide();
+                        }
+                    });
+                }
+                else
+                {
+                    $("#content_data").hide();
+                }
                 $("#"+divId).show();
+            }
+            function showFolderOption(divId)
+            {
+                var divId = (divId.value == undefined) ? divId : divId.value;
+                if(divId == "new_folder")
+                {
+                    $("#"+divId).show();
+                }
+                else
+                {
+                    $("#new_folder").hide();
+                }
             }
             function changeValue(eValue)
             {
@@ -735,6 +794,7 @@
             }
             $(document).ready(function(){
                 showData("<?php echo isset($_POST['payload_source']) ? $_POST['payload_source'] : ''; ?>");
+                showData("<?php echo isset($_POST['folder_source']) ? $_POST['folder_source'] : ''; ?>");
             });
         </script>
         <div class="color-white">
@@ -742,24 +802,14 @@
                 <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
             </a>
         </div><br/><br/>
-        <form id="getpayload_form" class="common-form" method="post" action="" enctype="multipart/form-data">
+        <form id="getpayload_form" method="post" action="" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-sm-12 title">
-                    <h2>Enter Payload Details</h2>
+                    <h2>Install  Payload </h2>
                 </div>
-                <div class="col-sm-12 folder_class">
-                    <select name="folder_source" id="folder_source" class="col-sm-3 form-control extra">
-                        <option id="check_admin" value="admin" <?php echo ((isset($_POST['folder_source']) && $_POST['folder_source'] == "admin") || PAYLOAD_FOLDER == "admin") ? "selected='selected'" : ""; ?>>Admin</option>
-                        <option id="check_payloads" value="payloads" <?php echo ((isset($_POST['folder_source']) && $_POST['folder_source'] == "payloads") || PAYLOAD_FOLDER == "payloads") ? "selected='selected'" : ""; ?>>Payloads</option>
-                        <option id="check_data" value="data" <?php echo ((isset($_POST['folder_source']) && $_POST['folder_source'] == "data" ) || PAYLOAD_FOLDER == "data") ? "selected='selected'" : ""; ?>>Data</option>
-                        <option id="check_content" value="content" <?php echo ((isset($_POST['folder_source']) && $_POST['folder_source'] == "content" ) || PAYLOAD_FOLDER == "content") ? "selected='selected'" : ""; ?>>Content</option>
-                        <option id="check_play" value="play" <?php echo ((isset($_POST['folder_source']) && $_POST['folder_source'] == "play" ) || PAYLOAD_FOLDER == "play") ? "selected='selected'" : ""; ?>>Play</option>
-                    </select>
-                </div>
-                
-<!--                <label class="start_payload">
-                    <input type="checkbox" name="check_admin" id="check_admin" value="<?php echo isset($_POST['check_admin']) ? $_POST['check_admin'] : '0'; ?>" <?php echo isset($_POST['check_admin']) ? "checked='checked'" : ""; ?> onClick="changeValue('check_admin');"/>  Is this an Admin Payload? 
-                </label>-->
+                <div class="col-sm-12">
+                    <label class="col-sm-12"><font style="color:red">*</font> Indicates mandatory field</label>
+                    </div>
                 <div class="col-sm-12">
                     <select name="payload_source" id="payload_source" class="col-sm-3 form-control extra" onChange="showData(this);">
                         <option id="check_payload">Select Payload Source</option>
@@ -768,12 +818,12 @@
                         <option id="check_website" value="website_url" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "website_url" ) ? "selected='selected'" : ""; ?>>URL/Website</option>
                         <option id="check_google" value="google_drive" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "google_drive" ) ? "selected='selected'" : ""; ?>>Google Drive</option>
                         <option value="file_browse" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "file_browse" ) ? "selected='selected'" : ""; ?>>File Upload</option>
+                        <option value="OATSEAdirectory" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "OATSEAdirectory " ) ? "selected='selected'" : ""; ?>>OATSEA Directory</option>
                     </select>
                     <div class="error-message">
-                    <?php echo isset($_SESSION['isValidation']['check_payload']) ? $_SESSION['isValidation']['check_payload'] : '';?>
-                     </div>
+                        <?php echo isset($_SESSION['isValidation']['check_payload']) ? $_SESSION['isValidation']['check_payload'] : '';?>
+                    </div>
                 </div>
-                
                 <div id="github_payloads" style="display:none" class="source" >
                     <div class="form-group">
                         <label class="col-sm-12 control-label">GitHub Username<font style="color:red">*</font> </label>
@@ -870,18 +920,26 @@
                             </div>
                         </div>
                     </div>
-                    <br/><br/>
-                    <div class="col-sm-12">
-                    <label class="start_payload"><input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($_POST['show_debug']) ? $_POST['show_debug'] : '0'; ?>" <?php echo isset($_POST['show_debug']) ? "checked='checked'" : ""; ?> onClick="changeValue('show_debug');">  Show debug text</label>
-<!--                        <div><label class="start_payload"><input type="checkbox" name="chmod" id="chmod" value="<?php echo isset($_POST['chmod']) ? $_POST['chmod'] : '0'; ?>" <?php echo isset($_POST['chmod']) ? "checked='checked'" : ""; ?> onclick="changeValue('chmod');">  Chmod?</label>
-                    </div>-->
+                    <div class="col-sm-12 folder_class">
+                        <select name="folder_source" id="folder_source" class="col-sm-3 form-control extra" onchange="showData(this);">
+                            <option id="check_folder">Select Payload Type</option>
+                            <option id="play" value="play" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "play") ? "selected='selected'" : ""; ?>>Play</option>
+                            <option id="check_admin" value="admin" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "admin") ? "selected='selected'" : ""; ?>>Admin</option>
+                            <option id="check_admin" value="service" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "service") ? "selected='selected'" : ""; ?>>Service</option>
+                            <option id="check_content" value="content" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "content" ) ? "selected='selected'" : ""; ?>>Content</option>
+                            <option id="check_data" value="data" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "data" ) ? "selected='selected'" : ""; ?>>Data</option>
+                        </select>
+                        <div class="error-message">
+                            <?php echo isset($_SESSION['isValidation']['folder_source']) ? $_SESSION['isValidation']['folder_source'] : '';?>
+                        </div>
                     </div>
-                    <div class="col-sm-12">
-                    <label class="col-sm-12"><font style="color:red">*</font> Indicates mandatory field</label>
-                    </div>
-                    <div class="go-button btn btn-lg btn-primary">
-                        <input type="button" name="button" id="button" value="GO!" align="center" onClick="checkLoaded(true);">  
-                    </div>
+                <div id="content_data" style="display:none">
+                    <div class="col-sm-12 folder_class" id="folder_options"></div>
+                </div>
+                <br/><br/>
+                <div class="go-button btn btn-lg btn-primary">
+                    <input type="button" name="button" id="button" value="GO!" align="center" onClick="checkLoaded(true);">  
+                </div>
             </div>
         </form>
 <?php
