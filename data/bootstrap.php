@@ -1,4 +1,4 @@
-<?php
+<?php  
     $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
     $sDestination = $sFolderPath.'/data/constants.php';
     if (file_exists($sDestination)) 
