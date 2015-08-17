@@ -45,8 +45,7 @@
             $sListContent = "<?php
 define('ROOT_DIR','$sDocumentRoot');
 define('SITE_URL','$sSiteUrl');
-define('ROOT_FOLDER','$sFolderLocation');
-define('ROOT_PATH','$sDocumentRoot/$sFolderLocation');
+define('ROOT_PATH','$sFolderLocation');
 define('LANGUAGE','$sLanguage');
 define('DEBUG_TEXT','$bShowDebugText');
 define('EXTERNAL_TEXT','$bExternalSource');
@@ -118,15 +117,15 @@ define('EXTERNAL_TEXT','$bExternalSource');
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <input type="checkbox" name="external_source" id="external_source" value="<?php echo isset($bExternalSource) ? $bExternalSource: '0'; ?>" <?php echo (isset($bExternalSource) && ($bExternalSource)) ? "checked='checked'" : ""; ?>onClick="changeValue('external_source');">  
+                        <input type="checkbox" name="external_source" id="external_source" value="<?php echo isset($bExternalSource) ? $bExternalSource: EXTERNAL_TEXT; ?>" <?php echo ((isset($bExternalSource) && ($bExternalSource == 1)) || (EXTERNAL_TEXT == '1')) ? "checked='checked'" : ""; ?>onClick="changeValue('external_source');">  
                         <label class="start_payload">Use External Storage?</label>
                     </div>
                 </div>
-                <div id="folder_location_address" style="<?php echo (isset($sFolderLocation) && empty($sFolderLocation)) ? 'display:block' : 'display:none'; ?>">
+                <div id="folder_location_address" style="<?php echo ((isset($bExternalSource) && ($bExternalSource == 1)) || (EXTERNAL_TEXT == '1')) ? "display:block;" : "display:none;"; ?>">
                     <div class="form-group">
                         <label class="col-sm-12 control-label">Folder Location:<font style="color:red">*</font></label>
                         <div class="col-sm-12">
-                            <input type="text" name="folder_location" class="form-control" value="<?php echo isset($_POST['folder_location']) ? $_POST['folder_location'] : ROOT_FOLDER ; ?>" ></label>
+                            <input type="text" name="folder_location" class="form-control" value="<?php echo isset($_POST['folder_location']) ? $_POST['folder_location'] : ROOT_PATH ; ?>" ></label>
                             <div class="error-message">
                                 <?php echo isset($_SESSION['isValidation']['folder_location_required']) ? $_SESSION['isValidation']['folder_location_required'] : '';?>
                             </div>
@@ -135,7 +134,7 @@ define('EXTERNAL_TEXT','$bExternalSource');
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($_POST['show_debug']) ? $_POST['show_debug'] : '0'; ?>" <?php echo isset($_POST['show_debug']) ? "checked='checked'" : ""; ?> onClick="changeValue('show_debug');">
+                        <input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($bShowDebugText) ? $bShowDebugText : DEBUG_TEXT; ?>" <?php echo ((isset($bShowDebugText) && $bShowDebugText == 1) || (DEBUG_TEXT == '1')) ? "checked='checked'" : ""; ?> onClick="changeValue('show_debug');">
                         <label class="start_payload">Show debug text?</label>
                     </div>
                 </div>

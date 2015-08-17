@@ -68,69 +68,124 @@
             $_SESSION['isValidation']['folder_source'] = 'Please select payload type!!';
             $_SESSION['isValidation']['flag'] = FALSE;
         }
-        else if($sPayloadSource == "Select Payload Source")
+        else
         {
-            $_SESSION['isValidation']['check_payload'] = 'Please select payload source!!';
+            unset($_SESSION['isValidation']['folder_source']);
+            $_SESSION['isValidation']['flag'] = TRUE;
+        }
+        if($sPayloadSource == "Select Payload Source")
+        {
+            $_SESSION['isValidation']['payload_source'] = 'Please select payload source!!';
             $_SESSION['isValidation']['flag'] = FALSE;
         }
-        else if($sPayloadSource == 'github_payloads')
+        else
+        {
+            unset($_SESSION['isValidation']['payload_source']);
+            $_SESSION['isValidation']['flag'] = TRUE;
+        }
+        if($sPayloadSource == 'github_payloads')
         {
             if(empty($sUserName))
             {
                 $_SESSION['isValidation']['user_name_required'] = 'Please enter username!!';
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
+            else
+            {
+                unset($_SESSION['isValidation']['user_name_required']);
+                $_SESSION['isValidation']['flag'] = TRUE;
+            }
             if(empty($sRepository))
             {
                 $_SESSION['isValidation']['repository_required'] = 'Please enter repository!!';
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
+            else
+            {
+                unset($_SESSION['isValidation']['repository_required']);
+                $_SESSION['isValidation']['flag'] = TRUE;
+            }
         }
-        else if($sPayloadSource == 'infected_device')
+        if($sPayloadSource == 'infected_device')
         {
             if(empty($sDeviceAddress))
             {
                 $_SESSION['isValidation']['device_address'] = 'Please enter device address!!';
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
+            else
+            {
+                unset($_SESSION['isValidation']['device_address']);
+                $_SESSION['isValidation']['flag'] = TRUE;
+            }
             if(empty($sInfectUserName))
             {
                 $_SESSION['isValidation']['infect_user_name'] = 'Please enter name!!';
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
+            else
+            {
+                unset($_SESSION['isValidation']['infect_user_name']);
+                $_SESSION['isValidation']['flag'] = TRUE;
+            }
         }
-        else if($sPayloadSource == 'website_url')
+        if($sPayloadSource == 'website_url')
         {
             if(empty($sPayloadName))
             {
                 $_SESSION['isValidation']['payload_name'] = 'Please enter payload name!!';
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
+            else
+            {
+                unset($_SESSION['isValidation']['payload_name']);
+                $_SESSION['isValidation']['flag'] = TRUE;
+            }
             if(empty($sPayloadUrl))
             {
                 $_SESSION['isValidation']['payload_url'] = 'Please enter payload url!!';
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
+            else
+            {
+                unset($_SESSION['isValidation']['payload_url']);
+                $_SESSION['isValidation']['flag'] = TRUE;
+            }
         }
-        else if($sPayloadSource == 'file_browse')
+        if($sPayloadSource == 'file_browse')
         {   
             if(empty($sFileName))
             {
                 $_SESSION['isValidation']['upload_file'] = 'Please Choose File!!';
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
+            else
+            {
+                unset($_SESSION['isValidation']['upload_file']);
+                $_SESSION['isValidation']['flag'] = TRUE;
+            }
         }
-        else if($sPayloadSource == 'google_drive')
+        if($sPayloadSource == 'google_drive')
         {
             if(empty($sGooglePayloadName))
             {
                 $_SESSION['isValidation']['google_payload_name'] = 'Please enter payload name!!';
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
+            else
+            {
+                unset($_SESSION['isValidation']['google_payload_name']);
+                $_SESSION['isValidation']['flag'] = TRUE;
+            }
             if(empty($sGoogleDriveLink))
             {
                 $_SESSION['isValidation']['google_drive_link'] = 'Please enter google drive link!!';
                 $_SESSION['isValidation']['flag'] = FALSE;
+            }
+            else
+            {
+                unset($_SESSION['isValidation']['google_drive_link']);
+                $_SESSION['isValidation']['flag'] = TRUE;
             }
         }
 
@@ -688,7 +743,7 @@
             } // END try alternative move approach
     }
     if($_SESSION['isValidation']['flag'] == 1) 
-        unset($_SESSION['isValidation']['user_name_required'],$_SESSION['isValidation']['repository_required'],$_SESSION['isValidation']['device_address'],$_SESSION['isValidation']['infect_user_name'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['payload_url'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['google_payload_name'],$_SESSION['isValidation']['google_drive_link'],$_SESSION['isValidation']['upload_file'],$_SESSION['isValidation']['check_payload'],$_SESSION['isValidation']['folder_source'],$_SESSION['isValidation']['new_folder']);
+        unset($_SESSION['isValidation']['user_name_required'],$_SESSION['isValidation']['repository_required'],$_SESSION['isValidation']['device_address'],$_SESSION['isValidation']['infect_user_name'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['payload_url'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['google_payload_name'],$_SESSION['isValidation']['google_drive_link'],$_SESSION['isValidation']['upload_file'],$_SESSION['isValidation']['payload_source'],$_SESSION['isValidation']['folder_source'],$_SESSION['isValidation']['new_folder']);
 
     if($_SESSION['isValidation']['flag'] == 1 || count($_SESSION['isValidation']) > 1)
     {
@@ -740,8 +795,9 @@
                     $("#website_url").hide();
                     $("#google_drive").hide();
                 }
-                else if(divId == "content" || divId == "data" || divId == "Select Payload Type")
+                else if(divId == "content" || divId == "data")
                 {
+                    $("#folder_source_error").text('');
                     $("#loading-image").show();
                     $.ajax({
                         type: "POST",
@@ -812,7 +868,7 @@
                     </div>
                 <div class="col-sm-12">
                     <select name="payload_source" id="payload_source" class="col-sm-3 form-control extra" onChange="showData(this);">
-                        <option id="check_payload">Select Payload Source</option>
+                        <option>Select Payload Source</option>
                         <option id="check_github" value="github_payloads" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "github_payloads") ? "selected='selected'" : ""; ?>>GitHub</option>
                         <option id="check_infected" value="infected_device" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "infected_device" ) ? "selected='selected'" : ""; ?>>Infected Device</option>
                         <option id="check_website" value="website_url" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "website_url" ) ? "selected='selected'" : ""; ?>>URL/Website</option>
@@ -821,7 +877,7 @@
                         <option value="OATSEAdirectory" <?php echo (isset($_POST['payload_source']) && $_POST['payload_source'] == "OATSEAdirectory " ) ? "selected='selected'" : ""; ?>>OATSEA Directory</option>
                     </select>
                     <div class="error-message">
-                        <?php echo isset($_SESSION['isValidation']['check_payload']) ? $_SESSION['isValidation']['check_payload'] : '';?>
+                        <?php echo isset($_SESSION['isValidation']['payload_source']) ? $_SESSION['isValidation']['payload_source'] : '';?>
                     </div>
                 </div>
                 <div id="github_payloads" style="display:none" class="source" >
@@ -929,7 +985,7 @@
                             <option id="check_content" value="content" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "content" ) ? "selected='selected'" : ""; ?>>Content</option>
                             <option id="check_data" value="data" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "data" ) ? "selected='selected'" : ""; ?>>Data</option>
                         </select>
-                        <div class="error-message">
+                        <div id="folder_source_error" class="error-message">
                             <?php echo isset($_SESSION['isValidation']['folder_source']) ? $_SESSION['isValidation']['folder_source'] : '';?>
                         </div>
                     </div>

@@ -12,7 +12,6 @@
         $sListContent = "<?php
         define('ROOT_DIR','$sDocumentRoot');
         define('SITE_URL','$sSiteUrl');
-        define('ROOT_FOLDER','/');
         define('ROOT_PATH','$sDocumentRoot');
         define('LANGUAGE','english');
         define('DEBUG_TEXT','0');
