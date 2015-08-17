@@ -454,7 +454,6 @@
             {
                 // Download from github zipball/master as no IP address set
                 $geturl = "https://github.com/$sUserName/$sRepository/zipball/master/";
-                
             }
             else 
             {
@@ -470,7 +469,7 @@
                 $aExplodeLinkID = explode("id=", $sGoogleDriveLink);
                 $geturl = "https://docs.google.com/uc?id=$aExplodeLinkID[1]&export=download";
             }
-            else
+            else if(!empty($sTempFileName))
             {
                 $geturl = $sTempFileName;
             }
