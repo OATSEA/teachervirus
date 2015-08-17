@@ -96,7 +96,16 @@ body{
         color: #fff;
         text-align: center;
 }
-.common-form{
+#getpayload_form{
+    border: 1px solid #fff;
+    font-size: 20px !important;
+    height: auto;
+    margin: 20px auto;
+    padding: 20px;
+    width: 70%;
+    text-align: left;
+}
+#getsetting_form{
     border: 1px solid #fff;
     font-size: 20px !important;
     height: auto;
@@ -288,7 +297,6 @@ input[type="text"] {
  border-bottom: 1px solid;
  margin-bottom: 17px;
  padding-bottom: 10px;
- width: 100%;
 }
 .extra
 {
@@ -305,11 +313,11 @@ input[type="text"] {
 select.extra > option {
     color: #000;
 }
+.folder_class select
+{
+	width:208px;
+}
 .source
 {
 	margin-left:15px;
-}
-.playloadfolder label
-{
-    margin-left: 13px;
 }
