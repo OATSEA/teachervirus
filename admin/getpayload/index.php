@@ -71,7 +71,6 @@
         else
         {
             unset($_SESSION['isValidation']['folder_source']);
-            $_SESSION['isValidation']['flag'] = TRUE;
         }
         if($sPayloadSource == "Select Payload Source")
         {
@@ -81,19 +80,17 @@
         else
         {
             unset($_SESSION['isValidation']['payload_source']);
-            $_SESSION['isValidation']['flag'] = TRUE;
         }
         if($sPayloadSource == 'github_payloads')
         {
             if(empty($sUserName))
             {
                 $_SESSION['isValidation']['user_name_required'] = 'Please enter username!!';
-                $_SESSION['isValidation']['flag'] = FALSE;
             }
             else
             {
                 unset($_SESSION['isValidation']['user_name_required']);
-                $_SESSION['isValidation']['flag'] = TRUE;
+                //$_SESSION['isValidation']['flag'] = TRUE;
             }
             if(empty($sRepository))
             {
@@ -103,7 +100,6 @@
             else
             {
                 unset($_SESSION['isValidation']['repository_required']);
-                $_SESSION['isValidation']['flag'] = TRUE;
             }
         }
         if($sPayloadSource == 'infected_device')
@@ -116,7 +112,6 @@
             else
             {
                 unset($_SESSION['isValidation']['device_address']);
-                $_SESSION['isValidation']['flag'] = TRUE;
             }
             if(empty($sInfectUserName))
             {
@@ -126,7 +121,6 @@
             else
             {
                 unset($_SESSION['isValidation']['infect_user_name']);
-                $_SESSION['isValidation']['flag'] = TRUE;
             }
         }
         if($sPayloadSource == 'website_url')
@@ -139,7 +133,6 @@
             else
             {
                 unset($_SESSION['isValidation']['payload_name']);
-                $_SESSION['isValidation']['flag'] = TRUE;
             }
             if(empty($sPayloadUrl))
             {
@@ -149,7 +142,6 @@
             else
             {
                 unset($_SESSION['isValidation']['payload_url']);
-                $_SESSION['isValidation']['flag'] = TRUE;
             }
         }
         if($sPayloadSource == 'file_browse')
@@ -162,7 +154,6 @@
             else
             {
                 unset($_SESSION['isValidation']['upload_file']);
-                $_SESSION['isValidation']['flag'] = TRUE;
             }
         }
         if($sPayloadSource == 'google_drive')
@@ -175,7 +166,6 @@
             else
             {
                 unset($_SESSION['isValidation']['google_payload_name']);
-                $_SESSION['isValidation']['flag'] = TRUE;
             }
             if(empty($sGoogleDriveLink))
             {
@@ -185,7 +175,6 @@
             else
             {
                 unset($_SESSION['isValidation']['google_drive_link']);
-                $_SESSION['isValidation']['flag'] = TRUE;
             }
         }
 
@@ -884,7 +873,7 @@
                     <div class="form-group">
                         <label class="col-sm-12 control-label">GitHub Username<font style="color:red">*</font> </label>
                         <div class="col-sm-12">    
-                            <input type="text" class="form-control" name="user_name">
+                            <input type="text" class="form-control" name="user_name" value="<?php echo isset($sUserName) ? $sUserName : ''; ?>">
                             <div class="error-message">
                                  <?php echo isset($_SESSION['isValidation']['user_name_required']) ? $_SESSION['isValidation']['user_name_required'] : '';?>
                             </div>
@@ -893,7 +882,7 @@
                     <div class="form-group">
                         <label class="col-sm-12 control-label">GitHub Repository<font style="color:red">*</font> </label>
                         <div class="col-sm-12">    
-                            <input type="text" class="form-control" name="repository">
+                            <input type="text" class="form-control" name="repository" value="<?php echo isset($sRepository) ? $sRepository : ''; ?>">
                             <div class="error-message">
                                 <?php echo isset($_SESSION['isValidation']['repository_required']) ? $_SESSION['isValidation']['repository_required'] : '';?>
                             </div>
@@ -904,7 +893,7 @@
                         <div class="form-group">
                             <label class="col-sm-12 control-label">Device Address (IP or URL)<font style="color:red">*</font> </label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" name="device_address">
+                                <input type="text" class="form-control" name="device_address" value="<?php echo isset($sDeviceAddress) ? $sDeviceAddress : ''; ?>">
                                     <div class="error-message1">
                                          <?php echo isset($_SESSION['isValidation']['device_address']) ? $_SESSION['isValidation']['device_address'] : '';?>
                                     </div><br/><br/>
@@ -912,7 +901,7 @@
                             <div class="col-sm-12 example">Provide an IP or URL - For Example: 192.168.143.1 or demo.teachervirus.org</div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-12 control-label">Port</label>
+                            <label class="col-sm-12 control-label">Port</label> 
                             <div class="col-sm-12">    
                                 <input type="text" class="form-control" name="port_number" id="port_number" value="8080"><a href="javascript:void(0);" onClick="removePort();"><input type="button" class="button" value="Clear" onClick="removePort('branch_name');"/><br/></a>
                             </div>
@@ -920,7 +909,7 @@
                         <div class="form-group">
                             <label class="col-sm-12 control-label">Folder/Payload Name<font style="color:red">*</font></label>
                             <div class="col-sm-12">    
-                                <input type="text" class="form-control" name="infect_user_name">
+                                <input type="text" class="form-control" name="infect_user_name" value="<?php echo isset($sInfectUserName) ? $sInfectUserName :''; ?>">
                                 <div id="infect_user_input" class="error-message1">
                                     <?php echo isset($_SESSION['isValidation']['infect_user_name']) ? $_SESSION['isValidation']['infect_user_name'] : '';?>
                                 </div>
@@ -931,7 +920,7 @@
                         <div class="form-group">
                             <label class="col-sm-12 control-label">Payload Name <font style="color:red">*</font></label>
                             <div class="col-sm-12">  
-                                <input type="text" class="form-control" name="payload_name">
+                                <input type="text" class="form-control" name="payload_name" value="<?php echo isset($sPayloadName) ? $sPayloadName: '';?>">
                                 <div class="error-message">
                                     <?php echo isset($_SESSION['isValidation']['payload_name']) ? $_SESSION['isValidation']['payload_name'] : '';?>
                                 </div>
@@ -940,7 +929,7 @@
                         <div class="form-group">
                             <label class="urlwebsite control-label">URL <font style="color:red">*</font></label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" name="payload_url">
+                                <input type="text" class="form-control" name="payload_url" value="<?php echo isset($sPayloadUrl) ? $sPayloadUrl: '';?>">
                                 <div id="url_input" class="error-message">
                                     <?php echo isset($_SESSION['isValidation']['payload_url']) ? $_SESSION['isValidation']['payload_url'] : '';?>
                                 </div>
@@ -951,7 +940,7 @@
                         <div class="form-group">
                             <label class="col-sm-12 control-label">Payload Name<font style="color:red">*</font></label>
                                 <div class="col-sm-12">
-                                        <input type="text" class="form-control" name="google_payload_name">
+                                        <input type="text" class="form-control" name="google_payload_name" value="<?php echo isset($sGooglePayloadName) ? $sGooglePayloadName: '';?>">
                                     <div class="error-message">
                                         <?php echo isset($_SESSION['isValidation']['google_payload_name']) ? $_SESSION['isValidation']['google_payload_name'] : '';?>
                                     </div>
@@ -960,7 +949,7 @@
                         <div class="form-group">
                             <label class="col-sm-12 control-label">Google Drive Link<font style="color:red">*</font> </label>  
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" name="google_drive_link">
+                                <input type="text" class="form-control" name="google_drive_link" value="<?php echo isset($sGoogleDriveLink) ? $sGoogleDriveLink: '';?>">
                                 <div id="url_input" class="error-message">
                                      <?php echo isset($_SESSION['isValidation']['google_drive_link']) ? $_SESSION['isValidation']['google_drive_link'] : '';?>
                                  </div><br/><br/>
@@ -970,7 +959,7 @@
                     </div>
                     <div id="file_browse" style="display:none;" class="source">
                         <div class="col-sm-12">
-                            <input type="file" name="upload_file" value="Browse">
+                            <input type="file" name="upload_file" value="<?php echo isset($sFileName) ? $sFileName: '';?>Browse">
                             <div class="error-message">
                                 <?php echo isset($_SESSION['isValidation']['upload_file']) ? $_SESSION['isValidation']['upload_file'] : '';?>
                             </div>
