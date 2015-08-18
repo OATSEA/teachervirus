@@ -14,6 +14,7 @@
     {
         $sLanguage = isset($_POST['language']) ? $_POST['language'] : '';
         $bShowDebugText = isset($_POST['show_debug']) ? $_POST['show_debug'] : 0;
+        $bShowAdminText = isset($_POST['show_admin']) ? $_POST['show_admin'] : 0;
         $sFolderLocation = isset($_POST['folder_location'])? $_POST['folder_location'] : '';
         $bExternalSource = isset($_POST['external_source'])? $_POST['external_source'] : 0;
 
@@ -48,13 +49,14 @@ define('SITE_URL','$sSiteUrl');
 define('ROOT_PATH','$sFolderLocation');
 define('LANGUAGE','$sLanguage');
 define('DEBUG_TEXT','$bShowDebugText');
+define('ADMIN_TEXT','$bShowAdminText');
 define('EXTERNAL_TEXT','$bExternalSource');
 ?>";
+            
             $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
             $destination = $sFolderPath.'/data';
             $myfile = fopen("$destination/constants.php", "w");
-            $txt = $sListContent;
-            fwrite($myfile, $txt);
+            fwrite($myfile, $sListContent);
             fclose($myfile);
 
             require_once "$destination/constants.php";
@@ -112,7 +114,98 @@ define('EXTERNAL_TEXT','$bExternalSource');
                 <div class="form-group">
                     <label class="col-sm-12 control-label">Language:</label>
                     <div class="col-sm-12">    
-                        <input type="text" name="language" id="language" value="<?php echo isset($_POST['language']) ? $_POST['language'] : LANGUAGE; ?>" >
+                        <!--<input type="text" name="language" id="language" value="<?php echo isset($_POST['language']) ? $_POST['language'] : LANGUAGE; ?>" >-->
+                        <select name="language" class="col-sm-3 form-control extra">
+                            <option value="ar"<?php echo ((isset($_POST['language']) && $_POST['language'] == "ar") || (LANGUAGE == "ar")) ? "selected='selected'" : ""; ?>>Arabic</option>
+                            <option value="af"<?php echo ((isset($_POST['language']) && $_POST['language'] == "af") || (LANGUAGE == "af")) ? "selected='selected'" : ""; ?>>Afrikaans</option>
+                            <option value="sq"<?php echo ((isset($_POST['language']) && $_POST['language'] == "sq") || (LANGUAGE == "sq")) ? "selected='selected'" : ""; ?>>Albanian</option>
+                            <option value="hy"<?php echo ((isset($_POST['language']) && $_POST['language'] == "hy") || (LANGUAGE == "hy")) ? "selected='selected'" : ""; ?>>Armenian</option>
+                            <option value="az"<?php echo ((isset($_POST['language']) && $_POST['language'] == "az") || (LANGUAGE == "az")) ? "selected='selected'" : ""; ?>>Azerbaijani</option>
+                            <option value="eu"<?php echo ((isset($_POST['language']) && $_POST['language'] == "eu") || (LANGUAGE == "eu")) ? "selected='selected'" : ""; ?>>Basque</option>
+                            <option value="be"<?php echo ((isset($_POST['language']) && $_POST['language'] == "be") || (LANGUAGE == "be")) ? "selected='selected'" : ""; ?>>Belarusian</option>
+                            <option value="bn"<?php echo ((isset($_POST['language']) && $_POST['language'] == "bn") || (LANGUAGE == "bn")) ? "selected='selected'" : ""; ?>>Bengali</option>
+                            <option value="bs"<?php echo ((isset($_POST['language']) && $_POST['language'] == "bs") || (LANGUAGE == "bs")) ? "selected='selected'" : ""; ?>>Bosnian</option>
+                            <option value="bg"<?php echo ((isset($_POST['language']) && $_POST['language'] == "bg") || (LANGUAGE == "bg")) ? "selected='selected'" : ""; ?>>Bulgarian</option>
+                            <option value="my"<?php echo ((isset($_POST['language']) && $_POST['language'] == "my") || (LANGUAGE == "my")) ? "selected='selected'" : ""; ?>>Burmese</option>
+                            <option value="ca"<?php echo ((isset($_POST['language']) && $_POST['language'] == "ca") || (LANGUAGE == "ca")) ? "selected='selected'" : ""; ?>>Catalan</option>
+                            <option value="ceb"<?php echo ((isset($_POST['language']) && $_POST['language'] == "ceb") || (LANGUAGE == "ceb")) ? "selected='selected'" : ""; ?>>Cebuano</option>
+                            <option value="zh-CN"<?php echo ((isset($_POST['language']) && $_POST['language'] == "zh-CN") || (LANGUAGE == "zh-CN")) ? "selected='selected'" : ""; ?>>Chinese (Simplified)</option>
+                            <option value="zh-TW"<?php echo ((isset($_POST['language']) && $_POST['language'] == "zh-TW") || (LANGUAGE == "zh-TW")) ? "selected='selected'" : ""; ?>>Chinese (Traditional)</option>
+                            <option value="hr"<?php echo ((isset($_POST['language']) && $_POST['language'] == "hr") || (LANGUAGE == "hr")) ? "selected='selected'" : ""; ?>>Croatian</option>
+                            <option value="cs"<?php echo ((isset($_POST['language']) && $_POST['language'] == "cs") || (LANGUAGE == "cs")) ? "selected='selected'" : ""; ?>>Czech</option>
+                            <option value="da"<?php echo ((isset($_POST['language']) && $_POST['language'] == "da") || (LANGUAGE == "da")) ? "selected='selected'" : ""; ?>>Danish</option>
+                            <option value="nl"<?php echo ((isset($_POST['language']) && $_POST['language'] == "nl")|| (LANGUAGE == "nl")) ? "selected='selected'" : ""; ?>>Dutch</option>
+                            <option value="en"<?php echo (((isset($_POST['language']) && $_POST['language'] == "en") || (LANGUAGE == "en")) ? "selected='selected'" : (!isset($_POST) ? "selected='selected'" : "")); ?>>English</option>
+                            <option value="eo"<?php echo ((isset($_POST['language']) && $_POST['language'] == "eo") || (LANGUAGE == "eo")) ? "selected='selected'" : ""; ?>>Esperanto</option>
+                            <option value="et"<?php echo ((isset($_POST['language']) && $_POST['language'] == "et") || (LANGUAGE == "et")) ? "selected='selected'" : ""; ?>>Estonian</option>
+                            <option value="tl"<?php echo ((isset($_POST['language']) && $_POST['language'] == "tl") || (LANGUAGE == "tl")) ? "selected='selected'" : ""; ?>>Filipino</option>
+                            <option value="fi"<?php echo ((isset($_POST['language']) && $_POST['language'] == "fi") || (LANGUAGE == "fi")) ? "selected='selected'" : ""; ?>>Finnish</option>
+                            <option value="fr"<?php echo ((isset($_POST['language']) && $_POST['language'] == "fr") || (LANGUAGE == "fr")) ? "selected='selected'" : ""; ?>>French</option>
+                            <option value="gl"<?php echo ((isset($_POST['language']) && $_POST['language'] == "gl") || (LANGUAGE == "gl")) ? "selected='selected'" : ""; ?>>Galician</option>
+                            <option value="ka"<?php echo ((isset($_POST['language']) && $_POST['language'] == "ka") || (LANGUAGE == "ka")) ? "selected='selected'" : ""; ?>>Georgian</option>
+                            <option value="de"<?php echo ((isset($_POST['language']) && $_POST['language'] == "de") || (LANGUAGE == "de")) ? "selected='selected'" : ""; ?>>German</option>
+                            <option value="el"<?php echo ((isset($_POST['language']) && $_POST['language'] == "el") || (LANGUAGE == "el")) ? "selected='selected'" : ""; ?>>Greek</option>
+                            <option value="gu"<?php echo ((isset($_POST['language']) && $_POST['language'] == "gu") || (LANGUAGE == "gu")) ? "selected='selected'" : ""; ?>>Gujarati</option>
+                            <option value="ht"<?php echo ((isset($_POST['language']) && $_POST['language'] == "ht") || (LANGUAGE == "ht")) ? "selected='selected'" : ""; ?>>Haitian</option>
+                            <option value="ha"<?php echo ((isset($_POST['language']) && $_POST['language'] == "ha") || (LANGUAGE == "ha")) ? "selected='selected'" : ""; ?>>Hausa</option>
+                            <option value="iw"<?php echo ((isset($_POST['language']) && $_POST['language'] == "iw") || (LANGUAGE == "iw")) ? "selected='selected'" : ""; ?>>Hebrew</option>
+                            <option value="hi"<?php echo ((isset($_POST['language']) && $_POST['language'] == "hi") || (LANGUAGE == "hi")) ? "selected='selected'" : ""; ?>>Hindi</option>
+                            <option value="hmn"<?php echo ((isset($_POST['language']) && $_POST['language'] == "hmn") || (LANGUAGE == "hmn")) ? "selected='selected'" : ""; ?>>Hmong</option>
+                            <option value="hu"<?php echo ((isset($_POST['language']) && $_POST['language'] == "hu") || (LANGUAGE == "hu")) ? "selected='selected'" : ""; ?>>Hungarian</option>
+                            <option value="is"<?php echo ((isset($_POST['language']) && $_POST['language'] == "is") || (LANGUAGE == "is")) ? "selected='selected'" : ""; ?>>Icelandic</option>
+                            <option value="ig"<?php echo ((isset($_POST['language']) && $_POST['language'] == "ig") || (LANGUAGE == "ig")) ? "selected='selected'" : ""; ?>>Igbo</option>
+                            <option value="id"<?php echo ((isset($_POST['language']) && $_POST['language'] == "id") || (LANGUAGE == "id")) ? "selected='selected'" : ""; ?>>Indonesian</option>
+                            <option value="ga"<?php echo ((isset($_POST['language']) && $_POST['language'] == "ga") || (LANGUAGE == "ga")) ? "selected='selected'" : ""; ?>>Irish</option>
+                            <option value="it"<?php echo ((isset($_POST['language']) && $_POST['language'] == "it") || (LANGUAGE == "it")) ? "selected='selected'" : ""; ?>>Italian</option>
+                            <option value="ja"<?php echo ((isset($_POST['language']) && $_POST['language'] == "ja") || (LANGUAGE == "ja")) ? "selected='selected'" : ""; ?>>Japanese</option>
+                            <option value="jv"<?php echo ((isset($_POST['language']) && $_POST['language'] == "jv") || (LANGUAGE == "jv")) ? "selected='selected'" : ""; ?>>Javanese</option>
+                            <option value="kn"<?php echo ((isset($_POST['language']) && $_POST['language'] == "kn") || (LANGUAGE == "kn")) ? "selected='selected'" : ""; ?>>Kannada</option>
+                            <option value="kk"<?php echo ((isset($_POST['language']) && $_POST['language'] == "kk") || (LANGUAGE == "kk")) ? "selected='selected'" : ""; ?>>Kazakh</option>
+                            <option value="km"<?php echo ((isset($_POST['language']) && $_POST['language'] == "km") || (LANGUAGE == "km")) ? "selected='selected'" : ""; ?>>Khmer</option>
+                            <option value="ko"<?php echo ((isset($_POST['language']) && $_POST['language'] == "ko") || (LANGUAGE == "ko")) ? "selected='selected'" : ""; ?>>Korean</option>
+                            <option value="lo"<?php echo ((isset($_POST['language']) && $_POST['language'] == "lo") || (LANGUAGE == "lo")) ? "selected='selected'" : ""; ?>>Lao</option>
+                            <option value="la"<?php echo ((isset($_POST['language']) && $_POST['language'] == "la") || (LANGUAGE == "la")) ? "selected='selected'" : ""; ?>>Latin</option>
+                            <option value="lv"<?php echo ((isset($_POST['language']) && $_POST['language'] == "lv") || (LANGUAGE == "lv")) ? "selected='selected'" : ""; ?>>Latvian</option>
+                            <option value="lt"<?php echo ((isset($_POST['language']) && $_POST['language'] == "lt") || (LANGUAGE == "lt")) ? "selected='selected'" : ""; ?>>Lithuanian</option>
+                            <option value="mk"<?php echo ((isset($_POST['language']) && $_POST['language'] == "mk") || (LANGUAGE == "mk")) ? "selected='selected'" : ""; ?>>Macedonian</option>
+                            <option value="mg"<?php echo ((isset($_POST['language']) && $_POST['language'] == "mg") || (LANGUAGE == "mg")) ? "selected='selected'" : ""; ?>>Malagasy</option>
+                            <option value="ms"<?php echo ((isset($_POST['language']) && $_POST['language'] == "ms") || (LANGUAGE == "ms")) ? "selected='selected'" : ""; ?>>Malay</option>
+                            <option value="ml"<?php echo ((isset($_POST['language']) && $_POST['language'] == "ml") || (LANGUAGE == "ml")) ? "selected='selected'" : ""; ?>>Malayalam</option>
+                            <option value="mt"<?php echo ((isset($_POST['language']) && $_POST['language'] == "mt") || (LANGUAGE == "mt")) ? "selected='selected'" : ""; ?>>Maltese</option>
+                            <option value="mi"<?php echo ((isset($_POST['language']) && $_POST['language'] == "mi") || (LANGUAGE == "mi")) ? "selected='selected'" : ""; ?>>Maori</option>
+                            <option value="mr"<?php echo ((isset($_POST['language']) && $_POST['language'] == "mr") || (LANGUAGE == "mr")) ? "selected='selected'" : ""; ?>>Marathi</option>
+                            <option value="mn"<?php echo ((isset($_POST['language']) && $_POST['language'] == "mn") || (LANGUAGE == "mn")) ? "selected='selected'" : ""; ?>>Mongolian</option>
+                            <option value="ne"<?php echo ((isset($_POST['language']) && $_POST['language'] == "ne") || (LANGUAGE == "ne")) ? "selected='selected'" : ""; ?>>Nepali</option>
+                            <option value="no"<?php echo ((isset($_POST['language']) && $_POST['language'] == "no") || (LANGUAGE == "no")) ? "selected='selected'" : ""; ?>>Norwegian</option>
+                            <option value="ny"<?php echo ((isset($_POST['language']) && $_POST['language'] == "ny") || (LANGUAGE == "ny")) ? "selected='selected'" : ""; ?>>Nyanja</option>
+                            <option value="fa"<?php echo ((isset($_POST['language']) && $_POST['language'] == "pl") || (LANGUAGE == "pl")) ? "selected='selected'" : ""; ?>>Polish</option>
+                            <option value="pt"<?php echo ((isset($_POST['language']) && $_POST['language'] == "pt") || (LANGUAGE == "pt")) ? "selected='selected'" : ""; ?>>Portuguese</option>
+                            <option value="pa"<?php echo ((isset($_POST['language']) && $_POST['language'] == "pa") || (LANGUAGE == "pa")) ? "selected='selected'" : ""; ?>>Punjabi</option>
+                            <option value="ro"<?php echo ((isset($_POST['language']) && $_POST['language'] == "ro") || (LANGUAGE == "ro")) ? "selected='selected'" : ""; ?>>Romanian</option>
+                            <option value="ru"<?php echo ((isset($_POST['language']) && $_POST['language'] == "ru") || (LANGUAGE == "ru")) ? "selected='selected'" : ""; ?>>Russian</option>
+                            <option value="sr"<?php echo ((isset($_POST['language']) && $_POST['language'] == "sr") || (LANGUAGE == "sr")) ? "selected='selected'" : ""; ?>>Serbian</option>
+                            <option value="si"<?php echo ((isset($_POST['language']) && $_POST['language'] == "si") || (LANGUAGE == "si")) ? "selected='selected'" : ""; ?>>Sinhala</option>
+                            <option value="sk"<?php echo ((isset($_POST['language']) && $_POST['language'] == "sk") || (LANGUAGE == "sk")) ? "selected='selected'" : ""; ?>>Slovak</option>
+                            <option value="sl"<?php echo ((isset($_POST['language']) && $_POST['language'] == "sl") || (LANGUAGE == "sl")) ? "selected='selected'" : ""; ?>>Slovenian</option>
+                            <option value="so"<?php echo ((isset($_POST['language']) && $_POST['language'] == "so") || (LANGUAGE == "so")) ? "selected='selected'" : ""; ?>>Somali</option>
+                            <option value="es"<?php echo ((isset($_POST['language']) && $_POST['language'] == "es") || (LANGUAGE == "es")) ? "selected='selected'" : ""; ?>>Spanish</option>
+                            <option value="su"<?php echo ((isset($_POST['language']) && $_POST['language'] == "su") || (LANGUAGE == "su")) ? "selected='selected'" : ""; ?>>Sundanese</option>
+                            <option value="sw"<?php echo ((isset($_POST['language']) && $_POST['language'] == "sw") || (LANGUAGE == "sw")) ? "selected='selected'" : ""; ?>>Swahili</option>
+                            <option value="sv"<?php echo ((isset($_POST['language']) && $_POST['language'] == "sv") || (LANGUAGE == "sv")) ? "selected='selected'" : ""; ?>>Swedish</option>
+                            <option value="tg"<?php echo ((isset($_POST['language']) && $_POST['language'] == "tg") || (LANGUAGE == "tg")) ? "selected='selected'" : ""; ?>>Tajik</option>
+                            <option value="ta"<?php echo ((isset($_POST['language']) && $_POST['language'] == "ta") || (LANGUAGE == "ta")) ? "selected='selected'" : ""; ?>>Tamil</option>
+                            <option value="te"<?php echo ((isset($_POST['language']) && $_POST['language'] == "te") || (LANGUAGE == "te")) ? "selected='selected'" : ""; ?>>Telugu</option>
+                            <option value="th"<?php echo ((isset($_POST['language']) && $_POST['language'] == "th") || (LANGUAGE == "th")) ? "selected='selected'" : ""; ?>>Thai</option>
+                            <option value="tr"<?php echo ((isset($_POST['language']) && $_POST['language'] == "tr") || (LANGUAGE == "tr")) ? "selected='selected'" : ""; ?>>Turkish</option>
+                            <option value="uk"<?php echo ((isset($_POST['language']) && $_POST['language'] == "uk") || (LANGUAGE == "uk")) ? "selected='selected'" : ""; ?>>Ukrainian</option>
+                            <option value="ur"<?php echo ((isset($_POST['language']) && $_POST['language'] == "ur") || (LANGUAGE == "ur")) ? "selected='selected'" : ""; ?>>Urdu</option>
+                            <option value="uz"<?php echo ((isset($_POST['language']) && $_POST['language'] == "uz") || (LANGUAGE == "uz")) ? "selected='selected'" : ""; ?>>Uzbek</option>
+                            <option value="vi"<?php echo ((isset($_POST['language']) && $_POST['language'] == "vi") || (LANGUAGE == "vi")) ? "selected='selected'" : ""; ?>>Vietnamese</option>
+                            <option value="cy"<?php echo ((isset($_POST['language']) && $_POST['language'] == "cy") || (LANGUAGE == "cy")) ? "selected='selected'" : ""; ?>>Welsh</option>
+                            <option value="yi"<?php echo ((isset($_POST['language']) && $_POST['language'] == "yi") || (LANGUAGE == "yi")) ? "selected='selected'" : ""; ?>>Yiddish</option>
+                            <option value="yo"<?php echo ((isset($_POST['language']) && $_POST['language'] == "yo") || (LANGUAGE == "yo")) ? "selected='selected'" : ""; ?>>Yoruba</option>
+                            <option value="zu"<?php echo ((isset($_POST['language']) && $_POST['language'] == "zu") || (LANGUAGE == "zu")) ? "selected='selected'" : ""; ?>>Zulu</option>
+                            </select>
                     </div>
                 </div>
                 <div class="form-group">
@@ -136,6 +229,12 @@ define('EXTERNAL_TEXT','$bExternalSource');
                     <div class="col-sm-12">
                         <input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($bShowDebugText) ? $bShowDebugText : DEBUG_TEXT; ?>" <?php echo ((isset($bShowDebugText) && $bShowDebugText == 1) || (DEBUG_TEXT == '1')) ? "checked='checked'" : ""; ?> onClick="changeValue('show_debug');">
                         <label class="start_payload">Show debug text?</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input type="checkbox" name="show_admin" id="show_admin" value="<?php echo isset($bShowAdminText) ? $bShowAdminText : ADMIN_TEXT; ?>" <?php echo ((isset($bShowAdminText) && $bShowAdminText == 1) || (ADMIN_TEXT == '1')) ? "checked='checked'" : ""; ?> onClick="changeValue('show_admin');">
+                        <label class="start_payload">Show Admin Cog to Student?</label>
                     </div>
                 </div>
                 <div class="go-button btn btn-lg btn-primary">
