@@ -3,7 +3,7 @@
     $sDestination = $sFolderPath.'/data/constants.php';
     if (file_exists($sDestination)) 
     {
-        require 'constants.php'; 
+        require(ROOT_DIR.'/data/constants.php'); 
     }
     else 
     {
@@ -22,6 +22,6 @@
         $myfile = fopen("$sDestination", "w");
         fwrite($myfile, $sListContent);
         fclose($myfile);
-        require 'constants.php';
+        require(ROOT_DIR.'/data/constants.php');
     }
 ?>

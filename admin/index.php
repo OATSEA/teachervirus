@@ -1,21 +1,21 @@
 <?php
     $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
     $sDestination = $sFolderPath.'/data/bootstrap.php';
-    require_once $sDestination;
+    require_once($sDestination);
 ?>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Icons Menu</title>
-        <link href="buttons.css" rel="stylesheet">
-        <link href="../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="changePassword/_style/changePassword.css"/>
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-        <script src="changePassword/js/jquery-1.11.1.js"></script>
-        <script src='../js/jquery.imagefit.js'></script>
-        <script src="buttons.js"></script>
-        <script src="changePassword/_script/changePassword.js"></script>
+        <link href="<?php echo SITE_URL; ?>/admin/buttons.css" rel="stylesheet">
+        <link href="<?php echo SITE_URL; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="<?php echo SITE_URL; ?>/admin/changePassword/_style/changePassword.css"/>
+        <script src="<?php echo SITE_URL; ?>/admin/changePassword/js/jquery-1.11.1.js"></script>
+        <script src='<?php echo SITE_URL; ?>/js/jquery.imagefit.js'></script>
+        <script src="<?php echo SITE_URL; ?>/admin/buttons.js"></script>
+        <script src="<?php echo SITE_URL; ?>/admin/changePassword/_script/changePassword.js"></script>
         <script>$(document).ready(function() { setup(); }); </script>
     </head>
     <body class="main" >
@@ -24,9 +24,9 @@
 
             $_SESSION['password_generated'] = false;
             $nConfirmPasswordFlag = 0;
-            if (file_exists($_SERVER['DOCUMENT_ROOT']."/data/admin/username_password.php")) 
+            if (file_exists(ROOT_DIR."/data/admin/username_password.php")) 
             {
-                require $_SERVER['DOCUMENT_ROOT']."/data/admin/username_password.php";
+                require(ROOT_DIR."/data/admin/username_password.php");
                 //Checking for request method.
                 if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['pattern_password']))
                 {
@@ -51,7 +51,9 @@
                     $sChangePasswordURL =  str_replace('admin', 'admin/changePassword', $thisURL);
                     $sInfectedURL =  str_replace('admin', 'admin/getinfected', $thisURL);
                     $sSettingURL =  str_replace('admin', 'admin/settings', $thisURL);
-                    require 'header.php';
+                    
+                    require(ROOT_DIR.'/admin/header.php');
+                    
                     foreach(glob($rootdir, GLOB_ONLYDIR) as $dir)
                     { 
                         $dir = basename($dir); 
@@ -67,9 +69,9 @@
                             echo '<a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.png" /></a>';
                         }
                     }
-                    (isset($sChangePasswordURL) && !empty($sChangePasswordURL)) ? '<a href="'.SITE_URL.'/'.$sChangePasswordURL.'"><img class="mybutton" alt="Change Password" src="'.$sChangePasswordURL.'icon.png" /></a>' : '';
-                    (isset($sInfectedURL) && !empty($sInfectedURL)) ? '<a href="'.SITE_URL.'/'.$sInfectedURL.'"><img class="mybutton" alt="Get Infected" src="'.$sInfectedURL.'icon.png" /></a>' : '';
-                    (isset($sSettingURL) && !empty($sSettingURL)) ? '<a href="'.SITE_URL.'/'.$sSettingURL.'"><img class="mybutton" alt="Settings" src="'.$sSettingURL.'icon.png" /></a>' : '';
+                    (isset($sChangePasswordURL) && !empty($sChangePasswordURL)) ? '<a href="'.SITE_URL.'/'.$sChangePasswordURL.'"><img class="mybutton" alt="Change Password" src="'.SITE_URL.'/'.$sChangePasswordURL.'icon.png" /></a>' : '';
+                    (isset($sInfectedURL) && !empty($sInfectedURL)) ? '<a href="'.SITE_URL.'/'.$sInfectedURL.'"><img class="mybutton" alt="Get Infected" src="'.SITE_URL.'/'.$sInfectedURL.'icon.png" /></a>' : '';
+                    (isset($sSettingURL) && !empty($sSettingURL)) ? '<a href="'.SITE_URL.'/'.$sSettingURL.'"><img class="mybutton" alt="Settings" src="'.SITE_URL.'/'.$sSettingURL.'icon.png" /></a>' : '';
                 }
                 else
                 {
@@ -140,8 +142,8 @@
                 }
                 if(isset($_SESSION['password_generated']) && $_SESSION['password_generated'])
                 {
-                    mkdir($_SERVER['DOCUMENT_ROOT']."/data/admin");
-                    $username_password = $_SERVER['DOCUMENT_ROOT']."/data/admin/username_password.php";
+                    mkdir(SITE_URL."/data/admin");
+                    $username_password = SITE_URL."/data/admin/username_password.php";
                     $handle = fopen($username_password, 'w')or die('Cannot open file:  '.$username_password); ;
                     $sPassword = md5($_POST['confirm_password']);
                     $txt = '<?php

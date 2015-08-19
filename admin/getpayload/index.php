@@ -8,10 +8,10 @@
     <head>
         <title>Payloads</title>
         <meta charset="utf-8">
-        <link href="../../css/bootstrap.min.css" rel="stylesheet">
-        <link href="../buttons.css" rel="stylesheet">
-        <link href="../../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-        <script src="../../js/jquery.js" type="text/javascript"></script>
+        <link href="<?php echo SITE_URL; ?>/css/bootstrap.min.css" rel="stylesheet">
+        <link href="<?php echo SITE_URL; ?>/admin/buttons.css" rel="stylesheet">
+        <link href="<?php echo SITE_URL; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <script src="<?php echo SITE_URL; ?>/js/jquery.js" type="text/javascript"></script>
         <script type="text/javascript">
             function checkLoaded(loaded){
                 if(loaded == true)

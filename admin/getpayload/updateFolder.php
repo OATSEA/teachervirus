@@ -1,4 +1,8 @@
 <?php
+    $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
+    $sDestination = $sFolderPath.'/data/bootstrap.php';
+    require_once($sDestination);
+    
     $_SESSION['isValidation']['flag'] = TRUE;
     if($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_SESSION['isValidation']))
     {
@@ -10,14 +14,14 @@
     }
     function listFolderFiles($dir,$sSelectedVal)
     {
-        $sNewDirPath = $_SERVER['DOCUMENT_ROOT'].'/'.$dir;
+        $sNewDirPath = ROOT_DIR.'/'.$dir;
         $ffs = array();
-        if(is_dir($_SERVER['DOCUMENT_ROOT'].'/'.$dir))
-        $ffs = scandir($_SERVER['DOCUMENT_ROOT'].'/'.$dir);
+        if(is_dir($sNewDirPath))
+        $ffs = scandir($sNewDirPath);
         $nHiddenCnt = 0;
         foreach($ffs as $ff)
         {
-                if(is_dir($_SERVER['DOCUMENT_ROOT'].'/'.$dir.'/'.$ff) && $ff != '.' && $ff != '..')
+                if(is_dir($sNewDirPath.'/'.$ff) && $ff != '.' && $ff != '..')
                 {
         ?>
                     <option value="<?php echo $ff ?>" <?php echo ($sSelectedVal == $ff) ? "selected='selected'"  : "" ; ?>><?php echo $ff ?></option>

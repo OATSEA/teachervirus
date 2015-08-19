@@ -1,9 +1,9 @@
 <?php
     $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
     $sDestination = $sFolderPath.'/data/bootstrap.php';
-    require_once $sDestination;
+    require_once($sDestination);
     
-    require '../checkLogin.php';
+    require(ROOT_DIR.'/admin/checkLogin.php');
     if(session_status()!=PHP_SESSION_ACTIVE) session_start(); 
 ?>
 <!DOCTYPE html>
@@ -14,11 +14,11 @@
     <title>Pattern Lock</title>
 </head>
 <body class="main" >
-    <link rel="stylesheet" type="text/css" href="_style/changePassword.css"/>
-    <link href="../buttons.css" rel="stylesheet">
-    <link href="../../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <script src="_script/changePassword.js"></script>
-    <script src="js/jquery-1.11.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo SITE_URL; ?>/admin/changePassword/_style/changePassword.css"/>
+    <link href="<?php echo SITE_URL; ?>/admin/buttons.css" rel="stylesheet">
+    <link href="<?php echo SITE_URL; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <script src="<?php echo SITE_URL; ?>/admin/changePassword/_script/changePassword.js"></script>
+    <script src="<?php echo SITE_URL; ?>/admin/changePassword/js/jquery-1.11.1.js"></script>
     <script>
         function submitform(){
            return true;
@@ -137,7 +137,7 @@
     }
     if(isset($_SESSION['password_changed']) && $_SESSION['password_changed'])
     {
-        $sDirName = $_SERVER['DOCUMENT_ROOT']."/data/admin/";
+        $sDirName = ROOT_DIR."/data/admin/";
         $username_password = 'username_password.php';
         unlink($sDirName.$username_password);
         $handle = fopen($sDirName.$username_password, 'w')or die('Cannot open file:  '.$username_password); ;

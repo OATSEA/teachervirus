@@ -2,10 +2,20 @@
 <html>
     <head>
        <meta charset="utf-8">
-       <link href="../../css/bootstrap.min.css" rel="stylesheet">
-       <link href="../buttons.css" rel="stylesheet">
-       <link href="../../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-       <script src="../../js/jquery.js" type="text/javascript"></script>
+       <?php
+            $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
+            $destination = $sFolderPath.'/data';
+            if(file_exists($destination."/constants.php"))
+            {
+                require_once("$destination/constants.php");
+                $sDocumentRoot = ROOT_DIR;
+                $sSiteUrl = SITE_URL;
+            }
+       ?>
+       <link href="<?php echo SITE_URL; ?>/css/bootstrap.min.css" rel="stylesheet">
+       <link href="<?php echo SITE_URL; ?>/admin/buttons.css" rel="stylesheet">
+       <link href="<?php echo SITE_URL; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+       <script src="<?php echo SITE_URL; ?>/js/jquery.js" type="text/javascript"></script>
     </head>
     <body>
     <?php
@@ -31,13 +41,7 @@
             {
                 $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
                 $destination = $sFolderPath.'/data';
-                if(file_exists($destination."/constants.php"))
-                {
-                    require_once "$destination/constants.php";
-                    $sDocumentRoot = ROOT_DIR;
-                    $sSiteUrl = SITE_URL;
-                }
-                else
+                if(!file_exists($destination."/constants.php"))
                 {
                     $sDocumentRoot = $_SERVER['DOCUMENT_ROOT'];
                     $sSiteUrl = (isset($_SERVER['SERVER_NAME']) ? "http://".$_SERVER['SERVER_NAME'] : '');
@@ -53,7 +57,6 @@ define('DEBUG_TEXT','$bShowDebugText');
 define('EXTERNAL_TEXT','$bExternalSource');
 define('ADMIN_COG','$bAdminCog');
 ?>";
-            
                 $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
                 $destination = $sFolderPath.'/data';
                 $myfile = fopen("$destination/constants.php", "w");
@@ -61,7 +64,7 @@ define('ADMIN_COG','$bAdminCog');
                 fwrite($myfile, $txt);
                 fclose($myfile);
 
-                require_once "$destination/constants.php";
+                require_once("$destination/constants.php");
                 echo '<h2>Settings Saved Successfully!!</h2>'
                     . '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
                     . '<div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>';
@@ -73,9 +76,6 @@ define('ADMIN_COG','$bAdminCog');
 
         if($_SESSION['isValidation']['flag'] == 1 || count($_SESSION['isValidation']) > 1)
         {
-            $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
-            $sDestination = $sFolderPath.'/data/bootstrap.php';
-            require_once $sDestination;
     ?>
             <script type="text/javascript">
                 function changeValue(eValue)
@@ -218,9 +218,9 @@ define('ADMIN_COG','$bAdminCog');
                     </div>
                     <div id="folder_location_address" style="<?php echo ((isset($bExternalSource) && ($bExternalSource == 1)) || (EXTERNAL_TEXT == '1')) ? "display:block;" : "display:none;"; ?>">
                         <div class="form-group">
-                            <label class="col-sm-12 control-label">Folder Location:<font style="color:red">*</font></label>
-                            <label class="col-sm-12 control-label"><?php echo ROOT_DIR;?></label>
-                            <div class="col-sm-12">
+                            <label class="col-sm-12 control-label">Folder Location<font style="color:red">*</font></label>
+                            <label class="col-sm-4 control-label"><?php echo ROOT_DIR.'/';?></label>
+                            <div class="col-sm-8 folder_text">
                                 <input type="text" name="folder_location" class="form-control" value="<?php echo isset($_POST['folder_location']) ? $_POST['folder_location'] : EXTERNAL_FOLDER ; ?>" ></label>
                                 <div class="error-message">
                                     <?php echo isset($_SESSION['isValidation']['folder_location_required']) ? $_SESSION['isValidation']['folder_location_required'] : '';?>

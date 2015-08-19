@@ -325,3 +325,7 @@ select.extra > option {
     margin: 0px;
     padding: 0px;
 }
+.col-sm-8.folder_text
+{
+    margin-left: -60px !important;
+}

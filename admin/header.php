@@ -1,9 +1,9 @@
-<?php 
+<?php
     $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
     $sDestination = $sFolderPath.'/data/bootstrap.php';
-    require_once $sDestination;
+    require_once($sDestination);
     
-    require 'checkLogin.php';
+    require(ROOT_DIR.'/admin/checkLogin.php');
 ?>
 <div class="color-white">
     <a class="play_img" href="<?php echo SITE_URL.'/'.$playURL; ?>"><i class="mainNav fa fa-play-circle-o fa-3x"></i></a>
