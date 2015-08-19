@@ -237,7 +237,7 @@ define('ADMIN_COG','$bAdminCog');
                     <div class="form-group">
                         <div class="col-sm-12">
                             <input type="checkbox" name="admin_cog" id="admin_cog" value="<?php echo isset($bAdminCog) ? $bAdminCog : ADMIN_COG; ?>" <?php echo ((isset($bAdminCog) && $bAdminCog == 1) || (ADMIN_COG == '1')) ? "checked='checked'" : ""; ?> onClick="changeValue('admin_cog');">
-                            <label class="start_payload">Show admin cog?</label>
+                            <label class="start_payload">Show admin cog to student?</label>
                         </div>
                     </div>
                     <div class="go-button btn btn-lg btn-primary">
