@@ -142,8 +142,8 @@
                 }
                 if(isset($_SESSION['password_generated']) && $_SESSION['password_generated'])
                 {
-                    mkdir(SITE_URL."/data/admin");
-                    $username_password = SITE_URL."/data/admin/username_password.php";
+                    mkdir(ROOT_DIR."/data/admin");
+                    $username_password = ROOT_DIR."/data/admin/username_password.php";
                     $handle = fopen($username_password, 'w')or die('Cannot open file:  '.$username_password); ;
                     $sPassword = md5($_POST['confirm_password']);
                     $txt = '<?php

@@ -2,7 +2,7 @@
     $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
     $sDestination = $sFolderPath.'/data/bootstrap.php';
     require_once $sDestination;
-    require '../checkLogin.php'; 
+    require(ROOT_DIR.'/admin/checkLogin.php');
 ?>
 <html>
     <head>
@@ -363,15 +363,15 @@
             {
                 if(!is_dir(EXTERNAL_PATH))
                 {
-                    mkdir(EXTERNAL_PATH,1,$nMode);
-                    mkdir(EXTERNAL_PATH.'/payloads',1,$nMode);
-                    mkdir(EXTERNAL_PATH.'/content',1,$nMode);
+                    mkdir(EXTERNAL_PATH, $nMode, true);
+                    mkdir(EXTERNAL_PATH.'/payloads', $nMode, true);
+                    mkdir(EXTERNAL_PATH.'/content', $nMode, true);
                 }
                 if($sFolderSource == 'content' && isset($_POST['install_source']) && $_POST['install_source'] != "new_folder")
                 {
                     if(!is_dir(EXTERNAL_PATH.'/content/'.$_POST['install_source']))
                     {
-                        mkdir(EXTERNAL_PATH.'/content/'.$_POST['install_source'],1,$nMode);  
+                        mkdir(EXTERNAL_PATH.'/content/'.$_POST['install_source'], $nMode, true);
                     }
                     $payload= EXTERNAL_PATH.'/content/'.$_POST['install_source'];
                 }
@@ -379,7 +379,7 @@
                 {
                     if(!is_dir(EXTERNAL_PATH.'/content/'.$sNewFolderName))
                     {
-                        mkdir(EXTERNAL_PATH.'/content/'.$sNewFolderName,1,$nMode);
+                        mkdir(EXTERNAL_PATH.'/content/'.$sNewFolderName, $nMode, true);
                     }  
                     $payload = EXTERNAL_PATH.'/content/'.$sNewFolderName;
                 }
@@ -456,7 +456,7 @@
             // default destination for downloaded zipped files
 
             // Create payload directory if it doesn't exist:
-            if (!makeDIR($payload,true,$nMode)) { 
+            if (!makeDIR($payload,true,$nMode)) {
                     // failed to make directory so exit
                     exit('<h3>Installation Failed!</h3><div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
             }
@@ -517,7 +517,7 @@
 
                 $destination = $payload;
                 if (!file_exists($destination))
-                    mkdir($destination,0775,true);
+                    mkdir($destination, $nMode, true);
 
                 $copyflag = FALSE;
 
