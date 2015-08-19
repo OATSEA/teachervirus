@@ -12,15 +12,14 @@
         $sListContent = "<?php
         define('ROOT_DIR','$sDocumentRoot');
         define('SITE_URL','$sSiteUrl');
-        define('ROOT_PATH','$sDocumentRoot');
+        define('EXTERNAL_PATH','$sDocumentRoot');
         define('LANGUAGE','en');
         define('DEBUG_TEXT','0');
-        define('ADMIN_TEXT','1');
         define('EXTERNAL_TEXT','0');
+        define('ADMIN_COG','1');
     ?>";
         $myfile = fopen("$sDestination", "w");
-        $txt = $sListContent;
-        fwrite($myfile, $txt);
+        fwrite($myfile, $sListContent);
         fclose($myfile);
         require 'constants.php';
     }

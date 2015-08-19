@@ -363,31 +363,31 @@
             
             if(EXTERNAL_TEXT == 1 && ($sFolderSource == "payloads" || $sFolderSource == "content"))
             {
-                if(!is_dir(ROOT_PATH))
+                if(!is_dir(EXTERNAL_PATH))
                 {
-                    mkdir(ROOT_PATH,1,$nMode);
-                    mkdir(ROOT_PATH.'/payloads',1,$nMode);
-                    mkdir(ROOT_PATH.'/content',1,$nMode);
+                    mkdir(EXTERNAL_PATH,1,$nMode);
+                    mkdir(EXTERNAL_PATH.'/payloads',1,$nMode);
+                    mkdir(EXTERNAL_PATH.'/content',1,$nMode);
                 }
                 if($sFolderSource == 'content' && isset($_POST['install_source']) && $_POST['install_source'] != "new_folder")
                 {
-                    if(!is_dir(ROOT_PATH.'/content'.$_POST['install_source']))
+                    if(!is_dir(EXTERNAL_PATH.'/content'.$_POST['install_source']))
                     {
-                        mkdir(ROOT_PATH.'/content'.$_POST['install_source'],1,$nMode);  
+                        mkdir(EXTERNAL_PATH.'/content'.$_POST['install_source'],1,$nMode);  
                     }
-                    $payload= ROOT_PATH.'/content'.$_POST['install_source'];
+                    $payload= EXTERNAL_PATH.'/content'.$_POST['install_source'];
                 }
                 else if($sFolderSource == 'content' && isset($_POST['install_source']) && $_POST['install_source'] == "new_folder" && !empty($sNewFolderName))
                 {
-                    if(!is_dir(ROOT_PATH.'/content/'.$sNewFolderName))
+                    if(!is_dir(EXTERNAL_PATH.'/content/'.$sNewFolderName))
                     {
-                        mkdir(ROOT_PATH,'/content/'.$sNewFolderName,1,$nMode);
+                        mkdir(EXTERNAL_PATH,'/content/'.$sNewFolderName,1,$nMode);
                     }  
-                    $payload = ROOT_PATH.'/content/'.$sNewFolderName;
+                    $payload = EXTERNAL_PATH.'/content/'.$sNewFolderName;
                 }
                 else if($sFolderSource == "payloads")
                 {
-                    $payload = ROOT_PATH.'/payloads';
+                    $payload = EXTERNAL_PATH.'/payloads';
                 }   
             }
             if(!empty($sUserName))

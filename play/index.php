@@ -19,7 +19,6 @@
 <body class="main" >
 <?php
 $rootdir = preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) )."*";
-// echo $rootdir."<br>";
 
 $payloadsDir = str_replace("play", 'payloads', $rootdir);
 $payloadsPath = str_replace("play", 'payloads',preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) ));
@@ -28,11 +27,14 @@ $thisURL = $_SERVER['REQUEST_URI'];
 
 $payloadsURL = str_replace("play", 'payloads', $thisURL);
 $adminURL =  str_replace("play", 'admin', $thisURL);
-echo '<div class="color-white"><a class="admin_img" href="'.SITE_URL.'/'.$adminURL.'"><i class="mainNav fa fa-cog fa-3x"></i></a></div><br/><br/>';
+if(ADMIN_COG == 1)
+{
+    echo '<div class="color-white"><a class="admin_img" href="'.SITE_URL.'/'.$adminURL.'"><i class="mainNav fa fa-cog fa-3x"></i></a></div><br/><br/>';
+}
 foreach(glob($payloadsDir, GLOB_ONLYDIR) as $dir) { 
 	$dir = basename($dir); 
 	$imgText = $dir."/icon.png";
-    $svgText = $dir."/icon.svg";
+        $svgText = $dir."/icon.svg";
     
     $svgTest = file_exists( $payloadsPath.$svgText);
 	$imgTest = file_exists( $payloadsPath.$imgText);
@@ -43,17 +45,12 @@ foreach(glob($payloadsDir, GLOB_ONLYDIR) as $dir) {
         echo '<a href="'.$payloadsURL.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.$svgText.'" /></a>';
     } else if ($imgTest) {
 		echo '<a href="'.$payloadsURL.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.$imgText.'" /></a>';
-		// <span class="pluscap"><br>'.$dir.'</span>
-    } else {
+} else {
         // Icon provided so use the default
         echo '<a href="'.$payloadsURL.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.svg" /></a>';
     }
 } 
 
-//echo '<a href="'.$adminURL.'"><img class="mybutton" alt="Admin" src="'.$adminURL.'icon.png" /></a>';
-
 ?>
-</table>
 </body>
 </html>
-
