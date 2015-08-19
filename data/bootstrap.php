@@ -3,7 +3,7 @@
     $sDestination = $sFolderPath.'/data/constants.php';
     if (file_exists($sDestination)) 
     {
-        require(ROOT_DIR.'/data/constants.php'); 
+        require($sDestination); 
     }
     else 
     {
