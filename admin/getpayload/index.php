@@ -330,8 +330,6 @@
             // -------------
             // REDIRECT PAGE
 
-            //
-
             function displayRedirect() {
                 echo "
                     <!DOCTYPE HTML>
@@ -371,17 +369,17 @@
                 }
                 if($sFolderSource == 'content' && isset($_POST['install_source']) && $_POST['install_source'] != "new_folder")
                 {
-                    if(!is_dir(EXTERNAL_PATH.'/content'.$_POST['install_source']))
+                    if(!is_dir(EXTERNAL_PATH.'/content/'.$_POST['install_source']))
                     {
-                        mkdir(EXTERNAL_PATH.'/content'.$_POST['install_source'],1,$nMode);  
+                        mkdir(EXTERNAL_PATH.'/content/'.$_POST['install_source'],1,$nMode);  
                     }
-                    $payload= EXTERNAL_PATH.'/content'.$_POST['install_source'];
+                    $payload= EXTERNAL_PATH.'/content/'.$_POST['install_source'];
                 }
                 else if($sFolderSource == 'content' && isset($_POST['install_source']) && $_POST['install_source'] == "new_folder" && !empty($sNewFolderName))
                 {
                     if(!is_dir(EXTERNAL_PATH.'/content/'.$sNewFolderName))
                     {
-                        mkdir(EXTERNAL_PATH,'/content/'.$sNewFolderName,1,$nMode);
+                        mkdir(EXTERNAL_PATH.'/content/'.$sNewFolderName,1,$nMode);
                     }  
                     $payload = EXTERNAL_PATH.'/content/'.$sNewFolderName;
                 }
@@ -1000,7 +998,6 @@
                             <option id="check_admin" value="tv" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "tv") ? "selected='selected'" : ""; ?>>Service</option>
                             <option id="check_content" value="content" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "content" ) ? "selected='selected'" : ""; ?>>Content</option>
                             <option id="check_data" value="data" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "data" ) ? "selected='selected'" : ""; ?>>Data</option>
-                            <option id="check_admin" value="web services" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "web services") ? "selected='selected'" : ""; ?>>TV</option>
                         </select>
                         <div id="folder_source_error" class="error-message">
                             <?php echo isset($_SESSION['isValidation']['folder_source']) ? $_SESSION['isValidation']['folder_source'] : '';?>
