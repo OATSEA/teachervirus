@@ -90,7 +90,6 @@
             else
             {
                 unset($_SESSION['isValidation']['user_name_required']);
-                //$_SESSION['isValidation']['flag'] = TRUE;
             }
             if(empty($sRepository))
             {
@@ -362,6 +361,35 @@
             
             $payload = ROOT_DIR.'/'.$payload;
             
+            if(EXTERNAL_TEXT == 1 && ($sFolderSource == "payloads" || $sFolderSource == "content"))
+            {
+                if(!is_dir(ROOT_PATH))
+                {
+                    mkdir(ROOT_PATH,1,$nMode);
+                    mkdir(ROOT_PATH.'/payloads',1,$nMode);
+                    mkdir(ROOT_PATH.'/content',1,$nMode);
+                }
+                if($sFolderSource == 'content' && isset($_POST['install_source']) && $_POST['install_source'] != "new_folder")
+                {
+                    if(!is_dir(ROOT_PATH.'/content'.$_POST['install_source']))
+                    {
+                        mkdir(ROOT_PATH.'/content'.$_POST['install_source'],1,$nMode);  
+                    }
+                    $payload= ROOT_PATH.'/content'.$_POST['install_source'];
+                }
+                else if($sFolderSource == 'content' && isset($_POST['install_source']) && $_POST['install_source'] == "new_folder" && !empty($sNewFolderName))
+                {
+                    if(!is_dir(ROOT_PATH.'/content/'.$sNewFolderName))
+                    {
+                        mkdir(ROOT_PATH,'/content/'.$sNewFolderName,1,$nMode);
+                    }  
+                    $payload = ROOT_PATH.'/content/'.$sNewFolderName;
+                }
+                else if($sFolderSource == "payloads")
+                {
+                    $payload = ROOT_PATH.'/payloads';
+                }   
+            }
             if(!empty($sUserName))
             {
                 $download_filename = $sUserName."-".$sRepository.".zip";
@@ -967,11 +995,12 @@
                     <div class="col-sm-12 folder_class">
                         <select name="folder_source" id="folder_source" class="col-sm-3 form-control extra" onchange="showData(this);">
                             <option id="check_folder">Select Payload Type</option>
-                            <option id="play" value="play" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "play") ? "selected='selected'" : ""; ?>>Play</option>
+                            <option id="check_play" value="payloads" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "payloads") ? "selected='selected'" : ""; ?>>Play</option>
                             <option id="check_admin" value="admin" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "admin") ? "selected='selected'" : ""; ?>>Admin</option>
-                            <option id="check_admin" value="service" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "service") ? "selected='selected'" : ""; ?>>Service</option>
+                            <option id="check_admin" value="tv" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "tv") ? "selected='selected'" : ""; ?>>Service</option>
                             <option id="check_content" value="content" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "content" ) ? "selected='selected'" : ""; ?>>Content</option>
                             <option id="check_data" value="data" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "data" ) ? "selected='selected'" : ""; ?>>Data</option>
+                            <option id="check_admin" value="web services" <?php echo (isset($_POST['folder_source']) && $_POST['folder_source'] == "web services") ? "selected='selected'" : ""; ?>>TV</option>
                         </select>
                         <div id="folder_source_error" class="error-message">
                             <?php echo isset($_SESSION['isValidation']['folder_source']) ? $_SESSION['isValidation']['folder_source'] : '';?>
