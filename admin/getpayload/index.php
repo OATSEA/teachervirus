@@ -359,13 +359,14 @@
             
             $payload = ROOT_DIR.'/'.$payload;
             
-            if(EXTERNAL_TEXT == 1 && ($sFolderSource == "payloads" || $sFolderSource == "content"))
+            if(EXTERNAL_TEXT == 1 && ($sFolderSource == "payloads" || $sFolderSource == "content" || $sFolderSource == "data"))
             {
                 if(!is_dir(EXTERNAL_PATH))
                 {
                     mkdir(EXTERNAL_PATH, $nMode, true);
                     mkdir(EXTERNAL_PATH.'/payloads', $nMode, true);
                     mkdir(EXTERNAL_PATH.'/content', $nMode, true);
+                    mkdir(EXTERNAL_PATH.'/data', $nMode, true);
                 }
                 if($sFolderSource == 'content' && isset($_POST['install_source']) && $_POST['install_source'] != "new_folder")
                 {
@@ -383,10 +384,26 @@
                     }  
                     $payload = EXTERNAL_PATH.'/content/'.$sNewFolderName;
                 }
+                else if($sFolderSource == 'data' && isset($_POST['install_source']) && $_POST['install_source'] != "new_folder")
+                {
+                    if(!is_dir(EXTERNAL_PATH.'/data/'.$_POST['install_source']))
+                    {
+                        mkdir(EXTERNAL_PATH.'/data/'.$_POST['install_source'], $nMode, true);
+                    }
+                    $payload= EXTERNAL_PATH.'/data/'.$_POST['install_source'];
+                }
+                else if($sFolderSource == 'data' && isset($_POST['install_source']) && $_POST['install_source'] == "new_folder" && !empty($sNewFolderName))
+                {
+                    if(!is_dir(EXTERNAL_PATH.'/data/'.$sNewFolderName))
+                    {
+                        mkdir(EXTERNAL_PATH.'/data/'.$sNewFolderName, $nMode, true);
+                    }  
+                    $payload = EXTERNAL_PATH.'/data/'.$sNewFolderName;
+                }
                 else if($sFolderSource == "payloads")
                 {
                     $payload = EXTERNAL_PATH.'/payloads';
-                }   
+                }
             }
             if(!empty($sUserName))
             {
