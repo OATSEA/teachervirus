@@ -1,8 +1,8 @@
 <?php 
     if(session_status()!=PHP_SESSION_ACTIVE) session_start();
     error_reporting(E_ALL ^ E_WARNING);
-    $protocol = isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
-    $protocol .= "://" . $_SERVER['HTTP_HOST'];
+    require_once("../../data/constants.php");
+    require(ROOT_DIR.'/admin/checkLogin.php');
 ?>
 <html>
     <head>
@@ -30,16 +30,6 @@
                 .sources{
                     margin-left: 40px;
                 }
-                /*.text-field{
-                    float: left;
-                    padding-right: 10px;
-                    text-align: right;
-                }
-                .example-text{
-                    padding-left: 20px;
-                    text-align: center;
-                    width: 100%;
-                }*/
                 .go-button{
                     color: #000;
                     float: right;
@@ -466,7 +456,7 @@
                 $download_unzip_filename = $aExplodeFileName[0];
             }
             $zipfile = $sUpdateinfectedDir.$download_filename;
-            $sUrl = (is_dir($_SERVER['DOCUMENT_ROOT']."/admin")) ? $protocol."/admin" : $_SERVER['DOCUMENT_ROOT']."/getinfected.php";
+            $sUrl = (is_dir($_SERVER['DOCUMENT_ROOT']."/admin")) ? SITE_URL."/admin" : $_SERVER['DOCUMENT_ROOT']."/getinfected.php";
             // Check for IP param and set $ip if param provided
             // ** TO DO **
             // Download file if OATSEA-teachervirus.zip doesn't already exist
@@ -630,7 +620,7 @@
                 echo "<h2>Update Successfully</h2>";
                 if (is_dir($_SERVER['DOCUMENT_ROOT']."/admin")) 
                 {
-                    echo '<link href="'.$protocol.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+                    echo '<link href="'.SITE_URL.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
                             <div class="color-white">
                                 <a class="play_img" href="'.$sUrl.'">
                                     <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
@@ -743,7 +733,7 @@
                         // As download failed delete empty zip file!
                         if ($debug) { echo "<h2>Download with CURL failed</h2>";}
                         echo "<h3>Update Failed!</h3><p>Couldn't download with either copy or curl</p>";
-                            echo '<link href="'.$protocol.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+                            echo '<link href="'.SITE_URL.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
                                     <div class="color-white">
                                         <a class="play_img" href="'.$sUrl.'">
                                             <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
@@ -901,7 +891,7 @@
                     echo "<h2>Update Successfully</h2>";
                     if (is_dir($_SERVER['DOCUMENT_ROOT']."/admin")) 
                     {
-                        echo '<link href="'.$protocol.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+                        echo '<link href="'.SITE_URL.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
                                 <div class="color-white">
                                     <a class="play_img" href="'.$sUrl.'">
                                         <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
@@ -938,9 +928,7 @@ if($_SESSION['isValidation']['flag'] == 1)
         $_SESSION['isLoggedIn'] = isset($_SESSION['isLoggedIn']) ? $_SESSION['isLoggedIn'] : FALSE;
         if((is_dir($_SERVER['DOCUMENT_ROOT']."/admin") && (isset($_SESSION['isLoggedIn']) && !$_SESSION['isLoggedIn'])) || (isset($_GET['isValidUser']) && (isset($_SESSION['isLoggedIn']) && !$_SESSION['isLoggedIn'])))
         {
-            $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off") ? "https" : "http";
-            $protocol .= "://" . $_SERVER['HTTP_HOST'] . '/admin';
-            redirect($protocol);
+            redirect(SITE_URL."/admin");
         }
         else if(!$installed)
         {
@@ -1080,9 +1068,9 @@ if($_SESSION['isValidation']['flag'] == 1)
         if (is_dir($_SERVER['DOCUMENT_ROOT']."/admin")) 
         {
     ?>
-            <link href="<?php echo $protocol; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+            <link href="<?php echo SITE_URL; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
             <div class="color-white">
-                <a class="play_img" href="<?php echo $protocol.'/admin'; ?>">
+                <a class="play_img" href="<?php echo SITE_URL.'/admin'; ?>">
                     <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
                 </a>
             </div><br/><br/>

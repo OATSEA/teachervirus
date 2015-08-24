@@ -9,10 +9,7 @@
     // doesn't work though
 
     // May have to do this functionality via native Android?
-    $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
-    $sDestination = $sFolderPath.'/data/bootstrap.php';
-    require_once($sDestination);
-
+    require_once("../../data/constants.php");
     require(SITE_URL.'/admin/checkLogin.php');
     $debug = 1;
 

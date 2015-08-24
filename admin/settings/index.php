@@ -3,11 +3,13 @@
     <head>
        <meta charset="utf-8">
        <?php
-            $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
-            $destination = $sFolderPath.'/data';
-            if(file_exists($destination."/constants.php"))
+            $sSiteUrl = (isset($_SERVER["HTTP_HOST"]) ? "http://".$_SERVER["HTTP_HOST"] : '');
+            $sRequestUrl = $sSiteUrl.$_SERVER['REQUEST_URI'];
+            $aExplodeUrl = explode("getinfected.php", $sRequestUrl);
+            $sDestination = getcwd().'/data/constants.php';
+            if(file_exists($destination))
             {
-                require_once("$destination/constants.php");
+                require_once($destination);
                 $sDocumentRoot = ROOT_DIR;
                 $sSiteUrl = SITE_URL;
             }
@@ -39,9 +41,12 @@
             }
             if($_SESSION['isValidation']['flag'] == 1)
             {
-                $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
-                $destination = $sFolderPath.'/data';
-                if(!file_exists($destination."/constants.php"))
+                $sSiteUrl = (isset($_SERVER["HTTP_HOST"]) ? "http://".$_SERVER["HTTP_HOST"] : '');
+                $sRequestUrl = $sSiteUrl.$_SERVER['REQUEST_URI'];
+                $aExplodeUrl = explode("getinfected.php", $sRequestUrl);
+                $sDestination = getcwd().'/data/constants.php';
+                
+                if(!file_exists($destination))
                 {
                     $sDocumentRoot = $_SERVER['DOCUMENT_ROOT'];
                     $sSiteUrl = (isset($_SERVER['SERVER_NAME']) ? "http://".$_SERVER['SERVER_NAME'] : '');
@@ -57,14 +62,11 @@ define('DEBUG_TEXT','$bShowDebugText');
 define('EXTERNAL_TEXT','$bExternalSource');
 define('ADMIN_COG','$bAdminCog');
 ?>";
-                $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
-                $destination = $sFolderPath.'/data';
-                $myfile = fopen("$destination/constants.php", "w");
-                $txt = $sListContent;
-                fwrite($myfile, $txt);
+                $myfile = fopen("$destination", "w");
+                fwrite($myfile, $sListContent);
                 fclose($myfile);
 
-                require_once("$destination/constants.php");
+                require_once("$destination");
                 echo '<h2>Settings Saved Successfully!!</h2>'
                     . '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
                     . '<div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>';

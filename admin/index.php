@@ -1,7 +1,5 @@
 <?php
-    $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
-    $sDestination = $sFolderPath.'/data/bootstrap.php';
-    require_once($sDestination);
+    require_once("../data/constants.php");
 ?>
 <!DOCTYPE html>
 <html>

@@ -1,7 +1,6 @@
 <?php
-    $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
-    $sDestination = $sFolderPath.'/data/bootstrap.php';
-    require_once($sDestination);
+    require_once("../../data/constants.php");
+    require(ROOT_DIR.'/admin/checkLogin.php');
     
     $_SESSION['isValidation']['flag'] = TRUE;
     if($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_SESSION['isValidation']))
