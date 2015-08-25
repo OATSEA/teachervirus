@@ -44,11 +44,10 @@
                 {
                     $rootdir = preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) )."*";
 
-                    $thisURL = $_SERVER['REQUEST_URI'];
-                    $playURL =  str_replace('admin', 'play', $thisURL);
-                    $sChangePasswordURL =  str_replace('admin', 'admin/changePassword', $thisURL);
-                    $sInfectedURL =  str_replace('admin', 'admin/getinfected', $thisURL);
-                    $sSettingURL =  str_replace('admin', 'admin/settings', $thisURL);
+                    $playURL = SITE_URL.'/play';
+                    $sChangePasswordURL =  SITE_URL.'/admin/changePassword';//str_replace('admin', 'admin/changePassword', $thisURL);
+                    $sInfectedURL =  SITE_URL.'/admin/getinfected';//str_replace('admin', 'admin/getinfected', $thisURL);
+                    $sSettingURL =  SITE_URL.'/admin/settings';//str_replace('admin', 'admin/settings', $thisURL);
                     
                     require(ROOT_DIR.'/admin/header.php');
                     
