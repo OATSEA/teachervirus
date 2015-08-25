@@ -313,6 +313,7 @@
                             // Move via rename
                             // rename(oldname, newname)
                             if (rename($currentFile , $newFile)) {
+                                chmod($newFile, 0755);
                                 //if($debug) { echo "<p>Moved $currentFile to $newFile</p>"; }
                             } else {
                                 if($debug) { echo "<p>Failed to move $currentFile to $newFile</p>"; }
@@ -436,6 +437,7 @@
                 $download_unzip_filename = $aExplodeFileName[0];
                 $sListContent = "file_browse;$isAdmin;$download_unzip_filename;$sFileName";
                 move_uploaded_file($sTempFileName, $payload.'/'.$sFileName);
+                chmod($payload.'/'.$sFileName, 0755);
             }
             $zipfile = $payload.'/'.$download_filename;
 
@@ -549,6 +551,7 @@
 
                     $copyflag = copy($geturl,$zipfile);
                 }
+                chmod($zipfile, 0755);
                 if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
                 $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$download_filename,true);
                 if ($zipFlag === TRUE) 
@@ -596,12 +599,11 @@
                               {
                                 moveDIR($temp_unzip_path . $value,$sPayloadUrl.'/'.$download_unzip_filename,$debug);
                                 $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
-                                $txt = $sListContent;
-                                fwrite($myfile, $txt);
+                                fwrite($myfile, $sListContent);
                                 fclose($myfile);
+                                
                                 $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
-                                $txt = $sListContent;
-                                fwrite($myfile, $txt);
+                                fwrite($myfile, $sListContent);
                                 fclose($myfile);
                                 $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
                                 // Add current file to archive
@@ -645,12 +647,11 @@
                               {
                                 moveDIR($temp_unzip_path . $value,$sPayloadUrl.DIRECTORY_SEPARATOR.$download_unzip_filename,$debug);
                                 $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
-                                $txt = $sListContent;
-                                fwrite($myfile, $txt);
+                                fwrite($myfile, $sListContent);
                                 fclose($myfile);
+                                
                                 $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
-                                $txt = $sListContent;
-                                fwrite($myfile, $txt);
+                                fwrite($myfile, $sListContent);
                                 fclose($myfile);
                                 $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
                                 // Add current file to archive
