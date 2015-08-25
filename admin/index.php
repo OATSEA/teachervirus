@@ -80,7 +80,7 @@
                     </script>
 
                     <div class="color-white">
-                        <a class="play_img" href="<?php echo SITE_URL.'/play'; ?>">
+                        <a class="play_img" href="<?php echo SITE_URL.'play'; ?>">
                             <i class="mainNav fa fa-play-circle-o fa-3x"></i>
                         </a>
                         <h2>Please Login</h2>
