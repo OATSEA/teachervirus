@@ -44,7 +44,7 @@
                 {
                     $rootdir = preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) )."*";
 
-                    $playURL = SITE_URL.'/play';
+                    $playURL = SITE_URL.'play';
                     $sChangePasswordURL =  SITE_URL.'/admin/changePassword';//str_replace('admin', 'admin/changePassword', $thisURL);
                     $sInfectedURL =  SITE_URL.'/admin/getinfected';//str_replace('admin', 'admin/getinfected', $thisURL);
                     $sSettingURL =  SITE_URL.'/admin/settings';//str_replace('admin', 'admin/settings', $thisURL);

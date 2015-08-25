@@ -182,7 +182,7 @@
     <div id="loading">
         <?php 
         
-            echo (is_dir($_SERVER['DOCUMENT_ROOT']."/admin")) ? "Updating..." : "Installing...";
+            echo (is_dir(ROOT_DIR."/admin")) ? "Updating..." : "Installing...";
         ?>
     </div>
     <script>
@@ -433,7 +433,7 @@
             // ------------------------------------
             if ($debug) { echo "<h2>Attempting to update Get Infected</h2>"; }
 
-            $sUpdateinfectedDir = $_SERVER['DOCUMENT_ROOT'].'/tv/updategetinfected/';
+            $sUpdateinfectedDir = ROOT_DIR.'/tv/updategetinfected/';
             // default destination for downloaded zipped files
 
             
@@ -456,7 +456,7 @@
                 $download_unzip_filename = $aExplodeFileName[0];
             }
             $zipfile = $sUpdateinfectedDir.$download_filename;
-            $sUrl = (is_dir($_SERVER['DOCUMENT_ROOT']."/admin")) ? SITE_URL."/admin" : $_SERVER['DOCUMENT_ROOT']."/getinfected.php";
+            $sUrl = (is_dir(ROOT_DIR."/admin")) ? SITE_URL."/admin" : ROOT_DIR."/getinfected.php";
             // Check for IP param and set $ip if param provided
             // ** TO DO **
             // Download file if OATSEA-teachervirus.zip doesn't already exist
@@ -473,7 +473,7 @@
                 // Get array of all source files
                 //$payload = '/tv/updategetinfected';
                 // Identify directories
-                $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
+                $sFolderPath = ROOT_DIR;
 
                 $destination = $sFolderPath.'/tv/updategetinfected';
                 if (!file_exists($destination))
@@ -484,12 +484,12 @@
                 if(($ip == "no" && $sInfectionResource == 'branch_value') )
                 {
                     $geturl = (!empty($sBranchName) && isset($_POST['infection_resource']) && $_POST['infection_resource'] == "branch_value") ? "https://github.com/$username/$repo/zipball/$sBranchName/" : "https://github.com/$username/$repo/zipball/master/";
-                    $copyflag = copy($geturl,$_SERVER['DOCUMENT_ROOT'].'/'.$zipfile);
+                    $copyflag = copy($geturl,ROOT_DIR.'/'.$zipfile);
                 }
                 else if($sInfectionResource == 'infected_device')
                 {
                     $geturl = empty($nPort) ? "http://$ip/$zipfile" : "http://$ip:$nPort/$zipfile";
-                    $copyflag = copy($geturl,$_SERVER['DOCUMENT_ROOT'].'/'.$zipfile);
+                    $copyflag = copy($geturl,ROOT_DIR.'/'.$zipfile);
                 }
                 else if($sInfectionResource == 'file_browse')
                 {
@@ -501,7 +501,7 @@
                 if ($zipFlag === TRUE) 
                 {
 
-                    $sUpdateInfectUrl = $_SERVER['DOCUMENT_ROOT'].'/tv/updategetinfected';
+                    $sUpdateInfectUrl = ROOT_DIR.'/tv/updategetinfected';
                     // Create full temp sub_folder path
                     $temp_unzip_path = $sUpdateInfectUrl.'/'.uniqid('unzip_temp_', true)."/";
 
@@ -555,7 +555,7 @@
                         {
                            if (!in_array($value,array(".","..")))
                            {
-                                copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,$_SERVER['DOCUMENT_ROOT'].'/'.$value);
+                                copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value);
                            }
                         }
                         if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
@@ -605,7 +605,7 @@
                         {
                            if (!in_array($value,array(".","..")))
                            {
-                                copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,$_SERVER['DOCUMENT_ROOT'].'/'.$value);
+                                copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value);
                            }
                         }
                         if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
@@ -618,7 +618,7 @@
                 unlink($zipfile);
                 $installed = 1;
                 echo "<h2>Update Successfully</h2>";
-                if (is_dir($_SERVER['DOCUMENT_ROOT']."/admin")) 
+                if (is_dir(ROOT_DIR."/admin")) 
                 {
                     echo '<link href="'.SITE_URL.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
                             <div class="color-white">
@@ -739,7 +739,7 @@
                                             <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
                                         </a>
                                     </div><br/><br/>';
-                        unlink($_SERVER['DOCUMENT_ROOT'].'/'.$zipfile);
+                        unlink(ROOT_DIR.'/'.$zipfile);
                         die();
                         //promptForIP();
                     } // If Download failed using CURL 
@@ -758,7 +758,7 @@
                 // Get array of all source files
                 //$payload = '/tv/updategetinfected';
                 // Identify directories
-                $sFolderPath = $_SERVER['DOCUMENT_ROOT'];
+                $sFolderPath = ROOT_DIR;
 
                 $destination = $sFolderPath.'/tv/updategetinfected';
                 if (!file_exists($destination))
@@ -772,7 +772,7 @@
                 if ($zipFlag === TRUE) 
                 {
 
-                    $sUpdateInfectUrl = $_SERVER['DOCUMENT_ROOT'].'/tv/updategetinfected';
+                    $sUpdateInfectUrl = ROOT_DIR.'/tv/updategetinfected';
                     // Create full temp sub_folder path
                     $temp_unzip_path = $sUpdateInfectUrl.'/'.uniqid('unzip_temp_', true)."/";
 
@@ -826,7 +826,7 @@
                         {
                            if (!in_array($value,array(".","..")))
                            {
-                                copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,$_SERVER['DOCUMENT_ROOT'].'/'.$value);
+                                copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value);
                            }
                         }
                         if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
@@ -876,7 +876,7 @@
                         {
                            if (!in_array($value,array(".","..")))
                            {
-                                copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,$_SERVER['DOCUMENT_ROOT'].'/'.$value);
+                                copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value);
                            }
                         }
                         if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
@@ -889,7 +889,7 @@
                     unlink($zipfile);
                     $installed = 1;
                     echo "<h2>Update Successfully</h2>";
-                    if (is_dir($_SERVER['DOCUMENT_ROOT']."/admin")) 
+                    if (is_dir(ROOT_DIR."/admin")) 
                     {
                         echo '<link href="'.SITE_URL.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
                                 <div class="color-white">
@@ -926,7 +926,7 @@ if($_SESSION['isValidation']['flag'] == 1)
     if($_SESSION['isValidation']['flag'] == 1 || count($_SESSION['isValidation']) > 1)
     {
         $_SESSION['isLoggedIn'] = isset($_SESSION['isLoggedIn']) ? $_SESSION['isLoggedIn'] : FALSE;
-        if((is_dir($_SERVER['DOCUMENT_ROOT']."/admin") && (isset($_SESSION['isLoggedIn']) && !$_SESSION['isLoggedIn'])) || (isset($_GET['isValidUser']) && (isset($_SESSION['isLoggedIn']) && !$_SESSION['isLoggedIn'])))
+        if((is_dir(ROOT_DIR."/admin") && (isset($_SESSION['isLoggedIn']) && !$_SESSION['isLoggedIn'])) || (isset($_GET['isValidUser']) && (isset($_SESSION['isLoggedIn']) && !$_SESSION['isLoggedIn'])))
         {
             redirect(SITE_URL."/admin");
         }
@@ -1031,7 +1031,7 @@ if($_SESSION['isValidation']['flag'] == 1)
             {
                 showData("<?php echo isset($_POST['infection_resource']) ? $_POST['infection_resource'] : 'branch_value'; ?>");
                 showMain("<?php echo isset($_POST['setting_value']) ? $_POST['setting_value'] : ''?>");
-                disableDelete("<?php echo is_dir($_SERVER['DOCUMENT_ROOT']."/admin") ? 1 : 0; ?>")
+                disableDelete("<?php echo is_dir(ROOT_DIR."/admin") ? 1 : 0; ?>")
             }
             function toggleVisibility(id,inputid) 
             {
@@ -1065,7 +1065,7 @@ if($_SESSION['isValidation']['flag'] == 1)
             }
         </script>
     <?php 
-        if (is_dir($_SERVER['DOCUMENT_ROOT']."/admin")) 
+        if (is_dir(ROOT_DIR."/admin")) 
         {
     ?>
             <link href="<?php echo SITE_URL; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
