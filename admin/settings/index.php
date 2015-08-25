@@ -2,18 +2,18 @@
 <html>
     <head>
        <meta charset="utf-8">
+        <?php
+            require_once("../../data/constants.php");
+        ?>
        <?php
-            $sSiteUrl = (isset($_SERVER["HTTP_HOST"]) ? "http://".$_SERVER["HTTP_HOST"] : '');
-            $sRequestUrl = $sSiteUrl.$_SERVER['REQUEST_URI'];
-            $aExplodeUrl = explode("getinfected.php", $sRequestUrl);
-            $sDestination = getcwd().'/data/constants.php';
-            if(file_exists($destination))
-            {
-                require_once($destination);
-                $sDocumentRoot = ROOT_DIR;
-                $sSiteUrl = SITE_URL;
-            }
-       ?>
+           //$sDestination = getcwd().'/data/constants.php';
+//           if(file_exists($sDestination))
+//            {
+//                require_once($sDestination);
+//                $sDocumentRoot = ROOT_DIR;
+//                $sSiteUrl = SITE_URL;
+//            }
+        ?> 
        <link href="<?php echo SITE_URL; ?>/css/bootstrap.min.css" rel="stylesheet">
        <link href="<?php echo SITE_URL; ?>/admin/buttons.css" rel="stylesheet">
        <link href="<?php echo SITE_URL; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -44,14 +44,15 @@
                 $sSiteUrl = (isset($_SERVER["HTTP_HOST"]) ? "http://".$_SERVER["HTTP_HOST"] : '');
                 $sRequestUrl = $sSiteUrl.$_SERVER['REQUEST_URI'];
                 $aExplodeUrl = explode("getinfected.php", $sRequestUrl);
-                $sDestination = getcwd().'/data/constants.php';
-                
-                if(!file_exists($destination))
+                $sDestination = ROOT_DIR.'/data/constants.php';
+                if(!file_exists($sDestination))
                 {
+                    
                     $sDocumentRoot = $_SERVER['DOCUMENT_ROOT'];
                     $sSiteUrl = (isset($_SERVER['SERVER_NAME']) ? "http://".$_SERVER['SERVER_NAME'] : '');
                     rtrim($sSiteUrl, "/");
                 }
+                            
                 $sListContent = "<?php
 define('ROOT_DIR','$sDocumentRoot');
 define('SITE_URL','$sSiteUrl');
@@ -62,11 +63,9 @@ define('DEBUG_TEXT','$bShowDebugText');
 define('EXTERNAL_TEXT','$bExternalSource');
 define('ADMIN_COG','$bAdminCog');
 ?>";
-                $myfile = fopen("$destination", "w");
+                $myfile = fopen("$sDestination", "w");
                 fwrite($myfile, $sListContent);
                 fclose($myfile);
-
-                require_once("$destination");
                 echo '<h2>Settings Saved Successfully!!</h2>'
                     . '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
                     . '<div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>';
