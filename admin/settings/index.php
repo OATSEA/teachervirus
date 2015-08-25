@@ -5,15 +5,6 @@
         <?php
             require_once("../../data/constants.php");
         ?>
-       <?php
-           //$sDestination = getcwd().'/data/constants.php';
-//           if(file_exists($sDestination))
-//            {
-//                require_once($sDestination);
-//                $sDocumentRoot = ROOT_DIR;
-//                $sSiteUrl = SITE_URL;
-//            }
-        ?> 
        <link href="<?php echo SITE_URL; ?>/css/bootstrap.min.css" rel="stylesheet">
        <link href="<?php echo SITE_URL; ?>/admin/buttons.css" rel="stylesheet">
        <link href="<?php echo SITE_URL; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -45,14 +36,11 @@
                 $sRequestUrl = $sSiteUrl.$_SERVER['REQUEST_URI'];
                 $aExplodeUrl = explode("getinfected.php", $sRequestUrl);
                 $sDestination = ROOT_DIR.'/data/constants.php';
-                if(!file_exists($sDestination))
+                if(file_exists($sDestination))
                 {
-                    
-                    $sDocumentRoot = $_SERVER['DOCUMENT_ROOT'];
-                    $sSiteUrl = (isset($_SERVER['SERVER_NAME']) ? "http://".$_SERVER['SERVER_NAME'] : '');
-                    rtrim($sSiteUrl, "/");
+                    $sDocumentRoot = ROOT_DIR;
+                    $sSiteUrl = SITE_URL;
                 }
-                            
                 $sListContent = "<?php
 define('ROOT_DIR','$sDocumentRoot');
 define('SITE_URL','$sSiteUrl');
