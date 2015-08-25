@@ -55,8 +55,8 @@ define('ADMIN_COG','$bAdminCog');
                 fwrite($myfile, $sListContent);
                 fclose($myfile);
                 echo '<h2>Settings Saved Successfully!!</h2>'
-                    . '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
-                    . '<div class="play_img"><a href="'.SITE_URL.'/play/" class="btn btn-lg btn-primary color-white">Play</a></div>';
+                    . '<div class="admin_img"><a href="'.SITE_URL.'admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
+                    . '<div class="play_img"><a href="'.SITE_URL.'play" class="btn btn-lg btn-primary color-white">Play</a></div>';
                 die();
             }
         }
