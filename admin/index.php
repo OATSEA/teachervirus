@@ -155,7 +155,7 @@
                     define("PASSWORD", $sPassword);
                     ?>';
                     fwrite($handle, $txt);
-                    header("Location:".SITE_URL);
+                    header("Location:".SITE_URL."/admin");
                 }
                 else if($nConfirmPasswordFlag == 0)
                 {
