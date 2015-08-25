@@ -10,10 +10,7 @@
     }
     else 
     {
-        $sDocumentRoot = getcwd();//$_SERVER['DOCUMENT_ROOT'];
-        $sSiteUrl = (isset($_SERVER["HTTP_HOST"]) ? "http://".$_SERVER["HTTP_HOST"] : '');
-        $sRequestUrl = $sSiteUrl.$_SERVER['REQUEST_URI'];
-        $aExplodeUrl = explode("/getinfected.php", $sRequestUrl);
+        $sDocumentRoot = getcwd();
         $sListContent = "<?php
         define('ROOT_DIR','$sDocumentRoot');
         define('SITE_URL','$aExplodeUrl[0]');
