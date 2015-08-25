@@ -456,7 +456,7 @@
                 $download_unzip_filename = $aExplodeFileName[0];
             }
             $zipfile = $sUpdateinfectedDir.$download_filename;
-            $sUrl = (is_dir(ROOT_DIR."/admin")) ? SITE_URL."/admin" : ROOT_DIR."/getinfected.php";
+            $sUrl = (is_dir(ROOT_DIR."/admin")) ? SITE_URL."admin" : ROOT_DIR."/getinfected.php";
             // Check for IP param and set $ip if param provided
             // ** TO DO **
             // Download file if OATSEA-teachervirus.zip doesn't already exist
