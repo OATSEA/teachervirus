@@ -21,7 +21,7 @@
         $payloadsPath = str_replace("play", (EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : 'payloads',preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) ));
         $thisURL = SITE_URL;
         $payloadsURL = SITE_URL.((EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : 'payloads');
-        $adminURL =  SITE_URL.'admin';
+        $adminURL =  SITE_URL.'/admin';
         if(ADMIN_COG == 1)
         {
             echo '<div class="color-white"><a class="admin_img" href="'.$adminURL.'"><i class="mainNav fa fa-cog fa-3x"></i></a></div><br/><br/>';

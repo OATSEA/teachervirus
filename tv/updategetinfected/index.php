@@ -456,7 +456,7 @@
                 $download_unzip_filename = $aExplodeFileName[0];
             }
             $zipfile = $sUpdateinfectedDir.$download_filename;
-            $sUrl = (is_dir(ROOT_DIR."/admin")) ? SITE_URL."admin" : ROOT_DIR."/getinfected.php";
+            $sUrl = (is_dir(ROOT_DIR."/admin")) ? SITE_URL."/admin" : ROOT_DIR."/getinfected.php";
             // Check for IP param and set $ip if param provided
             // ** TO DO **
             // Download file if OATSEA-teachervirus.zip doesn't already exist
@@ -928,7 +928,7 @@ if($_SESSION['isValidation']['flag'] == 1)
         $_SESSION['isLoggedIn'] = isset($_SESSION['isLoggedIn']) ? $_SESSION['isLoggedIn'] : FALSE;
         if((is_dir(ROOT_DIR."/admin") && (isset($_SESSION['isLoggedIn']) && !$_SESSION['isLoggedIn'])) || (isset($_GET['isValidUser']) && (isset($_SESSION['isLoggedIn']) && !$_SESSION['isLoggedIn'])))
         {
-            redirect(SITE_URL."admin");
+            redirect(SITE_URL."/admin");
         }
         else if(!$installed)
         {
@@ -1070,7 +1070,7 @@ if($_SESSION['isValidation']['flag'] == 1)
     ?>
             <link href="<?php echo SITE_URL; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
             <div class="color-white">
-                <a class="play_img" href="<?php echo SITE_URL.'admin'; ?>">
+                <a class="play_img" href="<?php echo SITE_URL.'/admin'; ?>">
                     <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
                 </a>
             </div><br/><br/>
