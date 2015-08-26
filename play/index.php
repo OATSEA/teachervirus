@@ -17,10 +17,10 @@
     <body class="main>
     <?php
         $rootdir = preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) )."*";
-        $payloadsDir = str_replace("play", (EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : 'payloads', $rootdir);
+        $payloadsDir = str_replace("play", (EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : '/payloads', $rootdir);
         $payloadsPath = str_replace("play", (EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : 'payloads',preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) ));
         $thisURL = SITE_URL;
-        $payloadsURL = SITE_URL.((EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : 'payloads');
+        $payloadsURL = SITE_URL.((EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : '/payloads');
         $adminURL =  SITE_URL.'/admin';
         if(ADMIN_COG == 1)
         {
