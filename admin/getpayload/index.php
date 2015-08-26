@@ -666,106 +666,102 @@
                         rrmdir(ROOT_DIR."/admin/getpayload/".$payload);
                     }
                 }
-                    $zip->close();
-                    unlink($destination."/list.txt");
+                $zip->close();
+                unlink($destination."/list.txt");
                     
-                    if ($copyflag === TRUE) {
-                        echo "<h3>Download Succeeded</h3><p>Files downloaded using <b>Copy</b> instead</p>";
-                    } else { 
-                        // try CURL    
+                if ($copyflag === TRUE) 
+                {
+                    echo "<h3>Download Succeeded</h3><p>Files downloaded using <b>Copy</b> instead</p>";
+                } 
+                else 
+                { 
+                    // try CURL    
 
-                        if ($debug) { echo "<p>Will attempt to download via CURL from <b>$geturl</b></p> ";}
+                    if ($debug) { echo "<p>Will attempt to download via CURL from <b>$geturl</b></p> ";}
 
-                        // USE CURL to Download ZIP
-                        // Code Attribution:  
-                        // http://stackoverflow.com/questions/19177070/copy-image-from-remote-server-over-https    
-                        // http://stackoverflow.com/questions/18974646/download-zip-php
-                        // http://stackoverflow.com/questions/11321761/using-curl-to-download-a-zip-file-isnt-working-with-follow-php-code
+                    // USE CURL to Download ZIP
+                    // Code Attribution:  
+                    // http://stackoverflow.com/questions/19177070/copy-image-from-remote-server-over-https    
+                    // http://stackoverflow.com/questions/18974646/download-zip-php
+                    // http://stackoverflow.com/questions/11321761/using-curl-to-download-a-zip-file-isnt-working-with-follow-php-code
 
-                        set_time_limit(0); //prevent timeout
-                        $fp = fopen(ROOT_DIR.'/'.$zipfile, 'w+'); // or perhaps 'wb'?
-                        if (!$fp) {
-                            exit("<h3><b>ERROR! Payload download failed</h3>
-                            <p>Unable to open temporary file: <b>$zipfile</b>!</p>
-                            <p>File permission issue maybe?
-                            ".'<div class="admin_img"><a href="'.SITE_URL.'admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'play" class="btn btn-lg btn-primary color-white">Play</a></div>'); 
-                        }
+                    set_time_limit(0); //prevent timeout
+                    $fp = fopen(ROOT_DIR.'/'.$zipfile, 'w+'); // or perhaps 'wb'?
+                    if (!$fp) {
+                        exit("<h3><b>ERROR! Payload download failed</h3>
+                        <p>Unable to open temporary file: <b>$zipfile</b>!</p>
+                        <p>File permission issue maybe?
+                        ".'<div class="admin_img"><a href="'.SITE_URL.'admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'play" class="btn btn-lg btn-primary color-white">Play</a></div>'); 
+                    }
 
-                        // ** TO DO ** add catch exception for curl not installed (e.g. RPI)
-                        $ch = curl_init();
+                    // ** TO DO ** add catch exception for curl not installed (e.g. RPI)
+                    $ch = curl_init();
 
-                        // CURL settings from Reference: http://php.net/manual/en/function.curl-setopt.php
+                    // CURL settings from Reference: http://php.net/manual/en/function.curl-setopt.php
 
-                        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Don't use!
-                        curl_setopt($ch, CURLOPT_URL, $geturl);
-                        curl_setopt($ch, CURLOPT_FILE, $fp);
-                        curl_setopt($ch, CURLOPT_HEADER, 0);
-                        curl_setopt($ch, CURLOPT_TIMEOUT, 50); // or 5040? - ** TO DO: Further testing required to optimise setting
-                        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); // was 2 try 0
-                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); 
-                        // curl_setopt($ch, CURLOPT_SSLVERSION, 4); 
-                        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                        curl_setopt($ch, CURLOPT_FAILONERROR, true);
+                    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Don't use!
+                    curl_setopt($ch, CURLOPT_URL, $geturl);
+                    curl_setopt($ch, CURLOPT_FILE, $fp);
+                    curl_setopt($ch, CURLOPT_HEADER, 0);
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 50); // or 5040? - ** TO DO: Further testing required to optimise setting
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); // was 2 try 0
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); 
+                    // curl_setopt($ch, CURLOPT_SSLVERSION, 4); 
+                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                    curl_setopt($ch, CURLOPT_FAILONERROR, true);
 
-                        curl_exec($ch);
-                        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);  // Check connection status
-                        $curl_error_result = curl_error($ch);
+                    curl_exec($ch);
+                    $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);  // Check connection status
+                    $curl_error_result = curl_error($ch);
 
-                        // Check if there were curl errors
-                        if ($curl_error_result) {
-                            $curlFlag=0; // Any contents means "true" - i.e. There's an error message so there were errors
-                        } else {
-                            $curlFlag=1; // false means all good - there were no errors 
-                        }
+                    // Check if there were curl errors
+                    if ($curl_error_result) {
+                        $curlFlag=0; // Any contents means "true" - i.e. There's an error message so there were errors
+                    } else {
+                        $curlFlag=1; // false means all good - there were no errors 
+                    }
 
-                        $downloadResult=0;
-                        if (($http_status==200)&&(file_exists($zipfile))&&($curlFlag)) {
-                            if ($debug) {
-                                echo "<p> HTTP Status of: $http_status (200 is good)</p>";          
-                                echo "<p> Zip file successfully downloaded to $zipfile</p>";
-                            }  
-                            $downloadResult=1;    
-                        } else {
-                            if ($debug) {
-                                // There was a problem downloading
-                                echo "<h3>Curl Download Failed!</h3>
-                                    <p>Error Downloading Payload via CURL</p>";
-                                echo "<p> HTTP Status of: $http_status (200 is good)</p>";
-                                echo "<p> CURL error: ".curl_error($ch)." ...</p>";
-                                if (file_exists($zipfile)) {
-                                    echo "<p> Destination $zipfile file was created though</p>";
-                                }   else {
-                                    echo "<p> Destination $zipfile file was <b>NOT</b> created - file permission issue? </p>";
-                                    echo '<div class="admin_img"><a href="'.SITE_URL.'admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'play" class="btn btn-lg btn-primary color-white">Play</a></div>'; 
-                                }
+                    $downloadResult=0;
+                    if (($http_status==200)&&(file_exists($zipfile))&&($curlFlag)) {
+                        if ($debug) {
+                            echo "<p> HTTP Status of: $http_status (200 is good)</p>";          
+                            echo "<p> Zip file successfully downloaded to $zipfile</p>";
+                        }  
+                        $downloadResult=1;    
+                    } else {
+                        if ($debug) {
+                            // There was a problem downloading
+                            echo "<h3>Curl Download Failed!</h3>
+                                <p>Error Downloading Payload via CURL</p>";
+                            echo "<p> HTTP Status of: $http_status (200 is good)</p>";
+                            echo "<p> CURL error: ".curl_error($ch)." ...</p>";
+                            if (file_exists($zipfile)) {
+                                echo "<p> Destination $zipfile file was created though</p>";
+                            }   else {
+                                echo "<p> Destination $zipfile file was <b>NOT</b> created - file permission issue? </p>";
+                                echo '<div class="admin_img"><a href="'.SITE_URL.'admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'play" class="btn btn-lg btn-primary color-white">Play</a></div>'; 
+                            }
 
-                            } // END debug
+                        } // END debug
 
-                        } // END http_status and file exists check
-                        
-                        curl_close($ch);
-                        fclose($fp);
+                    } // END http_status and file exists check
 
-                        if (!$downloadResult) {
-                            // As download failed delete empty zip file!
-                            if ($debug) { echo "<h2>Download with CURL failed</h2>";}
-                            echo "<h3>Installation Failed!</h3><p>Couldn't download with either copy or curl</p>";
-                            echo '<div class="admin_img"><a href="'.SITE_URL.'admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
-                                . '<div class="play_img"><a href="'.SITE_URL.'play" class="btn btn-lg btn-primary color-white">Play</a></div>';
-                            (file_exists($zipfile)) ? unlink($zipfile) : '';
-                            die();
-                            //promptForIP();
-                        } // If Download failed using CURL 
-                    }// END else CURL
+                    curl_close($ch);
+                    fclose($fp);
+
+                    if (!$downloadResult) 
+                    {
+                        // As download failed delete empty zip file!
+                        if ($debug) { echo "<h2>Download with CURL failed</h2>";}
+                        echo "<h3>Installation Failed!</h3><p>Couldn't download with either copy or curl</p>";
+                        echo '<div class="admin_img"><a href="'.SITE_URL.'admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
+                            . '<div class="play_img"><a href="'.SITE_URL.'play" class="btn btn-lg btn-primary color-white">Play</a></div>';
+                        (file_exists($zipfile)) ? unlink($zipfile) : '';
+                        die();
+                        //promptForIP();
+                    } // If Download failed using CURL 
+                }// END else CURL
                     
-            // ---------------------
-            // UNZIP downloaded file
-            // ---------------------
-
-            // Code Attribution: 
-            // http://stackoverflow.com/questions/8889025/unzip-a-file-with-php
-            
-                
                 echo '<h2>Installation Complete!</h2><p>Check installation has worked: </p>'
                     . '<div class="admin_img"><a href="'.SITE_URL.'admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
                     . '<div class="play_img"><a href="'.SITE_URL.'play" class="btn btn-lg btn-primary color-white">Play</a></div>';

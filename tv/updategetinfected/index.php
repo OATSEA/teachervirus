@@ -1070,7 +1070,7 @@ if($_SESSION['isValidation']['flag'] == 1)
     ?>
             <link href="<?php echo SITE_URL; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
             <div class="color-white">
-                <a class="play_img" href="<?php echo SITE_URL.'/admin'; ?>">
+                <a class="play_img" href="<?php echo SITE_URL.'admin'; ?>">
                     <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
                 </a>
             </div><br/><br/>

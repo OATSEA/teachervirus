@@ -33,8 +33,6 @@
             if($_SESSION['isValidation']['flag'] == 1)
             {
                 $sSiteUrl = (isset($_SERVER["HTTP_HOST"]) ? "http://".$_SERVER["HTTP_HOST"] : '');
-                $sRequestUrl = $sSiteUrl.$_SERVER['REQUEST_URI'];
-                $aExplodeUrl = explode("getinfected.php", $sRequestUrl);
                 $sDestination = ROOT_DIR.'/data/constants.php';
                 if(file_exists($sDestination))
                 {
@@ -90,7 +88,7 @@ define('ADMIN_COG','$bAdminCog');
                 }
             </script>
             <div class="color-white">
-                <a class="play_img" href="<?php echo SITE_URL.'/admin'; ?>">
+                <a class="play_img" href="<?php echo SITE_URL.'admin'; ?>">
                     <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
                 </a>
             </div>

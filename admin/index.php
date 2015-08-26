@@ -66,9 +66,9 @@
                             echo '<a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.png" /></a>';
                         }
                     }
-                    (isset($sChangePasswordURL) && !empty($sChangePasswordURL)) ? '<a href="'.SITE_URL.'/'.$sChangePasswordURL.'"><img class="mybutton" alt="Change Password" src="'.SITE_URL.'/'.$sChangePasswordURL.'icon.png" /></a>' : '';
-                    (isset($sInfectedURL) && !empty($sInfectedURL)) ? '<a href="'.SITE_URL.'/'.$sInfectedURL.'"><img class="mybutton" alt="Get Infected" src="'.SITE_URL.'/'.$sInfectedURL.'icon.png" /></a>' : '';
-                    (isset($sSettingURL) && !empty($sSettingURL)) ? '<a href="'.SITE_URL.'/'.$sSettingURL.'"><img class="mybutton" alt="Settings" src="'.SITE_URL.'/'.$sSettingURL.'icon.png" /></a>' : '';
+                    (isset($sChangePasswordURL) && !empty($sChangePasswordURL)) ? '<a href="'.$sChangePasswordURL.'"><img class="mybutton" alt="Change Password" src="'.$sChangePasswordURL.'icon.png" /></a>' : '';
+                    (isset($sInfectedURL) && !empty($sInfectedURL)) ? '<a href="'.$sInfectedURL.'"><img class="mybutton" alt="Get Infected" src="'.$sInfectedURL.'icon.png" /></a>' : '';
+                    (isset($sSettingURL) && !empty($sSettingURL)) ? '<a href="'.$sSettingURL.'"><img class="mybutton" alt="Settings" src="'.$sSettingURL.'icon.png" /></a>' : '';
                 }
                 else
                 {
@@ -80,7 +80,7 @@
                     </script>
 
                     <div class="color-white">
-                        <a class="play_img" href="<?php echo SITE_URL.'play'; ?>">
+                        <a class="play_img" href="<?php echo SITE_URL.'/play'; ?>">
                             <i class="mainNav fa fa-play-circle-o fa-3x"></i>
                         </a>
                         <h2>Please Login</h2>
@@ -178,4 +178,4 @@
         }
         ?>
     </body>
-</html> 
+</html>

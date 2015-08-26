@@ -10,7 +10,7 @@
 
     // May have to do this functionality via native Android?
     require_once("../../data/constants.php");
-    require(SITE_URL.'/admin/checkLogin.php');
+    require(ROOT_DIR.'/admin/checkLogin.php');
     $debug = 1;
 
     if(isset($_SERVER["SERVER_ADDR"])){
