@@ -1,7 +1,7 @@
 <?php
     $sSiteUrl = (isset($_SERVER["HTTP_HOST"]) ? "http://".$_SERVER["HTTP_HOST"] : '');
     $sRequestUrl = $sSiteUrl.$_SERVER['REQUEST_URI'];
-    $aExplodeUrl = explode("getinfected.php", $sRequestUrl);
+    $aExplodeUrl = explode("/getinfected.php", $sRequestUrl);
     $sDestination = getcwd().'/data/constants.php';
     
     if (file_exists($sDestination)) 
