@@ -475,7 +475,7 @@
             // Create payload directory if it doesn't exist:
             if (!makeDIR($payload,true,$nMode)) {
                     // failed to make directory so exit
-                    exit('<h3>Installation Failed!</h3><div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                    exit('<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
             }
            
              // Check for IP param and set $ip if param provided
@@ -568,7 +568,7 @@
 
                 // Make the new temp sub_folder for unzipped files
                 if (!mkdir($temp_unzip_path, $nMode, true)) {
-                    exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                    exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Failed because : File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
                 } else {
                     if($debug) { echo "<p>Temp unzip Folder Created! <br>"; }
                 }
@@ -580,7 +580,7 @@
                     {
                         rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
                         if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Already installed?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Failed because : Already installed?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
                         } else {
                             if($debug) { echo "<p>Folder Created! <br>"; }
                         }
@@ -588,7 +588,7 @@
                     else
                     {
                         if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Failed because : File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
                         } else {
                             if($debug) { echo "<p>Folder Created! <br>"; }
                         }        
@@ -628,7 +628,7 @@
                     {
                         rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
                         if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Already installed?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Failed because : Already installed?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
                         } else {
                             if($debug) { echo "<p>Folder Created! <br>"; }
                         }
@@ -636,7 +636,7 @@
                     else
                     {
                         if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Failed because : File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
                         } else {
                             if($debug) { echo "<p>Folder Created! <br>"; }
                         }        
@@ -688,8 +688,8 @@
                 $fp = fopen($zipfile, 'w+'); // or perhaps 'wb'?
                 echo $geturl;exit;
                 if (!$fp) {
-                    exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4>
-                    <p>File permission issue maybe?
+                    exit("<h3>Payload $download_unzip_filename</h3><h4>Installed via $geturl FAILED!!</h4>
+                    <p>Failed because : File permission issue maybe?
                     ".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>'); 
                 }
 
@@ -730,9 +730,9 @@
                 } else {
                     if ($debug) {
                         // There was a problem downloading
-                        echo "<h3>Payload $download_unzip_filename</h3><h4> Installed via CURL FAILED!!</h4>";
+                        echo "<h3>Payload $download_unzip_filename</h3><h4>Installed via CURL FAILED!!</h4>";
                         echo "<p> HTTP Status of: $http_status (200 is good)</p>";
-                        echo "<p> CURL error: ".curl_error($ch)." ...</p>";
+                        echo "<p> Failed because : CURL error: ".curl_error($ch)." ...</p>";
                         if (file_exists($zipfile)) {
                             echo "<p> Destination $zipfile file was created though</p>";
                         }   else {
@@ -746,12 +746,12 @@
 
                 curl_close($ch);
                 fclose($fp);
-
+                
                 if (!$downloadResult) 
                 {
                     // As download failed delete empty zip file!
                     if ($debug) { echo "<h2>Download with CURL failed</h2>";}
-                    echo "<h3>Installation Failed!</h3><p>Couldn't download with either copy or curl</p>";
+                    echo "<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Failed because : Couldn't download with either copy or curl</p>";
                     echo '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
                         . '<div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>';
                     (file_exists($zipfile)) ? unlink($zipfile) : '';
@@ -760,7 +760,7 @@
                 } // If Download failed using CURL 
             }// END else CURL
 
-            echo "<h3>Payload $download_filename</h3><h4> Installed Successfully via $geturl</h4>";
+            echo "<h3>Payload $download_unzip_filename</h3><h4> Installed Successfully via $geturl</h4>";
             echo   '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
                 . '<div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>';
             die();
