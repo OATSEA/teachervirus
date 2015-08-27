@@ -484,7 +484,10 @@
             // Download file if OATSEA-teachervirus.zip doesn't already exist
             if (file_exists($zipfile)) 
             {
-                if ($debug) { 
+                unlink($zipfile);
+                rrmdir($payload.'/'.$download_unzip_filename);
+                if ($debug)
+                { 
                     echo "<p>The Payloads files have already been downloaded to: $zipfile</p>
                     <p>This installation will use the existing file rather than downloading a new version of $sInfectUserName.</p>
                     <p><b>Hint:</b> If you want to download a new version of Payload you will need to:</br>
@@ -493,7 +496,7 @@
                     * refresh/re-open <b>getpayload</b></p>"; 
                 } // END Debug
             }
-            else if ($ip == "no")
+            if ($ip == "no")
             {
                 // Download from github zipball/master as no IP address set
                 $geturl = "https://github.com/$sUserName/$sRepository/zipball/master/";
@@ -517,256 +520,251 @@
                 $geturl = $sTempFileName;
             }
             // TRY DOWNLOAD via copy
-            if ($debug) { echo "<h2>Download Files</h2>
-               <p>Will attempt to download via copy from <b>$geturl</b></p> ";}
+            if ($debug)
+            { 
+                echo "<h2>Download Files</h2>
+                <p>Will attempt to download via copy from <b>$geturl</b></p> ";
+            }
+            // ** TO DO ** catch warnings
+            // get following error on MAC: 
+            umask(0);
+            $zip = new ZipArchive;
+            // Get array of all source files
+            $files = scandir($payload);
+            // Identify directories
+            $source = $payload;
+            $sFolderPath = ROOT_DIR;
 
-                // ** TO DO ** catch warnings
-                // get following error on MAC: 
-                // Warning: copy(): SSL operation failed with code 1.
-                umask(0);
-                echo "<h3>Unzip Successful!</h3>";
-                $zip = new ZipArchive;
-                // Get array of all source files
-                $files = scandir($payload);
-                // Identify directories
-                $source = $payload;
-                $sFolderPath = ROOT_DIR;
+            $destination = $payload;
+            if (!file_exists($destination))
+                mkdir($destination, $nMode, true);
 
-                $destination = $payload;
-                if (!file_exists($destination))
-                    mkdir($destination, $nMode, true);
+            $copyflag = FALSE;
 
-                $copyflag = FALSE;
+            if(($ip == "no" || $sPayloadSource == 'infected_device') && $sPayloadSource != 'file_browse')
+            {
+                $copyflag = copy($geturl,$zipfile);
+            }
+            else if($sPayloadSource == 'file_browse')
+            {
+                $copyflag = TRUE;
+            }
+            else if(file_exists($geturl))
+            {
 
-                if(($ip == "no" || $sPayloadSource == 'infected_device') && $sPayloadSource != 'file_browse')
-                {
-                    $copyflag = copy($geturl,$zipfile);
+                $copyflag = copy($geturl,$zipfile);
+            }
+            chmod($zipfile, 0755);
+            if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
+            $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$download_filename,true);
+            if ($zipFlag === TRUE) 
+            {
+
+                $sPayloadUrl = $payload;
+                // Create full temp sub_folder path
+                $temp_unzip_path = $sPayloadUrl.'/'.uniqid('unzip_temp_', true)."/";
+
+                if($debug) { echo "Temp Unzip Path is: ".$temp_unzip_path."<br>"; }
+
+                // Make the new temp sub_folder for unzipped files
+                if (!mkdir($temp_unzip_path, $nMode, true)) {
+                    exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                } else {
+                    if($debug) { echo "<p>Temp unzip Folder Created! <br>"; }
                 }
-                else if($sPayloadSource == 'file_browse')
+
+                if(is_dir($sPayloadUrl))
                 {
-                    $copyflag = TRUE;
-                }
-                else if(file_exists($geturl))
-                {
-
-                    $copyflag = copy($geturl,$zipfile);
-                }
-                chmod($zipfile, 0755);
-                if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
-                $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$download_filename,true);
-                if ($zipFlag === TRUE) 
-                {
-
-                    $sPayloadUrl = $payload;
-                    // Create full temp sub_folder path
-                    $temp_unzip_path = $sPayloadUrl.'/'.uniqid('unzip_temp_', true)."/";
-
-                    if($debug) { echo "Temp Unzip Path is: ".$temp_unzip_path."<br>"; }
-
-                    // Make the new temp sub_folder for unzipped files
-                    if (!mkdir($temp_unzip_path, $nMode, true)) {
-                        exit("<h2>Error - Payload installation Failed!</h2><p> Could not create unzip folder: $temp_unzip_path</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
-                    } else {
-                        if($debug) { echo "<p>Temp unzip Folder Created! <br>"; }
-                    }
-
-                    if(is_dir($sPayloadUrl))
+                    $zip->extractTo($temp_unzip_path);
+                    if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
                     {
-                        $zip->extractTo($temp_unzip_path);
-                        if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
-                        {
-                            rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
-                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
-                            } else {
-                                if($debug) { echo "<p>Folder Created! <br>"; }
-                            }
+                        rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
+                        if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
+                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Already installed?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                        } else {
+                            if($debug) { echo "<p>Folder Created! <br>"; }
                         }
-                        else
-                        {
-                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
-                            } else {
-                                if($debug) { echo "<p>Folder Created! <br>"; }
-                            }        
-                        }
-                        $files = scandir($temp_unzip_path,1);
-                        foreach ($files as $key => $value)
-                        {
-                           if (!in_array($value,array(".","..")))
-                           {
-                              if (is_dir($temp_unzip_path . $value))
-                              {
-                                moveDIR($temp_unzip_path . $value,$sPayloadUrl.'/'.$download_unzip_filename,$debug);
-                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
-                                fwrite($myfile, $sListContent);
-                                fclose($myfile);
-                                
-                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
-                                fwrite($myfile, $sListContent);
-                                fclose($myfile);
-                                $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
-                                // Add current file to archive
-                                $zip->addFile($destination."/list.txt", $relativePath);
-                              }
-                           }
-                        }
-                        if(is_dir($temp_unzip_path))
-                        {
-                            rrmdir($temp_unzip_path);
-                        }
-                        rrmdir(ROOT_DIR."/admin/getpayload/".$payload);
                     }
                     else
                     {
-                        $zip->extractTo($temp_unzip_path);
-                        if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
-                        {
-                            rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
-                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
-                            } else {
-                                if($debug) { echo "<p>Folder Created! <br>"; }
-                            }
-                        }
-                        else
-                        {
-                            if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Payload installation Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
-                            } else {
-                                if($debug) { echo "<p>Folder Created! <br>"; }
-                            }        
-                        }     
-
-                        $files = scandir($temp_unzip_path,1);
-                        foreach ($files as $key => $value)
-                        {
-                           if (!in_array($value,array(".","..")))
-                           {
-                              if (is_dir($temp_unzip_path . $value))
-                              {
-                                moveDIR($temp_unzip_path . $value,$sPayloadUrl.DIRECTORY_SEPARATOR.$download_unzip_filename,$debug);
-                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
-                                fwrite($myfile, $sListContent);
-                                fclose($myfile);
-                                
-                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
-                                fwrite($myfile, $sListContent);
-                                fclose($myfile);
-                                $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
-                                // Add current file to archive
-                                $zip->addFile($destination."/list.txt", $relativePath);
-                              }
-                           }
-                        }
-                        if(is_dir($temp_unzip_path))
-                        {
-                            rrmdir($temp_unzip_path);
-                        }
-                        rrmdir(ROOT_DIR."/admin/getpayload/".$payload);
-                    }
-                }
-                $zip->close();
-                unlink($destination."/list.txt");
-                    
-                if ($copyflag === TRUE) 
-                {
-                    echo "<h3>Download Succeeded</h3><p>Files downloaded using <b>Copy</b> instead</p>";
-                } 
-                else 
-                { 
-                    // try CURL    
-
-                    if ($debug) { echo "<p>Will attempt to download via CURL from <b>$geturl</b></p> ";}
-
-                    // USE CURL to Download ZIP
-                    // Code Attribution:  
-                    // http://stackoverflow.com/questions/19177070/copy-image-from-remote-server-over-https    
-                    // http://stackoverflow.com/questions/18974646/download-zip-php
-                    // http://stackoverflow.com/questions/11321761/using-curl-to-download-a-zip-file-isnt-working-with-follow-php-code
-
-                    set_time_limit(0); //prevent timeout
-                    $fp = fopen(ROOT_DIR.'/'.$zipfile, 'w+'); // or perhaps 'wb'?
-                    if (!$fp) {
-                        exit("<h3><b>ERROR! Payload download failed</h3>
-                        <p>Unable to open temporary file: <b>$zipfile</b>!</p>
-                        <p>File permission issue maybe?
-                        ".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>'); 
+                        if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
+                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                        } else {
+                            if($debug) { echo "<p>Folder Created! <br>"; }
+                        }        
                     }
 
-                    // ** TO DO ** add catch exception for curl not installed (e.g. RPI)
-                    $ch = curl_init();
-
-                    // CURL settings from Reference: http://php.net/manual/en/function.curl-setopt.php
-
-                    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Don't use!
-                    curl_setopt($ch, CURLOPT_URL, $geturl);
-                    curl_setopt($ch, CURLOPT_FILE, $fp);
-                    curl_setopt($ch, CURLOPT_HEADER, 0);
-                    curl_setopt($ch, CURLOPT_TIMEOUT, 50); // or 5040? - ** TO DO: Further testing required to optimise setting
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); // was 2 try 0
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); 
-                    // curl_setopt($ch, CURLOPT_SSLVERSION, 4); 
-                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                    curl_setopt($ch, CURLOPT_FAILONERROR, true);
-
-                    curl_exec($ch);
-                    $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);  // Check connection status
-                    $curl_error_result = curl_error($ch);
-
-                    // Check if there were curl errors
-                    if ($curl_error_result) {
-                        $curlFlag=0; // Any contents means "true" - i.e. There's an error message so there were errors
-                    } else {
-                        $curlFlag=1; // false means all good - there were no errors 
-                    }
-
-                    $downloadResult=0;
-                    if (($http_status==200)&&(file_exists($zipfile))&&($curlFlag)) {
-                        if ($debug) {
-                            echo "<p> HTTP Status of: $http_status (200 is good)</p>";          
-                            echo "<p> Zip file successfully downloaded to $zipfile</p>";
-                        }  
-                        $downloadResult=1;    
-                    } else {
-                        if ($debug) {
-                            // There was a problem downloading
-                            echo "<h3>Curl Download Failed!</h3>
-                                <p>Error Downloading Payload via CURL</p>";
-                            echo "<p> HTTP Status of: $http_status (200 is good)</p>";
-                            echo "<p> CURL error: ".curl_error($ch)." ...</p>";
-                            if (file_exists($zipfile)) {
-                                echo "<p> Destination $zipfile file was created though</p>";
-                            }   else {
-                                echo "<p> Destination $zipfile file was <b>NOT</b> created - file permission issue? </p>";
-                                echo '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>'; 
-                            }
-
-                        } // END debug
-
-                    } // END http_status and file exists check
-
-                    curl_close($ch);
-                    fclose($fp);
-
-                    if (!$downloadResult) 
+                    $files = scandir($temp_unzip_path,1);
+                    foreach ($files as $key => $value)
                     {
-                        // As download failed delete empty zip file!
-                        if ($debug) { echo "<h2>Download with CURL failed</h2>";}
-                        echo "<h3>Installation Failed!</h3><p>Couldn't download with either copy or curl</p>";
-                        echo '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
-                            . '<div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>';
-                        (file_exists($zipfile)) ? unlink($zipfile) : '';
-                        die();
-                        //promptForIP();
-                    } // If Download failed using CURL 
-                }// END else CURL
-                    
-                echo '<h2>Installation Complete!</h2><p>Check installation has worked: </p>'
-                    . '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
-                    . '<div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>';
-                die();
-            } // END try alternative move approach
+                       if (!in_array($value,array(".","..")))
+                       {
+                          if (is_dir($temp_unzip_path . $value))
+                          {
+                            moveDIR($temp_unzip_path . $value,$sPayloadUrl.'/'.$download_unzip_filename,$debug);
+                            $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                            fwrite($myfile, $sListContent);
+                            fclose($myfile);
+
+                            $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                            fwrite($myfile, $sListContent);
+                            fclose($myfile);
+                            $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
+                            // Add current file to archive
+                            $zip->addFile($destination."/list.txt", $relativePath);
+                          }
+                       }
+                    }
+                    if(is_dir($temp_unzip_path))
+                    {
+                        rrmdir($temp_unzip_path);
+                    }
+                    rrmdir(ROOT_DIR."/admin/getpayload/".$payload);
+                }
+                else
+                {
+                    $zip->extractTo($temp_unzip_path);
+                    if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
+                    {
+                        rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
+                        if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
+                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Already installed?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                        } else {
+                            if($debug) { echo "<p>Folder Created! <br>"; }
+                        }
+                    }
+                    else
+                    {
+                        if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
+                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>File security or permissions issue?".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                        } else {
+                            if($debug) { echo "<p>Folder Created! <br>"; }
+                        }        
+                    }     
+
+                    $files = scandir($temp_unzip_path,1);
+                    foreach ($files as $key => $value)
+                    {
+                       if (!in_array($value,array(".","..")))
+                       {
+                          if (is_dir($temp_unzip_path . $value))
+                          {
+                            moveDIR($temp_unzip_path . $value,$sPayloadUrl.DIRECTORY_SEPARATOR.$download_unzip_filename,$debug);
+                            $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                            fwrite($myfile, $sListContent);
+                            fclose($myfile);
+
+                            $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                            fwrite($myfile, $sListContent);
+                            fclose($myfile);
+                            $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
+                            // Add current file to archive
+                            $zip->addFile($destination."/list.txt", $relativePath);
+                          }
+                       }
+                    }
+                    if(is_dir($temp_unzip_path))
+                    {
+                        rrmdir($temp_unzip_path);
+                    }
+                    rrmdir(ROOT_DIR."/admin/getpayload/".$payload);
+                }
+            }
+            $zip->close();
+            unlink($destination."/list.txt");
+
+            if ($copyflag === FALSE) 
+            { 
+                // try CURL    
+                if ($debug) { echo "<p>Will attempt to download via CURL from <b>$geturl</b></p> ";}
+
+                // USE CURL to Download ZIP
+                // Code Attribution:  
+                // http://stackoverflow.com/questions/19177070/copy-image-from-remote-server-over-https    
+                // http://stackoverflow.com/questions/18974646/download-zip-php
+                // http://stackoverflow.com/questions/11321761/using-curl-to-download-a-zip-file-isnt-working-with-follow-php-code
+
+                set_time_limit(0); //prevent timeout
+                $fp = fopen($zipfile, 'w+'); // or perhaps 'wb'?
+                echo $geturl;exit;
+                if (!$fp) {
+                    exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4>
+                    <p>File permission issue maybe?
+                    ".'<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>'); 
+                }
+
+                // ** TO DO ** add catch exception for curl not installed (e.g. RPI)
+                $ch = curl_init();
+
+                // CURL settings from Reference: http://php.net/manual/en/function.curl-setopt.php
+
+                // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Don't use!
+                curl_setopt($ch, CURLOPT_URL, $geturl);
+                curl_setopt($ch, CURLOPT_FILE, $fp);
+                curl_setopt($ch, CURLOPT_HEADER, 0);
+                curl_setopt($ch, CURLOPT_TIMEOUT, 50); // or 5040? - ** TO DO: Further testing required to optimise setting
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); // was 2 try 0
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); 
+                // curl_setopt($ch, CURLOPT_SSLVERSION, 4); 
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                curl_setopt($ch, CURLOPT_FAILONERROR, true);
+
+                curl_exec($ch);
+                $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);  // Check connection status
+                $curl_error_result = curl_error($ch);
+
+                // Check if there were curl errors
+                if ($curl_error_result) {
+                    $curlFlag=0; // Any contents means "true" - i.e. There's an error message so there were errors
+                } else {
+                    $curlFlag=1; // false means all good - there were no errors 
+                }
+
+                $downloadResult=0;
+                if (($http_status==200)&&(file_exists($zipfile))&&($curlFlag)) {
+                    if ($debug) {
+                        echo "<p> HTTP Status of: $http_status (200 is good)</p>";          
+                        echo "<p> Zip file successfully downloaded to $zipfile</p>";
+                    }  
+                    $downloadResult=1;    
+                } else {
+                    if ($debug) {
+                        // There was a problem downloading
+                        echo "<h3>Payload $download_unzip_filename</h3><h4> Installed via CURL FAILED!!</h4>";
+                        echo "<p> HTTP Status of: $http_status (200 is good)</p>";
+                        echo "<p> CURL error: ".curl_error($ch)." ...</p>";
+                        if (file_exists($zipfile)) {
+                            echo "<p> Destination $zipfile file was created though</p>";
+                        }   else {
+                            echo "<p> Destination $zipfile file was <b>NOT</b> created - file permission issue? </p>";
+                            echo '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>'; 
+                        }
+
+                    } // END debug
+
+                } // END http_status and file exists check
+
+                curl_close($ch);
+                fclose($fp);
+
+                if (!$downloadResult) 
+                {
+                    // As download failed delete empty zip file!
+                    if ($debug) { echo "<h2>Download with CURL failed</h2>";}
+                    echo "<h3>Installation Failed!</h3><p>Couldn't download with either copy or curl</p>";
+                    echo '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
+                        . '<div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>';
+                    (file_exists($zipfile)) ? unlink($zipfile) : '';
+                    die();
+                    //promptForIP();
+                } // If Download failed using CURL 
+            }// END else CURL
+
+            echo "<h3>Payload $download_filename</h3><h4> Installed Successfully via $geturl</h4>";
+            echo   '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
+                . '<div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>';
+            die();
+        } // END try alternative move approach
     }
     if($_SESSION['isValidation']['flag'] == 1) 
         unset($_SESSION['isValidation']['user_name_required'],$_SESSION['isValidation']['repository_required'],$_SESSION['isValidation']['device_address'],$_SESSION['isValidation']['infect_user_name'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['payload_url'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['google_payload_name'],$_SESSION['isValidation']['google_drive_link'],$_SESSION['isValidation']['upload_file'],$_SESSION['isValidation']['payload_source'],$_SESSION['isValidation']['folder_source'],$_SESSION['isValidation']['new_folder']);
