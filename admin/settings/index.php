@@ -20,7 +20,7 @@
             $sFolderLocation = isset($_POST['folder_location'])? $_POST['folder_location'] : '';
             $bExternalSource = isset($_POST['external_source'])? $_POST['external_source'] : 0;
             $bAdminCog = isset($_POST['admin_cog']) ? $_POST['admin_cog'] : 0;
-
+            $sGetInfectedBranch = isset($_POST['getinfected_branch']) ? $_POST['getinfected_branch'] : '';
             if($bExternalSource)
             {
                 if(empty($sFolderLocation))
@@ -38,6 +38,7 @@
                 {
                     $sDocumentRoot = ROOT_DIR;
                     $sSiteUrl = SITE_URL;
+                    $sTvBranchName = TV_BRANCH;
                 }
                 $sListContent = "<?php
 define('ROOT_DIR','$sDocumentRoot');
@@ -47,7 +48,9 @@ define('EXTERNAL_PATH','$sDocumentRoot/$sFolderLocation');
 define('LANGUAGE','$sLanguage');
 define('DEBUG_TEXT','$bShowDebugText');
 define('EXTERNAL_TEXT','$bExternalSource');
+define('TV_BRANCH','$sTvBranchName');
 define('ADMIN_COG','$bAdminCog');
+define('GETINFECTED_BRANCH','$sGetInfectedBranch');
 ?>";
                 $myfile = fopen("$sDestination", "w");
                 fwrite($myfile, $sListContent);
