@@ -916,8 +916,6 @@
                 $bAdminCog = ADMIN_COG;
                 $sGetInfectedBranch = $sBranchName;
 
-                unlink("$sDocumentRoot/data/constants.php");
-
                 $sListContent = "<?php
                 define('ROOT_DIR','$sDocumentRoot');
                 define('SITE_URL','$sSiteUrl');
