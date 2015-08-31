@@ -21,9 +21,7 @@
         define('DEBUG_TEXT','0');
         define('EXTERNAL_TEXT','0');
         define('TV_BRANCH','$sTvBranchName');
-        define('ADMIN_COG','1');
-        
-    ?>";
+        define('ADMIN_COG','1');";
         $myfile = fopen("$sDocumentRoot/data/constants.php", "w")or die('Cannot open file: constants.php');
         fwrite($myfile, $sListContent);
         fclose($myfile);
