@@ -230,11 +230,34 @@
         
         if($_SESSION['isValidation']['flag'] == 1)
         {
-            $file = ROOT_DIR."/data/constants.php";
-            $current = file_get_contents($file);
-            // Append a new content to the file
-            $current .= "define('GETINFECTED_BRANCH','$sBranchName');";
-            file_put_contents($file, $current);
+            $sDocumentRoot = ROOT_DIR;
+            $sSiteUrl = SITE_URL;
+            $sExternalFolder = EXTERNAL_FOLDER;
+            $sExternalPath = EXTERNAL_PATH;
+            $sLanguage = LANGUAGE;
+            $bDebugText = DEBUG_TEXT;
+            $bExternalText = EXTERNAL_TEXT;
+            $sTvBranchName = TV_BRANCH;
+            $bAdminCog = ADMIN_COG;
+            $sGetInfectedBranch = $sBranchName;
+            
+            unlink("$sDocumentRoot/data/constants.php");
+            
+            $sListContent = "<?php
+            define('ROOT_DIR','$sDocumentRoot');
+            define('SITE_URL','$sSiteUrl');
+            define('EXTERNAL_FOLDER','$sExternalFolder');
+            define('EXTERNAL_PATH','$sExternalPath');
+            define('LANGUAGE','$sLanguage');
+            define('DEBUG_TEXT','$bDebugText');
+            define('EXTERNAL_TEXT','$bExternalText');
+            define('TV_BRANCH','$sTvBranchName');
+            define('ADMIN_COG','$bAdminCog');
+            define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
+            
+            $myfile = fopen("$sDocumentRoot/data/constants.php", "w")or die('Cannot open file: constants.php');
+            fwrite($myfile, $sListContent);
+            fclose($myfile);
             
             function rrmdir($dir)
             {
