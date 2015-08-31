@@ -329,3 +329,18 @@ select.extra > option {
 {
     margin-left: -60px !important;
 }
+.col-sm-12.buttonshow > input{
+    color: black;
+    margin: 12px;
+}
+.col-sm-8.teacherbranch > input{
+    margin: 10px 0px 0px 10px;
+}
+.form-group.teacherbranch
+{
+    margin:15px 0px 0px 20px;
+}
+
+.col-sm-12.teacherbranch{
+    margin:15px 0px 0px 20px;
+}

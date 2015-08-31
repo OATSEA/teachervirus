@@ -86,6 +86,35 @@ define('ADMIN_COG','$bAdminCog');
                         $("#folder_location_address").hide();
                     }
                 }
+                
+            function toggleShowFile(id,buttonid)
+            {
+                 var divId = document.getElementById(id);
+                 var buttonId = document.getElementById(buttonid);
+                 if (divId.style.display == 'block' || divId.style.display=='')
+                {
+                    buttonId.value = 'Show Breeder and Mutator Settings ';
+                    divId.style.display = 'none';
+                }
+                else 
+                {
+                    buttonId.value = 'Hide Breeder and Mutator Settings';
+                    divId.style.display = 'block';
+               }
+            }
+            function ShowBranch(id)
+            {
+                var divId = document.getElementById(id); 
+                 if (divId.style.display == 'block' || divId.style.display=='')
+                {
+                    
+                    divId.style.display = 'none';
+                }
+                else 
+                {
+                    divId.style.display = 'block';
+               }
+            }
             </script>
             <div class="color-white">
                 <a class="play_img" href="<?php echo SITE_URL.'/admin'; ?>">
@@ -225,6 +254,57 @@ define('ADMIN_COG','$bAdminCog');
                         <div class="col-sm-12">
                             <input type="checkbox" name="admin_cog" id="admin_cog" value="<?php echo isset($bAdminCog) ? $bAdminCog : ADMIN_COG; ?>" <?php echo ((isset($bAdminCog) && $bAdminCog == 1) || (ADMIN_COG == '1')) ? "checked='checked'" : ""; ?> onClick="changeValue('admin_cog');">
                             <label class="start_payload">Show admin cog to student?</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12 buttonshow">
+                            <input type="button" id="show_branch_option" value="Show Breeder and Mutator Settings" onclick="toggleShowFile('branch_option','show_branch_option');">
+                        </div>
+                    </div> 
+                    <div id="branch_option" style="display:none">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input type="checkbox" name="show_tv_update" id="delete_data" value="<?php echo isset($_POST['show_tv_update']) ? $_POST['show_tv_update'] : empty($_POST) ? '1' : '0'; ?>" onclick="ShowBranch('branch')" >
+                                <label class="start_payload"> Show Branch option for TV updates</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="branch" style="display:none">
+                        <div class="form-group teacherbranch">
+                            <div class="col-sm-4">
+                                <label class="start_payload">Default Teacher Virus Branch</label>
+                            </div>
+                            <div class="col-sm-8 teacherbranch">
+                                <input type="text" name="tv_branch" class="form-control" value="<?php echo isset($_POST['tv_branch']) ? $_POST['tv_branch'] : TV_BRANCH ; ?>" >
+                            </div>
+                        </div>
+                        <div class="col-sm-12 teacherbranch">
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <label>Default getinfected.php Branch</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" name="getinfected_branch" class="form-control" value="<?php echo isset($_POST['getinfected_branch']) ? $_POST['getinfected_branch'] : GETINFECTED_BRANCH ; ?>" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input type="checkbox" name="show_tv_update" id="delete_data" value="<?php echo isset($_POST['show_tv_update']) ? $_POST['show_tv_update'] : empty($_POST) ? '1' : '0'; ?>">
+                            <label class="start_payload"> Show Branch Option For Payload Install</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input type="checkbox" name="show_tv_update" id="delete_data" value="<?php echo isset($_POST['show_tv_update']) ? $_POST['show_tv_update'] : empty($_POST) ? '1' : '0'; ?>">
+                            <label class="start_payload"> Show Debug Comments</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input type="checkbox" name="show_tv_update" id="delete_data" value="<?php echo isset($_POST['show_tv_update']) ? $_POST['show_tv_update'] : empty($_POST) ? '1' : '0'; ?>">
+                            <label class="start_payload"> Show CHMOD Option</label>
                         </div>
                     </div>
                     <div class="go-button btn btn-lg btn-primary">
