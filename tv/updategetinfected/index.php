@@ -230,9 +230,12 @@
         
         if($_SESSION['isValidation']['flag'] == 1)
         {
-            $_SESSION['getinfected_branch'] = $sBranchName;
-            unlink(ROOT_DIR."/data/constants.php");
-            require_once(getcwd().'/data/bootstrap.php');
+            $file = ROOT_DIR."/data/constants.php";
+            $current = file_get_contents($file);
+            // Append a new content to the file
+            $current .= "define('GETINFECTED_BRANCH','$sBranchName');";
+            file_put_contents($file, $current);
+            
             function rrmdir($dir)
             {
                if (is_dir($dir)) { 
