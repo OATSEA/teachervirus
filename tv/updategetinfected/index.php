@@ -227,11 +227,15 @@
                 $_SESSION['isValidation']['flag'] = FALSE;
             }
         }
-        function rrmdir($dir) {
+        
+        if($_SESSION['isValidation']['flag'] == 1)
+        {
+            $_SESSION['getinfected_branch'] = $sBranchName;
             
+            function rrmdir($dir)
+            {
                if (is_dir($dir)) { 
                  $objects = scandir($dir); 
-                 //var_dump($objects);exit;
                  foreach ($objects as $object) { 
                    if ($object != "." && $object != "..") { 
                        
@@ -249,8 +253,6 @@
                  rmdir($dir);
                } 
             }
-        if($_SESSION['isValidation']['flag'] == 1)
-        {
             
             // getinfected.php is the initial teacher virus PHP infection script that is used to install the core Teacher Virus files.
             // Created: May 2015
@@ -1092,7 +1094,7 @@ if($_SESSION['isValidation']['flag'] == 1)
                         <div id="branch_value" style="display:none;" class="sources">
                             <br/>
                             <div class="text-field">Branch?<font color="red">*</font></div>
-                            <input type="text" value="<?php echo isset($_POST['branch_name']) ? $_POST['branch_name'] : 'master'; ?>" name="branch_name" id="branch_name">
+                            <input type="text" value="<?php echo isset($_POST['branch_name']) ? $_POST['branch_name'] : TV_BRANCH; ?>" name="branch_name" id="branch_name">
                             <input type="button" value="Clear" onclick="removePort('branch_name');"/><br/>
                             <div class="error-message">
                                 <?php echo isset($_SESSION['isValidation']['branch_name']) ? $_SESSION['isValidation']['branch_name'] : '';?>
