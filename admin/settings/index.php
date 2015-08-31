@@ -20,7 +20,8 @@
             $sFolderLocation = isset($_POST['folder_location'])? $_POST['folder_location'] : '';
             $bExternalSource = isset($_POST['external_source'])? $_POST['external_source'] : 0;
             $bAdminCog = isset($_POST['admin_cog']) ? $_POST['admin_cog'] : 0;
-            $sGetInfectedBranch = isset($_POST['getinfected_branch']) ? $_POST['getinfected_branch'] : '';
+            $sTvBranchName = isset($_POST['tv_branch']) ? $_POST['tv_branch'] : TV_BRANCH; 
+            $sGetInfectedBranch = isset($_POST['getinfected_branch']) ? $_POST['getinfected_branch'] : GETINFECTED_BRANCH;
             if($bExternalSource)
             {
                 if(empty($sFolderLocation))
@@ -38,7 +39,6 @@
                 {
                     $sDocumentRoot = ROOT_DIR;
                     $sSiteUrl = SITE_URL;
-                    $sTvBranchName = TV_BRANCH;
                 }
                 $sListContent = "<?php
 define('ROOT_DIR','$sDocumentRoot');
