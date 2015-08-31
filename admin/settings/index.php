@@ -19,9 +19,11 @@
             $bShowDebugText = isset($_POST['show_debug']) ? $_POST['show_debug'] : 0;
             $sFolderLocation = isset($_POST['folder_location'])? $_POST['folder_location'] : '';
             $bExternalSource = isset($_POST['external_source'])? $_POST['external_source'] : 0;
+            $bpayload_install = isset($_POST['show_payload'])? $_POST['show_payload'] : 0;
+            $bdebug_comment = isset($_POST['debug_comment'])? $_POST['debug_comment'] : 0;
+            $bshow_chmod = isset($_POST['show_chmod'])? $_POST['show_chmod'] : 0;
             $bAdminCog = isset($_POST['admin_cog']) ? $_POST['admin_cog'] : 0;
-            $sTvBranchName = isset($_POST['tv_branch']) ? $_POST['tv_branch'] : TV_BRANCH; 
-            $sGetInfectedBranch = isset($_POST['getinfected_branch']) ? $_POST['getinfected_branch'] : GETINFECTED_BRANCH;
+            $sGetInfectedBranch = isset($_POST['getinfected_branch']) ? $_POST['getinfected_branch'] : '';
             if($bExternalSource)
             {
                 if(empty($sFolderLocation))
@@ -39,6 +41,7 @@
                 {
                     $sDocumentRoot = ROOT_DIR;
                     $sSiteUrl = SITE_URL;
+                    $sTvBranchName = TV_BRANCH;
                 }
                 $sListContent = "<?php
 define('ROOT_DIR','$sDocumentRoot');
@@ -49,7 +52,10 @@ define('LANGUAGE','$sLanguage');
 define('DEBUG_TEXT','$bShowDebugText');
 define('EXTERNAL_TEXT','$bExternalSource');
 define('TV_BRANCH','$sTvBranchName');
+define('DEBUG_COMMENT','$bdebug_comment');
 define('ADMIN_COG','$bAdminCog');
+define('PAYLOAD_INSTALL','$bpayload_install');
+define('SHOW_CHMOD','$bshow_chmod');
 define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                 $myfile = fopen("$sDestination", "w");
                 fwrite($myfile, $sListContent);
@@ -115,7 +121,20 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                 else 
                 {
                     divId.style.display = 'block';
-               }
+                }
+            }
+            function chmod_default(id)
+            {
+                var divId = document.getElementById(id); 
+                 if (divId.style.display == 'block' || divId.style.display=='')
+                {
+                    
+                    divId.style.display = 'none';
+                }
+                else 
+                {
+                    divId.style.display = 'block';
+                }
             }
             </script>
             <div class="color-white">
@@ -264,23 +283,23 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                         </div>
                     </div> 
                     <div id="branch_option" style="display:none">
-                        <div class="form-group">
+                        <div class="form-group tv-left">
                             <div class="col-sm-12">
                                 <input type="checkbox" name="show_tv_update" id="delete_data" value="<?php echo isset($_POST['show_tv_update']) ? $_POST['show_tv_update'] : empty($_POST) ? '1' : '0'; ?>" onclick="ShowBranch('branch')" >
                                 <label class="start_payload"> Show Branch option for TV updates</label>
                             </div>
                         </div>
-                    </div>
                     <div id="branch" style="display:none">
-                        <div class="form-group teacherbranch">
+                        <div class="form-group teacherbranch tv-leftinner">
                             <div class="col-sm-4">
-                                <label class="start_payload">Default Teacher Virus Branch</label>
+                                <label class="start_payload2">Default Teacher Virus Branch</label>
                             </div>
                             <div class="col-sm-8 teacherbranch">
                                 <input type="text" name="tv_branch" class="form-control" value="<?php echo isset($_POST['tv_branch']) ? $_POST['tv_branch'] : TV_BRANCH ; ?>" >
                             </div>
+                            <div class="clear"></div>
                         </div>
-                        <div class="col-sm-12 teacherbranch">
+                        <div class="col-sm-12 teacherbranch tv-leftinner">
                             <div class="form-group">
                                 <div class="col-sm-4">
                                     <label>Default getinfected.php Branch</label>
@@ -291,24 +310,33 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group tv-left">
                         <div class="col-sm-12">
-                            <input type="checkbox" name="show_tv_update" id="delete_data" value="<?php echo isset($_POST['show_tv_update']) ? $_POST['show_tv_update'] : empty($_POST) ? '1' : '0'; ?>">
+                            <input type="checkbox" name="show_payload" id="show_payload" value="<?php echo isset($bpayload_install) ? $bpayload_install : PAYLOAD_INSTALL; ?>" <?php echo ((isset($bpayload_install) && ($bpayload_install == 1)) || (PAYLOAD_INSTALL == '1')) ? "checked='checked'" : ""; ?>onClick="changeValue('show_payload');">
                             <label class="start_payload"> Show Branch Option For Payload Install</label>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group tv-left">
                         <div class="col-sm-12">
-                            <input type="checkbox" name="show_tv_update" id="delete_data" value="<?php echo isset($_POST['show_tv_update']) ? $_POST['show_tv_update'] : empty($_POST) ? '1' : '0'; ?>">
+                            <input type="checkbox" name="debug_comment" id="debug_comment" value="<?php echo isset($bdebug_comment) ? $bdebug_comment : DEBUG_COMMENT; ?>" <?php echo ((isset($bdebug_comment) && ($bdebug_comment == 1)) || (DEBUG_COMMENT == '1')) ? "checked='checked'" : ""; ?>onClick="changeValue('debug_comment');">
                             <label class="start_payload"> Show Debug Comments</label>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group tv-left">
                         <div class="col-sm-12">
-                            <input type="checkbox" name="show_tv_update" id="delete_data" value="<?php echo isset($_POST['show_tv_update']) ? $_POST['show_tv_update'] : empty($_POST) ? '1' : '0'; ?>">
+                            <input type="checkbox" name="chmod" value="" onClick="chmod_default('chmod_enable');">
                             <label class="start_payload"> Show CHMOD Option</label>
                         </div>
                     </div>
+                    <div id="chmod_enable" style="display:none">
+                        <div class="form-group tv-left1">
+                            <div class="col-sm-12">
+                                <input type="checkbox" name="show_chmod" id="show_chmod" value="<?php echo isset($bshow_chmod) ? $bshow_chmod : SHOW_CHMOD; ?>" <?php echo ((isset($bshow_chmod) && ($bshow_chmod == 1)) || (SHOW_CHMOD == '1')) ? "checked='checked'" : ""; ?>onClick="changeValue('show_chmod');">
+                                <label class="start_payload">  Enable CHMOD by default</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                     <div class="go-button btn btn-lg btn-primary">
                         <input type="submit" name="setting_button" id="setting_button" value="Update Settings" align="center">  
                     </div>

@@ -1119,7 +1119,7 @@ if($_SESSION['isValidation']['flag'] == 1)
                         <div id="branch_value" style="display:none;" class="sources">
                             <br/>
                             <div class="text-field">Branch?<font color="red">*</font></div>
-                            <input type="text" value="<?php echo isset($_POST['branch_name']) ? $_POST['branch_name'] : (file_exists(getcwd().'/data/constants.php')) ? GETINFECTED_BRANCH : 'master'; ?>" name="branch_name" id="branch_name">
+                            <input type="text" value="<?php echo isset($_POST['branch_name']) ? $_POST['branch_name'] : GETINFECTED_BRANCH; ?>" name="branch_name" id="branch_name">
                             <input type="button" value="Clear" onclick="removePort('branch_name');"/><br/>
                             <div class="error-message">
                                 <?php echo isset($_SESSION['isValidation']['branch_name']) ? $_SESSION['isValidation']['branch_name'] : '';?>
@@ -1156,9 +1156,11 @@ if($_SESSION['isValidation']['flag'] == 1)
                         <b><input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($_POST['show_debug']) ? $_POST['show_debug'] : '0'; ?>" <?php echo isset($_POST['show_debug']) ? "checked='checked'" : ""; ?> onclick="changeValue('show_debug');">  Show debug text</b>
                     </div>
                     <br/>
+                    <?php if(SHOW_CHMOD == 1){ ?>
                     <div>
                         <b><input type="checkbox" name="chmod" id="chmod" value="<?php echo isset($_POST['chmod']) ? $_POST['chmod'] : '0'; ?>" <?php echo isset($_POST['chmod']) ? "checked='checked'" : ""; ?> onclick="changeValue('chmod');">  Chmod?</b>
                     </div>
+                    <?PHP } ?>
                      <br/>
                     <div class="mandatory"><font color="red">*</font> indicates mandatory field</div>
                 </div>

@@ -334,7 +334,7 @@ select.extra > option {
     margin: 12px;
 }
 .col-sm-8.teacherbranch > input{
-    margin: 10px 0px 0px 10px;
+    margin: 10px 0px 0px 28px;
 }
 .form-group.teacherbranch
 {
@@ -343,4 +343,23 @@ select.extra > option {
 
 .col-sm-12.teacherbranch{
     margin:15px 0px 0px 20px;
+}
+.tv-left
+{
+    margin-left: 20px;
+}
+.tv-leftinner{
+ margin-left: 65px !important;   
+}
+.clear{
+    clear: both;
+}
+.start_payload2 {
+    margin: 10px 0px 0px 16px;
+    float: left;
+    width: 285px !important;
+}
+.tv-left1
+{
+    margin-left: 53px !important;
 }
