@@ -11,6 +11,8 @@
     else 
     {
         $sDocumentRoot = getcwd();
+        $sTvBranchName = isset($_SESSION['teachervirus_branch']) ? $_SESSION['teachervirus_branch'] : '';
+        $sGetInfectedBranchName = isset($_SESSION['getinfected_branch']) ? $_SESSION['getinfected_branch'] : '';
         $sListContent = "<?php
         define('ROOT_DIR','$sDocumentRoot');
         define('SITE_URL','$aExplodeUrl[0]');
@@ -19,7 +21,10 @@
         define('LANGUAGE','en');
         define('DEBUG_TEXT','0');
         define('EXTERNAL_TEXT','0');
+        define('TV_BRANCH','$sTvBranchName');
+        define('GETINFECTED_BRANCH','$sGetInfectedBranchName');
         define('ADMIN_COG','1');
+        
     ?>";
         $myfile = fopen("$sDocumentRoot/data/constants.php", "w")or die('Cannot open file: constants.php');
         fwrite($myfile, $sListContent);
