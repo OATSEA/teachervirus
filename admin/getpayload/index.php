@@ -60,7 +60,7 @@
         $sPayloadSource = isset($_POST['payload_source'])? $_POST['payload_source'] : '';
         $sFolderSource = isset($_POST['folder_source'])? $_POST['folder_source'] : '';
         $sNewFolderName = isset($_POST['new_folder'])? $_POST['new_folder'] : '';
-        
+        $nPayloadInstall = (PAYLOAD_INSTALL == 1 && $_POST['branch_install']) ? $_POST['branch_install'] : 'master';
         if($sFolderSource == "Select Payload Type")
         {
             $_SESSION['isValidation']['folder_source'] = 'Please select payload type!!';
@@ -97,6 +97,15 @@
             else
             {
                 unset($_SESSION['isValidation']['repository_required']);
+            }
+            if(empty($nPayloadInstall))
+            {
+                $_SESSION['isValidation']['branch_required'] = 'Please enter branch!!';
+                $_SESSION['isValidation']['flag'] = FALSE;
+            }
+            else
+            {
+                unset($_SESSION['isValidation']['branch_required']);
             }
         }
         if($sPayloadSource == 'infected_device')
@@ -406,40 +415,40 @@
             }
             if(!empty($sUserName))
             {
-                $download_filename = $sUserName."-".$sRepository.".zip";
+                $sDownloadFileName = $sUserName."-".$sRepository.".zip";
                 $download_unzip_filename = $sUserName."-".$sRepository;
                 $sListContent = "github_payloads;$isAdmin;$sUserName;$sRepository";
             }
             else if(!empty($sDeviceAddress))
             {
-                $download_filename = $sInfectUserName.".zip";
+                $sDownloadFileName = $sInfectUserName.".zip";
                 $download_unzip_filename = $sInfectUserName;
                 $sPort = empty($nPort) ? 'none' : $nPort;
                 $sListContent = "infected_device;$isAdmin;$sDeviceAddress;$sPort;$download_unzip_filename";
             }
             else if(!empty($sPayloadName))
             {
-                $download_filename = $sPayloadName.".zip";
+                $sDownloadFileName = $sPayloadName.".zip";
                 $download_unzip_filename = $sPayloadName;
                 $sListContent = "website_url;$isAdmin;$download_unzip_filename;$sPayloadUrl";
             }
             else if(!empty($sGooglePayloadName))
             {
-                $download_filename = $sGooglePayloadName.".zip";
+                $sDownloadFileName = $sGooglePayloadName.".zip";
                 $download_unzip_filename = $sGooglePayloadName;
                 $sListContent = "google_drive;$isAdmin;$download_unzip_filename;$sGoogleDriveLink";
             }
             else if(!empty($sFileName))
             {
                 makeDIR($payload, 1, $nMode);
-                $download_filename = $sFileName;
+                $sDownloadFileName = $sFileName;
                 $aExplodeFileName = explode(".zip", $sFileName);
                 $download_unzip_filename = $aExplodeFileName[0];
                 $sListContent = "file_browse;$isAdmin;$download_unzip_filename;$sFileName";
                 move_uploaded_file($sTempFileName, $payload.'/'.$sFileName);
                 chmod($payload.'/'.$sFileName, 0755);
             }
-            $zipfile = $payload.'/'.$download_filename;
+            $zipfile = $payload.'/'.$sDownloadFileName;
 
             //-----------
             // CHECK for Play Dir
@@ -499,12 +508,12 @@
             if ($ip == "no")
             {
                 // Download from github zipball/master as no IP address set
-                $geturl = "https://github.com/$sUserName/$sRepository/zipball/master/";
+                $geturl = "https://github.com/$sUserName/$sRepository/zipball/$nPayloadInstall/";
             }
             else 
             {
                 // as IP address has been set attempt download from IP address
-                $geturl = empty($nPort) ? "http://$ip/payloads/$download_filename" : "http://$ip:$nPort/payloads/$download_filename";
+                $geturl = empty($nPort) ? "http://$ip/payloads/$sDownloadFileName" : "http://$ip:$nPort/payloads/$sDownloadFileName";
             }
             if(!empty($sPayloadName))
             {
@@ -556,7 +565,7 @@
             }
             chmod($zipfile, 0755);
             if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
-            $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$download_filename,true);
+            $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$sDownloadFileName,true);
             if ($zipFlag === TRUE) 
             {
 
@@ -609,7 +618,7 @@
                             $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             fwrite($myfile, $sListContent);
                             fclose($myfile);
-                            $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
+                            $relativePath = substr($destination.DIRECTORY_SEPARATOR.$sDownloadFileName.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$sDownloadFileName));
                             // Add current file to archive
                             $zip->addFile($destination."/list.txt", $relativePath);
                           }
@@ -657,7 +666,7 @@
                             $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             fwrite($myfile, $sListContent);
                             fclose($myfile);
-                            $relativePath = substr($destination.DIRECTORY_SEPARATOR.$download_filename.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$download_filename));
+                            $relativePath = substr($destination.DIRECTORY_SEPARATOR.$sDownloadFileName.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$sDownloadFileName));
                             // Add current file to archive
                             $zip->addFile($destination."/list.txt", $relativePath);
                           }
@@ -767,7 +776,7 @@
         } // END try alternative move approach
     }
     if($_SESSION['isValidation']['flag'] == 1) 
-        unset($_SESSION['isValidation']['user_name_required'],$_SESSION['isValidation']['repository_required'],$_SESSION['isValidation']['device_address'],$_SESSION['isValidation']['infect_user_name'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['payload_url'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['google_payload_name'],$_SESSION['isValidation']['google_drive_link'],$_SESSION['isValidation']['upload_file'],$_SESSION['isValidation']['payload_source'],$_SESSION['isValidation']['folder_source'],$_SESSION['isValidation']['new_folder']);
+        unset($_SESSION['isValidation']['user_name_required'],$_SESSION['isValidation']['repository_required'],$_SESSION['isValidation']['branch_required'],$_SESSION['isValidation']['device_address'],$_SESSION['isValidation']['infect_user_name'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['payload_url'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['google_payload_name'],$_SESSION['isValidation']['google_drive_link'],$_SESSION['isValidation']['upload_file'],$_SESSION['isValidation']['payload_source'],$_SESSION['isValidation']['folder_source'],$_SESSION['isValidation']['new_folder']);
 
     if($_SESSION['isValidation']['flag'] == 1 || count($_SESSION['isValidation']) > 1)
     {
@@ -923,6 +932,17 @@
                             </div>
                         </div>
                     </div>
+                    <?php if(PAYLOAD_INSTALL == 1){?>
+                    <div class="form-group">
+                        <label class="col-sm-12 control-label">Branch <font style="color:red">*</font> </label>
+                        <div class="col-sm-12">    
+                            <input type="text" class="form-control" name="branch_install" value="<?php echo isset($nPayloadInstall) ? $nPayloadInstall : 'master'; ?>">
+                            <div class="error-message">
+                                <?php echo isset($_SESSION['isValidation']['branch_required']) ? $_SESSION['isValidation']['branch_required'] : '';?>
+                            </div>
+                        </div>
+                    </div>
+                    <?php } ?>
                 </div>
                     <div id="infected_device" style="display:none" class="source">
                         <div class="form-group">

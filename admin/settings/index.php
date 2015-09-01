@@ -22,6 +22,7 @@
             $bExternalSource = isset($_POST['external_source'])? $_POST['external_source'] : 0;
             $bPayloadInstall = isset($_POST['show_payload'])? $_POST['show_payload'] : 0;
             $bDebugComment = isset($_POST['debug_comment'])? $_POST['debug_comment'] : 0;
+            $bShowMod = isset($_POST['chmod'])? $_POST['chmod'] : 0;
             $bShowChmod = isset($_POST['show_chmod'])? $_POST['show_chmod'] : 0;
             $bAdminCog = isset($_POST['admin_cog']) ? $_POST['admin_cog'] : 0;
             $sTvBranchName = isset($_POST['tv_branch']) ? $_POST['tv_branch'] : '';
@@ -53,11 +54,12 @@ define('EXTERNAL_PATH','$sDocumentRoot/$sFolderLocation');
 define('LANGUAGE','$sLanguage');
 define('DEBUG_TEXT','$bShowDebugText');
 define('EXTERNAL_TEXT','$bExternalSource');
-define('TV_BRANCH','$sTvBranchName');
-define('DEBUG_COMMENT','$bDebugComment');
-define('ADMIN_COG','$bAdminCog');
 define('PAYLOAD_INSTALL','$bPayloadInstall');
+define('DEBUG_COMMENT','$bDebugComment');
+define('SHOW_MOD','$bShowMod');
 define('SHOW_CHMOD','$bShowChmod');
+define('TV_BRANCH','$sTvBranchName');
+define('ADMIN_COG','$bAdminCog');
 define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                 $myfile = fopen("$sDestination", "w");
                 fwrite($myfile, $sListContent);
@@ -75,8 +77,9 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
         {
     ?>
             <script type="text/javascript">
-                function changeValue(eValue)
-                {
+               
+                    function changeValue(eValue)
+                    {
                     var isChecked = document.getElementById(eValue);
                     if (isChecked.checked)
                     {
@@ -115,20 +118,7 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                 
                 function ShowBranch(id)
                 {
-                    var divId = document.getElementById(id); 
-                     if (divId.style.display == 'block' || divId.style.display=='')
-                    {
-
-                        divId.style.display = 'none';
-                    }
-                    else 
-                    {
-                        divId.style.display = 'block';
-                    }
-                }
-                
-                function chmod_default(id)
-                {
+                    changeValue('chmod');
                     var divId = document.getElementById(id); 
                      if (divId.style.display == 'block' || divId.style.display=='')
                     {
@@ -328,11 +318,11 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                     </div>
                     <div class="form-group tv-left">
                         <div class="col-sm-12">
-                            <input type="checkbox" name="chmod" value="" onClick="chmod_default('chmod_enable');">
+                            <input type="checkbox" name="chmod" id="chmod" value="<?php echo isset($bShowMod) ? $bShowMod : SHOW_MOD; ?>" <?php echo ((isset($bShowMod) && ($bShowMod == 1)) || (SHOW_MOD == '1')) ? "checked='checked'" : "";?> onClick="ShowBranch('chmod_enable');">
                             <label class="start_payload"> Show CHMOD Option</label>
                         </div>
                     </div>
-                    <div id="chmod_enable" style="display:none">
+                        <div id="chmod_enable"<?php if(SHOW_MOD == 1) { echo 'style="display:block"';} else { echo 'style="display:none"';}?>>
                         <div class="form-group tv-left1">
                             <div class="col-sm-12">
                                 <input type="checkbox" name="show_chmod" id="show_chmod" value="<?php echo isset($bShowChmod) ? $bShowChmod : SHOW_CHMOD; ?>" <?php echo ((isset($bShowChmod) && ($bShowChmod == 1)) || (SHOW_CHMOD == '1')) ? "checked='checked'" : ""; ?>onClick="changeValue('show_chmod');">
