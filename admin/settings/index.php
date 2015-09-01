@@ -20,11 +20,13 @@
             $bShowDebugText = isset($_POST['show_debug']) ? $_POST['show_debug'] : 0;
             $sFolderLocation = isset($_POST['folder_location'])? $_POST['folder_location'] : '';
             $bExternalSource = isset($_POST['external_source'])? $_POST['external_source'] : 0;
-            $bpayload_install = isset($_POST['show_payload'])? $_POST['show_payload'] : 0;
-            $bdebug_comment = isset($_POST['debug_comment'])? $_POST['debug_comment'] : 0;
-            $bshow_chmod = isset($_POST['show_chmod'])? $_POST['show_chmod'] : 0;
+            $bPayloadInstall = isset($_POST['show_payload'])? $_POST['show_payload'] : 0;
+            $bDebugComment = isset($_POST['debug_comment'])? $_POST['debug_comment'] : 0;
+            $bShowChmod = isset($_POST['show_chmod'])? $_POST['show_chmod'] : 0;
             $bAdminCog = isset($_POST['admin_cog']) ? $_POST['admin_cog'] : 0;
+            $sTvBranchName = isset($_POST['tv_branch']) ? $_POST['tv_branch'] : '';
             $sGetInfectedBranch = isset($_POST['getinfected_branch']) ? $_POST['getinfected_branch'] : '';
+            
             if($bExternalSource)
             {
                 if(empty($sFolderLocation))
@@ -42,7 +44,6 @@
                 {
                     $sDocumentRoot = ROOT_DIR;
                     $sSiteUrl = SITE_URL;
-                    $sTvBranchName = TV_BRANCH;
                 }
                 $sListContent = "<?php
 define('ROOT_DIR','$sDocumentRoot');
@@ -53,10 +54,10 @@ define('LANGUAGE','$sLanguage');
 define('DEBUG_TEXT','$bShowDebugText');
 define('EXTERNAL_TEXT','$bExternalSource');
 define('TV_BRANCH','$sTvBranchName');
-define('DEBUG_COMMENT','$bdebug_comment');
+define('DEBUG_COMMENT','$bDebugComment');
 define('ADMIN_COG','$bAdminCog');
-define('PAYLOAD_INSTALL','$bpayload_install');
-define('SHOW_CHMOD','$bshow_chmod');
+define('PAYLOAD_INSTALL','$bPayloadInstall');
+define('SHOW_CHMOD','$bShowChmod');
 define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                 $myfile = fopen("$sDestination", "w");
                 fwrite($myfile, $sListContent);
@@ -96,47 +97,49 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                     }
                 }
                 
-            function toggleShowFile(id,buttonid)
-            {
-                 var divId = document.getElementById(id);
-                 var buttonId = document.getElementById(buttonid);
-                 if (divId.style.display == 'block' || divId.style.display=='')
+                function toggleShowFile(id,buttonid)
                 {
-                    buttonId.value = 'Show Breeder and Mutator Settings ';
-                    divId.style.display = 'none';
+                     var divId = document.getElementById(id);
+                     var buttonId = document.getElementById(buttonid);
+                     if (divId.style.display == 'block' || divId.style.display=='')
+                    {
+                        buttonId.value = 'Show Breeder and Mutator Settings ';
+                        divId.style.display = 'none';
+                    }
+                    else 
+                    {
+                        buttonId.value = 'Hide Breeder and Mutator Settings';
+                        divId.style.display = 'block';
+                   }
                 }
-                else 
+                
+                function ShowBranch(id)
                 {
-                    buttonId.value = 'Hide Breeder and Mutator Settings';
-                    divId.style.display = 'block';
-               }
-            }
-            function ShowBranch(id)
-            {
-                var divId = document.getElementById(id); 
-                 if (divId.style.display == 'block' || divId.style.display=='')
-                {
-                    
-                    divId.style.display = 'none';
+                    var divId = document.getElementById(id); 
+                     if (divId.style.display == 'block' || divId.style.display=='')
+                    {
+
+                        divId.style.display = 'none';
+                    }
+                    else 
+                    {
+                        divId.style.display = 'block';
+                    }
                 }
-                else 
+                
+                function chmod_default(id)
                 {
-                    divId.style.display = 'block';
+                    var divId = document.getElementById(id); 
+                     if (divId.style.display == 'block' || divId.style.display=='')
+                    {
+
+                        divId.style.display = 'none';
+                    }
+                    else 
+                    {
+                        divId.style.display = 'block';
+                    }
                 }
-            }
-            function chmod_default(id)
-            {
-                var divId = document.getElementById(id); 
-                 if (divId.style.display == 'block' || divId.style.display=='')
-                {
-                    
-                    divId.style.display = 'none';
-                }
-                else 
-                {
-                    divId.style.display = 'block';
-                }
-            }
             </script>
             <div class="color-white">
                 <a class="play_img" href="<?php echo SITE_URL.'/admin'; ?>">
@@ -313,13 +316,13 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                     </div>
                     <div class="form-group tv-left">
                         <div class="col-sm-12">
-                            <input type="checkbox" name="show_payload" id="show_payload" value="<?php echo isset($bpayload_install) ? $bpayload_install : PAYLOAD_INSTALL; ?>" <?php echo ((isset($bpayload_install) && ($bpayload_install == 1)) || (PAYLOAD_INSTALL == '1')) ? "checked='checked'" : ""; ?>onClick="changeValue('show_payload');">
+                            <input type="checkbox" name="show_payload" id="show_payload" value="<?php echo isset($bPayloadInstall) ? $bPayloadInstall : PAYLOAD_INSTALL; ?>" <?php echo ((isset($bPayloadInstall) && ($bPayloadInstall == 1)) || (PAYLOAD_INSTALL == '1')) ? "checked='checked'" : ""; ?>onClick="changeValue('show_payload');">
                             <label class="start_payload"> Show Branch Option For Payload Install</label>
                         </div>
                     </div>
                     <div class="form-group tv-left">
                         <div class="col-sm-12">
-                            <input type="checkbox" name="debug_comment" id="debug_comment" value="<?php echo isset($bdebug_comment) ? $bdebug_comment : DEBUG_COMMENT; ?>" <?php echo ((isset($bdebug_comment) && ($bdebug_comment == 1)) || (DEBUG_COMMENT == '1')) ? "checked='checked'" : ""; ?>onClick="changeValue('debug_comment');">
+                            <input type="checkbox" name="debug_comment" id="debug_comment" value="<?php echo isset($bDebugComment) ? $bDebugComment : DEBUG_COMMENT; ?>" <?php echo ((isset($bDebugComment) && ($bDebugComment == 1)) || (DEBUG_COMMENT == '1')) ? "checked='checked'" : ""; ?>onClick="changeValue('debug_comment');">
                             <label class="start_payload"> Show Debug Comments</label>
                         </div>
                     </div>
@@ -332,7 +335,7 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                     <div id="chmod_enable" style="display:none">
                         <div class="form-group tv-left1">
                             <div class="col-sm-12">
-                                <input type="checkbox" name="show_chmod" id="show_chmod" value="<?php echo isset($bshow_chmod) ? $bshow_chmod : SHOW_CHMOD; ?>" <?php echo ((isset($bshow_chmod) && ($bshow_chmod == 1)) || (SHOW_CHMOD == '1')) ? "checked='checked'" : ""; ?>onClick="changeValue('show_chmod');">
+                                <input type="checkbox" name="show_chmod" id="show_chmod" value="<?php echo isset($bShowChmod) ? $bShowChmod : SHOW_CHMOD; ?>" <?php echo ((isset($bShowChmod) && ($bShowChmod == 1)) || (SHOW_CHMOD == '1')) ? "checked='checked'" : ""; ?>onClick="changeValue('show_chmod');">
                                 <label class="start_payload">  Enable CHMOD by default</label>
                             </div>
                         </div>

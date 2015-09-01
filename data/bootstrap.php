@@ -4,11 +4,11 @@
     $aExplodeUrl = explode("/getinfected.php", $sRequestUrl);
     $sDestination = getcwd().'/data/constants.php';
     
-    if (file_exists($sDestination)) 
+    if (file_exists($sDestination))
     {
-        require("constants.php"); 
+        require("constants.php");
     }
-    else 
+    else
     {
         $sDocumentRoot = getcwd();
         $sTvBranchName = isset($_SESSION['teachervirus_branch']) ? $_SESSION['teachervirus_branch'] : 'master';
@@ -24,7 +24,7 @@
         define('DEBUG_COMMENT','0');
         define('SHOW_CHMOD','1');
         define('TV_BRANCH','$sTvBranchName');
-        define('GETINFECTED_BRANCH','$sGetInfectedBranch');    
+        define('GETINFECTED_BRANCH','master');    
         define('ADMIN_COG','1');";
         $myfile = fopen("$sDocumentRoot/data/constants.php", "w")or die('Cannot open file: constants.php');
         fwrite($myfile, $sListContent);
