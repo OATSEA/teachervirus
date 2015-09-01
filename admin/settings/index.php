@@ -4,6 +4,7 @@
        <meta charset="utf-8">
         <?php
             require_once("../../data/constants.php");
+            require(ROOT_DIR.'/admin/checkLogin.php');
         ?>
        <link href="<?php echo SITE_URL; ?>/css/bootstrap.min.css" rel="stylesheet">
        <link href="<?php echo SITE_URL; ?>/admin/buttons.css" rel="stylesheet">
