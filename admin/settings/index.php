@@ -21,7 +21,6 @@
             $sFolderLocation = isset($_POST['folder_location'])? $_POST['folder_location'] : '';
             $bExternalSource = isset($_POST['external_source'])? $_POST['external_source'] : 0;
             $bPayloadInstall = isset($_POST['show_payload'])? $_POST['show_payload'] : 0;
-            $bDebugComment = isset($_POST['debug_comment'])? $_POST['debug_comment'] : 0;
             $bShowMod = isset($_POST['chmod'])? $_POST['chmod'] : 0;
             $bShowChmod = isset($_POST['show_chmod'])? $_POST['show_chmod'] : 0;
             $bAdminCog = isset($_POST['admin_cog']) ? $_POST['admin_cog'] : 0;
@@ -55,7 +54,6 @@ define('LANGUAGE','$sLanguage');
 define('DEBUG_TEXT','$bShowDebugText');
 define('EXTERNAL_TEXT','$bExternalSource');
 define('PAYLOAD_INSTALL','$bPayloadInstall');
-define('DEBUG_COMMENT','$bDebugComment');
 define('SHOW_MOD','$bShowMod');
 define('SHOW_CHMOD','$bShowChmod');
 define('TV_BRANCH','$sTvBranchName');
@@ -261,12 +259,6 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                     </div>
                     <div class="form-group">
                         <div class="col-sm-12">
-                            <input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($bShowDebugText) ? $bShowDebugText : DEBUG_TEXT; ?>" <?php echo ((isset($bShowDebugText) && $bShowDebugText == 1) || (DEBUG_TEXT == '1')) ? "checked='checked'" : ""; ?> onClick="changeValue('show_debug');">
-                            <label class="start_payload">Show debug text?</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-12">
                             <input type="checkbox" name="admin_cog" id="admin_cog" value="<?php echo isset($bAdminCog) ? $bAdminCog : ADMIN_COG; ?>" <?php echo ((isset($bAdminCog) && $bAdminCog == 1) || (ADMIN_COG == '1')) ? "checked='checked'" : ""; ?> onClick="changeValue('admin_cog');">
                             <label class="start_payload">Show admin cog to student?</label>
                         </div>
@@ -312,8 +304,8 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                     </div>
                     <div class="form-group tv-left">
                         <div class="col-sm-12">
-                            <input type="checkbox" name="debug_comment" id="debug_comment" value="<?php echo isset($bDebugComment) ? $bDebugComment : DEBUG_COMMENT; ?>" <?php echo ((isset($bDebugComment) && ($bDebugComment == 1)) || (DEBUG_COMMENT == '1')) ? "checked='checked'" : ""; ?>onClick="changeValue('debug_comment');">
-                            <label class="start_payload"> Show Debug Comments</label>
+                            <input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($bShowDebugText) ? $bShowDebugText : DEBUG_TEXT; ?>" <?php echo ((isset($bShowDebugText) && $bShowDebugText == 1) || (DEBUG_TEXT == '1')) ? "checked='checked'" : ""; ?> onClick="changeValue('show_debug');">
+                            <label class="start_payload">Show Debug Comments</label>
                         </div>
                     </div>
                     <div class="form-group tv-left">

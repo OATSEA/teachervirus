@@ -1,7 +1,7 @@
 <?php 
     require_once("../../data/constants.php");
-    require(ROOT_DIR.'/admin/checkLogin.php');
-?>
+    require(ROOT_DIR.'/admin/checkLogin.php');PAYLOAD_INSTALL == 1
+   ?>
 <html>
     <head>
         <title>Payloads</title>
