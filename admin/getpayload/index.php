@@ -695,7 +695,7 @@
 
                 set_time_limit(0); //prevent timeout
                 $fp = fopen($zipfile, 'w+'); // or perhaps 'wb'?
-                echo $geturl;exit;
+                
                 if (!$fp) {
                     exit("<h3>Payload $download_unzip_filename</h3><h4>Installed via $geturl FAILED!!</h4>
                     <p>Failed because : File permission issue maybe?
