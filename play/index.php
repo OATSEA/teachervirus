@@ -19,7 +19,6 @@
         $rootdir = preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) )."*";
         $payloadsDir = str_replace("play", (EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : '/payloads', $rootdir);
         $payloadsPath = str_replace("play", (EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : 'payloads',preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) ));
-        $thisURL = SITE_URL;
         $payloadsURL = SITE_URL.'/'.((EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : 'payloads');
         $adminURL =  SITE_URL.'/admin';
         if(ADMIN_COG == 1)
@@ -27,7 +26,7 @@
             echo '<div class="color-white"><a class="admin_img" href="'.$adminURL.'"><i class="mainNav fa fa-cog fa-3x"></i></a></div><br/><br/>';
         }
         if(glob($payloadsDir, GLOB_ONLYDIR)==FALSE){
-          $path = $thisURL."admin/getpayload/";
+          $path = SITE_URL."/admin/getpayload/";
            echo '<div><h2> You have Not Installed Any Payloads Please <a href='.$path.'></h2></div><div><font size="6">Click Here</font></div></a>
                  <div><h2> To Install Payloads</h2></div>';
          
