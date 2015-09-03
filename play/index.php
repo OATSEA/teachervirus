@@ -26,6 +26,13 @@
         {
             echo '<div class="color-white"><a class="admin_img" href="'.$adminURL.'"><i class="mainNav fa fa-cog fa-3x"></i></a></div><br/><br/>';
         }
+        if(glob($payloadsDir, GLOB_ONLYDIR)==FALSE){
+          $path = $thisURL."admin/getpayload/";
+           echo '<div><h2> You have Not Installed Any Payloads Please <a href='.$path.'></h2></div><div><font size="6">Click Here</font></div></a>
+                 <div><h2> To Install Payloads</h2></div>';
+         
+        }
+        
         foreach(glob($payloadsDir, GLOB_ONLYDIR) as $dir)
         {
             $dir = basename($dir); 
@@ -52,5 +59,6 @@
             }
         }
     ?>
+    
     </body>
 </html>
