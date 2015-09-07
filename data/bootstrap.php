@@ -25,7 +25,9 @@
         define('SHOW_CHMOD','1');
         define('TV_BRANCH','$sTvBranchName');
         define('GETINFECTED_BRANCH','master');    
-        define('ADMIN_COG','1');";
+        define('ADMIN_COG','1');
+        define('SHOW_TV','0');";
+        
         $myfile = fopen("$sDocumentRoot/data/constants.php", "w")or die('Cannot open file: constants.php');
         fwrite($myfile, $sListContent);
         fclose($myfile);
