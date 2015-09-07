@@ -23,6 +23,7 @@
             $bPayloadInstall = isset($_POST['show_payload'])? $_POST['show_payload'] : 0;
             $bShowMod = isset($_POST['chmod'])? $_POST['chmod'] : 0;
             $bShowChmod = isset($_POST['show_chmod'])? $_POST['show_chmod'] : 0;
+            $bTvUpdate = isset($_POST['show_tv_update']) ? $_POST['show_tv_update'] : 0;
             $bAdminCog = isset($_POST['admin_cog']) ? $_POST['admin_cog'] : 0;
             $sTvBranchName = isset($_POST['tv_branch']) ? $_POST['tv_branch'] : '';
             $sGetInfectedBranch = isset($_POST['getinfected_branch']) ? $_POST['getinfected_branch'] : '';
@@ -58,6 +59,7 @@ define('SHOW_MOD','$bShowMod');
 define('SHOW_CHMOD','$bShowChmod');
 define('TV_BRANCH','$sTvBranchName');
 define('ADMIN_COG','$bAdminCog');
+define('SHOW_TV','$bTvUpdate');
 define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                 $myfile = fopen("$sDestination", "w");
                 fwrite($myfile, $sListContent);
@@ -96,6 +98,22 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                     {
                         $("#folder_location_address").hide();
                     }
+                    else if(eValue == "show_tv_update" && isChecked.checked)
+                    {
+                        $("#default_branches").show();
+                    }
+                    else if(eValue == "show_tv_update")
+                    {
+                        $("#default_branches").hide();
+                    }
+                    else if(eValue == "chmod" && isChecked.checked)
+                    {
+                        $("#chmod_enable").show();
+                    }
+                    else if(eValue == "chmod")
+                    {
+                        $("#chmod_enable").hide();
+                    }
                 }
                 
                 function toggleShowFile(id,buttonid)
@@ -114,20 +132,6 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                    }
                 }
                 
-                function ShowBranch(id)
-                {
-                    changeValue('chmod');
-                    var divId = document.getElementById(id); 
-                     if (divId.style.display == 'block' || divId.style.display=='')
-                    {
-
-                        divId.style.display = 'none';
-                    }
-                    else 
-                    {
-                        divId.style.display = 'block';
-                    }
-                }
             </script>
             <div class="color-white">
                 <a class="play_img" href="<?php echo SITE_URL.'/admin'; ?>">
@@ -271,11 +275,12 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                     <div id="branch_option" style="display:none">
                         <div class="form-group tv-left">
                             <div class="col-sm-12">
-                                <input type="checkbox" name="show_tv_update" id="delete_data" value="<?php echo isset($_POST['show_tv_update']) ? $_POST['show_tv_update'] : empty($_POST) ? '1' : '0'; ?>" onclick="ShowBranch('branch')" >
+                                <input type="checkbox" name="show_tv_update" id="show_tv_update" value="<?php echo isset($bTvUpdate) ? $bTvUpdate : SHOW_TV; ?>" <?php echo ((isset($bTvUpdate) && ($bTvUpdate == 1)) || (SHOW_TV == '1')) ? "checked='checked'" : "";?> onclick="changeValue('show_tv_update')" >
                                 <label class="start_payload"> Show Branch option for TV updates</label>
                             </div>
                         </div>
-                    <div id="branch" style="display:none">
+                        
+                    <div id="default_branches" <?php if(SHOW_TV == 1) { echo 'style="display:block"';} else { echo 'style="display:none"';}?>>
                         <div class="form-group teacherbranch tv-leftinner">
                             <div class="col-sm-4">
                                 <label class="start_payload2">Default Teacher Virus Branch</label>
@@ -310,7 +315,7 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                     </div>
                     <div class="form-group tv-left">
                         <div class="col-sm-12">
-                            <input type="checkbox" name="chmod" id="chmod" value="<?php echo isset($bShowMod) ? $bShowMod : SHOW_MOD; ?>" <?php echo ((isset($bShowMod) && ($bShowMod == 1)) || (SHOW_MOD == '1')) ? "checked='checked'" : "";?> onClick="ShowBranch('chmod_enable');">
+                            <input type="checkbox" name="chmod" id="chmod" value="<?php echo isset($bShowMod) ? $bShowMod : SHOW_MOD; ?>" <?php echo ((isset($bShowMod) && ($bShowMod == 1)) || (SHOW_MOD == '1')) ? "checked='checked'" : "";?> onClick="changeValue('chmod');">
                             <label class="start_payload"> Show CHMOD Option</label>
                         </div>
                     </div>
