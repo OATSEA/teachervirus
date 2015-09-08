@@ -12,6 +12,7 @@
     {
         $sDocumentRoot = getcwd();
         $sTvBranchName = isset($_SESSION['teachervirus_branch']) ? $_SESSION['teachervirus_branch'] : 'master';
+        $bChmod = isset($_SESSION['chmod']) ? $_SESSION['chmod'] : '0';
         $sListContent = "<?php
         define('ROOT_DIR','$sDocumentRoot');
         define('SITE_URL','$aExplodeUrl[0]');
@@ -22,7 +23,8 @@
         define('EXTERNAL_TEXT','0');
         define('PAYLOAD_INSTALL','0');
         define('SHOW_MOD','0');
-        define('SHOW_CHMOD','1');
+        define('SHOW_CHMOD','0');
+        define('CHMOD','$bChmod');
         define('TV_BRANCH','$sTvBranchName');
         define('GETINFECTED_BRANCH','master');    
         define('ADMIN_COG','1');
