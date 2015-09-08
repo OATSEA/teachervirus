@@ -272,7 +272,7 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                             <input type="button" id="show_branch_option" value="Show Breeder and Mutator Settings" onclick="toggleShowFile('branch_option','show_branch_option');">
                         </div>
                     </div> 
-                    <div id="branch_option" style="display:none">
+                <div id="branch_option" style="display:none">
                         <div class="form-group tv-left">
                             <div class="col-sm-12">
                                 <input type="checkbox" name="show_tv_update" id="show_tv_update" value="<?php echo isset($bTvUpdate) ? $bTvUpdate : SHOW_TV; ?>" <?php echo ((isset($bTvUpdate) && ($bTvUpdate == 1)) || (SHOW_TV == '1')) ? "checked='checked'" : "";?> onclick="changeValue('show_tv_update')" >
@@ -311,20 +311,6 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                         <div class="col-sm-12">
                             <input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($bShowDebugText) ? $bShowDebugText : DEBUG_TEXT; ?>" <?php echo ((isset($bShowDebugText) && $bShowDebugText == 1) || (DEBUG_TEXT == '1')) ? "checked='checked'" : ""; ?> onClick="changeValue('show_debug');">
                             <label class="start_payload">Show Debug Comments</label>
-                        </div>
-                    </div>
-                    <div class="form-group tv-left">
-                        <div class="col-sm-12">
-                            <input type="checkbox" name="chmod" id="chmod" value="<?php echo isset($bShowMod) ? $bShowMod : SHOW_MOD; ?>" <?php echo ((isset($bShowMod) && ($bShowMod == 1)) || (SHOW_MOD == '1')) ? "checked='checked'" : "";?> onClick="changeValue('chmod');">
-                            <label class="start_payload"> Show CHMOD Option</label>
-                        </div>
-                    </div>
-                        <div id="chmod_enable"<?php if(SHOW_MOD == 1) { echo 'style="display:block"';} else { echo 'style="display:none"';}?>>
-                        <div class="form-group tv-left1">
-                            <div class="col-sm-12">
-                                <input type="checkbox" name="show_chmod" id="show_chmod" value="<?php echo isset($bShowChmod) ? $bShowChmod : SHOW_CHMOD; ?>" <?php echo ((isset($bShowChmod) && ($bShowChmod == 1)) || (SHOW_CHMOD == '1')) ? "checked='checked'" : ""; ?>onClick="changeValue('show_chmod');">
-                                <label class="start_payload">  Enable CHMOD by default</label>
-                            </div>
                         </div>
                     </div>
                 </div>
