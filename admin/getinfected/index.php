@@ -1,4 +1,4 @@
 <?php
-    $protocol = isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
-    $protocol .= "://" . $_SERVER['HTTP_HOST']."/getinfected.php?isValidUser=true";
+    require_once("../../data/constants.php");
+    $protocol = SITE_URL."/getinfected.php?isValidUser=true";
     header("Location: $protocol");

@@ -1,6 +1,7 @@
 <?php
-    ob_start();
-    require '../checkLogin.php';
+    require_once("../../data/constants.php");
+    require(ROOT_DIR.'/admin/checkLogin.php');
+    if(session_status()!=PHP_SESSION_ACTIVE) session_start(); 
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -10,19 +11,18 @@
     <title>Pattern Lock</title>
 </head>
 <body class="main" >
-    <link rel="stylesheet" type="text/css" href="_style/changePassword.css"/>
-    <link href="../buttons.css" rel="stylesheet">
-    <link href="../../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <script src="_script/changePassword.js"></script>
-    <script src="js/jquery-1.11.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo SITE_URL; ?>/admin/changePassword/_style/changePassword.css"/>
+    <link href="<?php echo SITE_URL; ?>/admin/buttons.css" rel="stylesheet">
+    <link href="<?php echo SITE_URL; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <script src="<?php echo SITE_URL; ?>/admin/changePassword/_script/changePassword.js"></script>
+    <script src="<?php echo SITE_URL; ?>/admin/changePassword/js/jquery-1.11.1.js"></script>
     <script>
         function submitform(){
            return true;
         }
     </script>
     <?php
-        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
-        $protocol .= "://" . $_SERVER['HTTP_HOST']."/admin";
+        $protocol .= SITE_URL."/admin";
     ?>
 <?php
     if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['old_password']) && isset($_SESSION['pattern_password']) && (md5($_POST['old_password']) == $_SESSION['pattern_password']))
@@ -31,20 +31,20 @@
         if(($_SESSION['old_password'] == $_SESSION['pattern_password']))
         {
 ?>
-        <div class="color-white">
-            <a class="play_img" href="<?php echo $protocol; ?>">
-                <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
-            </a>
-            <h2>New Password</h2>
-        </div><br/><br/>
-        <div id="login">
-            <form method="post" action="" id="newPasswordForm">
-                <div>
-                    <input type="password" id="change_new_password" name="change_new_password" class="patternlock" />
-                    <input type="submit" value="login"/>
-                </div>
-            </form>
-        </div>
+            <div class="color-white">
+                <a class="play_img" href="<?php echo $protocol; ?>">
+                    <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
+                </a>
+                <h2>New Password</h2>
+            </div><br/><br/>
+            <div id="login">
+                <form method="post" action="" id="newPasswordForm">
+                    <div>
+                        <input type="password" id="change_new_password" name="change_new_password" class="patternlock" />
+                        <input type="submit" value="login"/>
+                    </div>
+                </form>
+            </div>
 <?php
         }
         else
@@ -114,7 +114,6 @@
     else
     {
         $_SESSION['old_password_not_matched'] = isset($_POST['old_password']) ?  "Old password not matched!!" : "";
-        unset($_SESSION['not_valid_password']);
 ?>
         <div class="color-white">
             <a class="play_img" href="<?php echo $protocol; ?>">
@@ -135,7 +134,7 @@
     }
     if(isset($_SESSION['password_changed']) && $_SESSION['password_changed'])
     {
-        $sDirName = $_SERVER['DOCUMENT_ROOT']."/data/admin/";
+        $sDirName = ROOT_DIR."/data/admin/";
         $username_password = 'username_password.php';
         unlink($sDirName.$username_password);
         $handle = fopen($sDirName.$username_password, 'w')or die('Cannot open file:  '.$username_password); ;

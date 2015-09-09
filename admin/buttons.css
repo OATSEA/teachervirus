@@ -94,19 +94,25 @@ body{
         padding: 0px;
         margin: 0;
         color: #fff;
-        text-align: left;
-}
-.main-body{
-    margin-left: 50px;
-    margin-right: 50px;
+        text-align: center;
 }
 #getpayload_form{
     border: 1px solid #fff;
     font-size: 20px !important;
     height: auto;
     margin: 20px auto;
-    padding: 10px 50px;;
+    padding: 20px;
     width: 70%;
+    text-align: left;
+}
+#getsetting_form{
+    border: 1px solid #fff;
+    font-size: 20px !important;
+    height: auto;
+    margin: 20px auto;
+    padding: 20px;
+    width: 70%;
+    text-align: left;
 }
 label{
     font-weight: normal;
@@ -208,9 +214,6 @@ input[type="text"] {
 	font-weight: bold;
 	font-size: 18px;
 }
-.sources{
-	margin-left: 20px;
-}
  #loading {
 	font-size: 70px;
 	font-weight: bold;
@@ -232,12 +235,37 @@ input[type="text"] {
 	text-align: right;
 	width: 120px;
 }
-.color-white h2{
+.color-white{
 	text-align: center;
+}
+@media only screen and (max-width:980px)
+{
+    h2
+    {
+        text-align: center;
+        width:91%;
+    }
+}
+@media only screen and (min-width:320px) and (max-width:480px)
+{
+    h2
+    {
+        text-align: center;
+        width:80%;
+    }
+}
+@media only screen and (min-width:1280px)
+{
+    h2
+    {
+        text-align: center;
+        width:94%;
+    }
 }
 .error-message{
 	color: red;
         margin-bottom: 5px;
+        margin-top: 10px;
         width: 76%;
 }
 .error-message1{
@@ -272,5 +300,66 @@ input[type="text"] {
 }
 .extra
 {
-    margin: 10px 0px 10px 0px;
+    color: #000;
+    font-weight: bold;
+    margin: 10px 0 10px 15px;
+    width: auto;
+    background-color: wheat;
+}
+.radio_class
+{
+   margin: 10px 0px; 
+}
+select.extra > option {
+    color: #000;
+}
+.folder_class select
+{
+	width:208px;
+}
+.source
+{
+	margin-left:15px;
+}
+#folder_options {
+    margin: 0px;
+    padding: 0px;
+}
+.col-sm-8.folder_text
+{
+    margin-left: -60px !important;
+}
+.col-sm-12.buttonshow > input{
+    color: black;
+    margin: 12px;
+}
+.col-sm-8.teacherbranch > input{
+    margin: 10px 0px 0px 28px;
+}
+.form-group.teacherbranch
+{
+    margin:15px 0px 0px 20px;
+}
+
+.col-sm-12.teacherbranch{
+    margin:15px 0px 0px 20px;
+}
+.tv-left
+{
+    margin-left: 20px;
+}
+.tv-leftinner{
+ margin-left: 65px !important;   
+}
+.clear{
+    clear: both;
+}
+.start_payload2 {
+    margin: 10px 0px 0px 16px;
+    float: left;
+    width: 285px !important;
+}
+.tv-left1
+{
+    margin-left: 53px !important;
 }

@@ -12,8 +12,4 @@
         <!-- Note: don't tell people to `click` the link, just tell them that it is a link. -->
         If you are not redirected automatically <a href='admin/OATSEA-teachervirus.org'>click here</a>
     </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> origin/master
