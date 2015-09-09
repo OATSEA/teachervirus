@@ -22,8 +22,6 @@
         define('DEBUG_TEXT','0');
         define('EXTERNAL_TEXT','0');
         define('PAYLOAD_INSTALL','0');
-        define('SHOW_MOD','0');
-        define('SHOW_CHMOD','0');
         define('CHMOD','$bChmod');
         define('TV_BRANCH','$sTvBranchName');
         define('GETINFECTED_BRANCH','master');    

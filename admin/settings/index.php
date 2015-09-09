@@ -21,8 +21,6 @@
             $sFolderLocation = isset($_POST['folder_location'])? $_POST['folder_location'] : '';
             $bExternalSource = isset($_POST['external_source'])? $_POST['external_source'] : 0;
             $bPayloadInstall = isset($_POST['show_payload'])? $_POST['show_payload'] : 0;
-            $bShowMod = isset($_POST['chmod'])? $_POST['chmod'] : 0;
-            $bShowChmod = isset($_POST['show_chmod'])? $_POST['show_chmod'] : 0;
             $bTvUpdate = isset($_POST['show_tv_update']) ? $_POST['show_tv_update'] : 0;
             $bAdminCog = isset($_POST['admin_cog']) ? $_POST['admin_cog'] : 0;
             $sTvBranchName = isset($_POST['tv_branch']) ? $_POST['tv_branch'] : '';
@@ -55,8 +53,6 @@ define('LANGUAGE','$sLanguage');
 define('DEBUG_TEXT','$bShowDebugText');
 define('EXTERNAL_TEXT','$bExternalSource');
 define('PAYLOAD_INSTALL','$bPayloadInstall');
-define('SHOW_MOD','$bShowMod');
-define('SHOW_CHMOD','$bShowChmod');
 define('TV_BRANCH','$sTvBranchName');
 define('ADMIN_COG','$bAdminCog');
 define('SHOW_TV','$bTvUpdate');
