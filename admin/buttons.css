@@ -313,10 +313,6 @@ input[type="text"] {
 select.extra > option {
     color: #000;
 }
-.folder_class select
-{
-	width:208px;
-}
 .source
 {
 	margin-left:15px;
@@ -362,4 +358,29 @@ select.extra > option {
 .tv-left1
 {
     margin-left: 53px !important;
+}
+.col-sm-12.label-repository{
+    margin-bottom: 15px;
+    padding: 0px;
+}
+.repository-button {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border-radius: 6px;
+    margin-left: 10px;
+}
+.left-repo {
+    float: left;
+    margin-left: 26px;
+    width: 47%;
+}
+.right-repo {
+    float: right;
+    margin-left: 26px;
+    width: 47%;
+}
+#loading-image {
+   position: absolute;
+   top: 100px;
+   left: 500px;
+   z-index: 100;
 }

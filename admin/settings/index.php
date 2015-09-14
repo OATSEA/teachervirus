@@ -43,6 +43,9 @@
                 {
                     $sDocumentRoot = ROOT_DIR;
                     $sSiteUrl = SITE_URL;
+                    $sInfectionResource = INFECTED_RESOURCE;
+                    $sDeviceAddress = DEVICE_ADDRESS;
+                    $nPort = PORT_NUMBER;
                 }
                 $sListContent = "<?php
 define('ROOT_DIR','$sDocumentRoot');
@@ -56,6 +59,9 @@ define('PAYLOAD_INSTALL','$bPayloadInstall');
 define('TV_BRANCH','$sTvBranchName');
 define('ADMIN_COG','$bAdminCog');
 define('SHOW_TV','$bTvUpdate');
+define('INFECTED_RESOURCE','$sInfectionResource');
+define('DEVICE_ADDRESS','$sDeviceAddress');
+define('PORT_NUMBER','$nPort');
 define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                 $myfile = fopen("$sDestination", "w");
                 fwrite($myfile, $sListContent);
