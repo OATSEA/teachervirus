@@ -63,7 +63,7 @@
                     font-size: 14px;
                     height: 26px;
                     line-height: 1.42857;
-                    padding: 6px 12px;
+                    padding: 0px 12px;
                     transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
                     width: 35%;
                     float: left;
@@ -222,7 +222,8 @@
     $installed=0;
     $_SESSION['isValidation']['flag'] = TRUE;
     if($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_SESSION['isValidation']))
-    {
+    {   
+        $sInfectionResource = isset($_POST['infection_resource']) ? $_POST['infection_resource'] : '';
         $sBranchName = isset($_POST['branch_name']) ? $_POST['branch_name'] : '';
         $sDeviceAddress = isset($_POST['device_address']) ? ($_POST['device_address']):'';
         $sFileName = isset($_FILES['upload_file']['name']) ? ($_FILES['upload_file']['name']):'';
@@ -942,7 +943,10 @@
                 $sTvBranchName = TV_BRANCH;
                 $bAdminCog = ADMIN_COG;
                 $sGetInfectedBranch = $sBranchName;
-
+                $sInfectionResource = INFECTED_RESOURCE;
+                $sDeviceAddress = DEVICE_ADDRESS;
+                $nPort = PORT_NUMBER;
+                
                 $sListContent = "<?php
                 define('ROOT_DIR','$sDocumentRoot');
                 define('SITE_URL','$sSiteUrl');
@@ -953,7 +957,10 @@
                 define('EXTERNAL_TEXT','$bExternalText');
                 define('TV_BRANCH','$sTvBranchName');
                 define('ADMIN_COG','$bAdminCog');
-                define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
+                define('GETINFECTED_BRANCH','$sGetInfectedBranch');
+                define('INFECTED_RESOURCE','$sInfectionResource');
+                define('DEVICE_ADDRESS','$sDeviceAddress');
+                define('PORT_NUMBER','$nPort');";
 
                 $myfile = fopen("$sDocumentRoot/data/constants.php", "w")or die('Cannot open file: constants.php');
                 fwrite($myfile, $sListContent);
@@ -1083,7 +1090,7 @@ if($_SESSION['isValidation']['flag'] == 1)
             }
             window.onload = function ()
             {
-                showData("<?php echo isset($_POST['infection_resource']) ? $_POST['infection_resource'] : 'branch_value'; ?>");
+                showData("<?php echo isset($_POST['infection_resource']) ? $_POST['infection_resource'] : (INFECTED_RESOURCE == "G") ? 'branch_value' : 'infected_device'; ?>");
                 showMain("<?php echo isset($_POST['setting_value']) ? $_POST['setting_value'] : ''?>");
                 disableDelete("<?php echo is_dir(ROOT_DIR."/admin") ? 1 : 0; ?>")
             }
@@ -1143,9 +1150,9 @@ if($_SESSION['isValidation']['flag'] == 1)
                     <div id="infection_sources">
                         <div style="font-weight:bold;">Update Source:</div><br/>
                         <div class="full-width">
-                            <input type="radio" class="radio_class" name="infection_resource" value="branch_value" <?php echo (isset($_POST['infection_resource']) && $_POST['infection_resource'] == "branch_value") ? "checked='checked'" : "checked='checked'"; ?> onclick="showData('branch_value');"> GitHub
+                            <input type="radio" class="radio_class" name="infection_resource" value="branch_value" <?php echo (isset($_POST['infection_resource']) && $_POST['infection_resource'] == 'branch_value') ? "checked='checked'" : (INFECTED_RESOURCE == 'G') ? "checked='checked'" : ""; ?> onclick="showData('branch_value');">GitHub
                         </div>
-                        <div id="branch_value" class="sources">
+                        <div id="branch_value" class="sources" style="<?php echo (INFECTED_RESOURCE == 'G') ? 'display:block' : 'display:none';?>">
                             <div class="full-width">
                                 <div class="branch-class" style="<?php echo (SHOW_TV == 1) ? 'display:block' : 'display:none'; ?>">
                                     <div class="text-field">Branch?<font color="red">*</font></div>
@@ -1161,20 +1168,20 @@ if($_SESSION['isValidation']['flag'] == 1)
                             </div>
                         </div>
                         <div class="full-width">
-                            <input type="radio" class="radio_class" name="infection_resource" value="infected_device" <?php echo (isset($_POST['infection_resource']) && $_POST['infection_resource'] == "infected_device" ) ? "checked='checked'" : ""; ?> onclick="showData('infected_device');"> Infected Device
+                            <input type="radio" class="radio_class" name="infection_resource" value="infected_device" <?php echo (isset($_POST['infection_resource']) && $_POST['infection_resource'] == 'infected_device') ? "checked='checked'" : (INFECTED_RESOURCE == 'I')  ? "checked='checked'" : ""; ?> onclick="showData('infected_device');">Infected Device
                         </div>
                     </div>
-                    <div id="infected_device" style="display:none;" class="sources">
+                    <div id="infected_device" class="sources" style="<?php echo (INFECTED_RESOURCE == 'I') ? 'display:block' : 'display:none';?>">
                         <div class="full-width">
                             <div class="text-field">Infected Device Address <font color="red">*</font></div>
-                            <input type="text" name="device_address">
+                            <input type="text" name="device_address" value="<?php echo isset($_POST['device_address']) ? $_POST['device_address'] : DEVICE_ADDRESS; ?>">
                             <div class="error-message">
                                 <?php echo isset($_SESSION['isValidation']['device_address']) ? $_SESSION['isValidation']['device_address'] : '';?>
                             </div>
                             <br/><br/>
                             <div class="example-text">Provide an IP or URL - For Example: 192.168.143.1 or demo.teachervirus.org</div><br/>
                             <div class="text-field">Port</div>
-                            <input type="text" name="port_number" id="port_number" value="8080">
+                            <input type="text" name="port_number" id="port_number" value="<?php echo isset($_POST['port_number']) ? $_POST['port_number'] : PORT_NUMBER; ?>">
                             <input type="button" value="Clear" onclick="removePort('port_number');"/>
                             <br/><br/><div class="example-text">Android devices are normally 8080.  Clear the field if using a normal webserver</div>
                         </div>
