@@ -18,22 +18,22 @@
         
         $bChmod = isset($_SESSION['chmod']) ? $_SESSION['chmod'] : '0';
         $sListContent = "<?php
-        define('ROOT_DIR','$sDocumentRoot');
-        define('SITE_URL','$aExplodeUrl[0]');
-        define('EXTERNAL_FOLDER','');
-        define('EXTERNAL_PATH','$sDocumentRoot');
-        define('LANGUAGE','en');
-        define('DEBUG_TEXT','0');
-        define('EXTERNAL_TEXT','0');
-        define('PAYLOAD_INSTALL','0');
-        define('CHMOD','$bChmod');
-        define('TV_BRANCH','$sTvBranchName');
-        define('GETINFECTED_BRANCH','master');    
-        define('ADMIN_COG','1');
-        define('SHOW_TV','0');
-        define('INFECTED_RESOURCE','$sInfectionResource');
-        define('DEVICE_ADDRESS','$sDeviceAddress');
-        define('PORT_NUMBER','$nPort');";
+        runkit_constant_redefine('ROOT_DIR','$sDocumentRoot');
+        runkit_constant_redefine('SITE_URL','$aExplodeUrl[0]');
+        runkit_constant_redefine('EXTERNAL_FOLDER','');
+        runkit_constant_redefine('EXTERNAL_PATH','$sDocumentRoot');
+        runkit_constant_redefine('LANGUAGE','en');
+        runkit_constant_redefine('DEBUG_TEXT','0');
+        runkit_constant_redefine('EXTERNAL_TEXT','0');
+        runkit_constant_redefine('PAYLOAD_INSTALL','0');
+        runkit_constant_redefine('CHMOD','$bChmod');
+        runkit_constant_redefine('TV_BRANCH','$sTvBranchName');
+        runkit_constant_redefine('GETINFECTED_BRANCH','master');    
+        runkit_constant_redefine('ADMIN_COG','1');
+        runkit_constant_redefine('SHOW_TV','0');
+        runkit_constant_redefine('INFECTED_RESOURCE','$sInfectionResource');
+        runkit_constant_redefine('DEVICE_ADDRESS','$sDeviceAddress');
+        runkit_constant_redefine('PORT_NUMBER','$nPort');";
         
         $myfile = fopen("$sDocumentRoot/data/constants.php", "w")or die('Cannot open file: constants.php');
         fwrite($myfile, $sListContent);
