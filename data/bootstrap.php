@@ -18,52 +18,52 @@
         
         $bChmod = isset($_SESSION['chmod']) ? $_SESSION['chmod'] : '0';
         $sListContent = "<?php
-        if(!define('ROOT_DIR')) 
+        if(!defined('ROOT_DIR')) 
             define('ROOT_DIR','$sDocumentRoot');
         
-        if(!define('SITE_URL')) 
+        if(!defined('SITE_URL')) 
             define('SITE_URL','$aExplodeUrl[0]');
         
-        if(!define('EXTERNAL_FOLDER')) 
+        if(!defined('EXTERNAL_FOLDER')) 
             define('EXTERNAL_FOLDER','');
         
-        if(!define('EXTERNAL_PATH')) 
+        if(!defined('EXTERNAL_PATH')) 
             define('EXTERNAL_PATH','$sDocumentRoot');
         
-        if(!define('LANGUAGE')) 
+        if(!defined('LANGUAGE')) 
             define('LANGUAGE','en');
         
-        if(!define('DEBUG_TEXT')) 
+        if(!defined('DEBUG_TEXT')) 
             define('DEBUG_TEXT','0');
         
-        if(!define('EXTERNAL_TEXT')) 
+        if(!defined('EXTERNAL_TEXT')) 
             define('EXTERNAL_TEXT','0');
         
-        if(!define('PAYLOAD_INSTALL')) 
+        if(!defined('PAYLOAD_INSTALL')) 
             define('PAYLOAD_INSTALL','0');
         
-        if(!define('CHMOD')) 
+        if(!defined('CHMOD')) 
             define('CHMOD','$bChmod');
         
-        if(!define('TV_BRANCH')) 
+        if(!defined('TV_BRANCH')) 
             define('TV_BRANCH','$sTvBranchName');
         
-        if(!define('ROOT_DIR')) 
+        if(!defined('ROOT_DIR')) 
             define('GETINFECTED_BRANCH','master');    
         
-        if(!define('ADMIN_COG')) 
+        if(!defined('ADMIN_COG')) 
             define('ADMIN_COG','1');
         
-        if(!define('SHOW_TV')) 
+        if(!defined('SHOW_TV')) 
             define('SHOW_TV','0');
         
-        if(!define('INFECTED_RESOURCE')) 
+        if(!defined('INFECTED_RESOURCE')) 
             define('INFECTED_RESOURCE','$sInfectionResource');
     
-        if(!define('DEVICE_ADDRESS')) 
+        if(!defined('DEVICE_ADDRESS')) 
             define('DEVICE_ADDRESS','$sDeviceAddress');
         
-        if(!define('PORT_NUMBER')) 
+        if(!defined('PORT_NUMBER')) 
             define('PORT_NUMBER','$nPort');";
         
         $myfile = fopen("$sDocumentRoot/data/constants.php", "w")or die('Cannot open file: constants.php');
