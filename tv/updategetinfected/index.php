@@ -248,6 +248,11 @@
                 .clear-button > input {
                     padding: 1.5px;
                 }
+                #loading > h2 {
+                    font-size: 86%;
+                    text-align: center;
+                    margin-top: 25%;
+                }
                 
         </style>
          <script type="text/javascript">
