@@ -18,22 +18,53 @@
         
         $bChmod = isset($_SESSION['chmod']) ? $_SESSION['chmod'] : '0';
         $sListContent = "<?php
-        runkit_constant_redefine('ROOT_DIR','$sDocumentRoot');
-        runkit_constant_redefine('SITE_URL','$aExplodeUrl[0]');
-        runkit_constant_redefine('EXTERNAL_FOLDER','');
-        runkit_constant_redefine('EXTERNAL_PATH','$sDocumentRoot');
-        runkit_constant_redefine('LANGUAGE','en');
-        runkit_constant_redefine('DEBUG_TEXT','0');
-        runkit_constant_redefine('EXTERNAL_TEXT','0');
-        runkit_constant_redefine('PAYLOAD_INSTALL','0');
-        runkit_constant_redefine('CHMOD','$bChmod');
-        runkit_constant_redefine('TV_BRANCH','$sTvBranchName');
-        runkit_constant_redefine('GETINFECTED_BRANCH','master');    
-        runkit_constant_redefine('ADMIN_COG','1');
-        runkit_constant_redefine('SHOW_TV','0');
-        runkit_constant_redefine('INFECTED_RESOURCE','$sInfectionResource');
-        runkit_constant_redefine('DEVICE_ADDRESS','$sDeviceAddress');
-        runkit_constant_redefine('PORT_NUMBER','$nPort');";
+        if(!defined('ROOT_DIR')) 
+            define('ROOT_DIR','$sDocumentRoot');
+        
+        if(!defined('SITE_URL')) 
+            define('SITE_URL','$aExplodeUrl[0]');
+        
+        if(!defined('EXTERNAL_FOLDER')) 
+            define('EXTERNAL_FOLDER','');
+        
+        if(!defined('EXTERNAL_PATH')) 
+            define('EXTERNAL_PATH','$sDocumentRoot');
+        
+        if(!defined('LANGUAGE')) 
+            define('LANGUAGE','en');
+        
+        if(!defined('DEBUG_TEXT')) 
+            define('DEBUG_TEXT','0');
+        
+        if(!defined('EXTERNAL_TEXT')) 
+            define('EXTERNAL_TEXT','0');
+        
+        if(!defined('PAYLOAD_INSTALL')) 
+            define('PAYLOAD_INSTALL','0');
+        
+        if(!defined('CHMOD')) 
+            define('CHMOD','$bChmod');
+        
+        if(!defined('TV_BRANCH')) 
+            define('TV_BRANCH','$sTvBranchName');
+        
+        if(!defined('ROOT_DIR')) 
+            define('GETINFECTED_BRANCH','master');    
+        
+        if(!defined('ADMIN_COG')) 
+            define('ADMIN_COG','1');
+        
+        if(!defined('SHOW_TV')) 
+            define('SHOW_TV','0');
+        
+        if(!defined('INFECTED_RESOURCE')) 
+            define('INFECTED_RESOURCE','$sInfectionResource');
+    
+        if(!defined('DEVICE_ADDRESS')) 
+            define('DEVICE_ADDRESS','$sDeviceAddress');
+        
+        if(!defined('PORT_NUMBER')) 
+            define('PORT_NUMBER','$nPort');";
         
         $myfile = fopen("$sDocumentRoot/data/constants.php", "w")or die('Cannot open file: constants.php');
         fwrite($myfile, $sListContent);
