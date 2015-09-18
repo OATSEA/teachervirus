@@ -1,6 +1,7 @@
 <?php 
     require_once("../../data/constants.php");
-    require(ROOT_DIR.'/admin/checkLogin.php');PAYLOAD_INSTALL == 1
+    require(ROOT_DIR.'/admin/checkLogin.php');
+    PAYLOAD_INSTALL == 1;
    ?>
 <html>
     <head>
@@ -322,7 +323,7 @@
                             // Move via rename
                             // rename(oldname, newname)
                             if (rename($currentFile , $newFile)) {
-                                chmod($newFile, 0755);
+                                (CHMOD == 1) ? chmod($newFile, 0755) : '';
                                 //if($debug) { echo "<p>Moved $currentFile to $newFile</p>"; }
                             } else {
                                 if($debug) { echo "<p>Failed to move $currentFile to $newFile</p>"; }
@@ -365,7 +366,7 @@
             }
             $isAdmin = strtoupper(substr($payload,0,1));
             
-            $payload = ROOT_DIR.'/'.$payload;
+            $payload = ROOT_DIR.DIRECTORY_SEPARATOR.$payload;
             
             if(EXTERNAL_TEXT == 1 && ($sFolderSource == "payloads" || $sFolderSource == "content" || $sFolderSource == "data"))
             {
@@ -445,10 +446,10 @@
                 $aExplodeFileName = explode(".zip", $sFileName);
                 $download_unzip_filename = $aExplodeFileName[0];
                 $sListContent = "file_browse;$isAdmin;$download_unzip_filename;$sFileName";
-                move_uploaded_file($sTempFileName, $payload.'/'.$sFileName);
-                chmod($payload.'/'.$sFileName, 0755);
+                move_uploaded_file($sTempFileName, $payload.DIRECTORY_SEPARATOR.$sFileName);
+                (CHMOD == 1) ? chmod($payload.DIRECTORY_SEPARATOR.$sFileName, 0755) : '';
             }
-            $zipfile = $payload.'/'.$sDownloadFileName;
+            $zipfile = $payload.DIRECTORY_SEPARATOR.$sDownloadFileName;
 
             //-----------
             // CHECK for Play Dir
@@ -491,7 +492,7 @@
             // ** TO DO **
 
             // Download file if OATSEA-teachervirus.zip doesn't already exist
-            if (file_exists($zipfile)) 
+            if (file_exists($zipfile) && empty($sFileName))
             {
                 unlink($zipfile);
                 rrmdir($payload.'/'.$download_unzip_filename);
@@ -560,10 +561,10 @@
             }
             else if(file_exists($geturl))
             {
-
                 $copyflag = copy($geturl,$zipfile);
+                
             }
-            chmod($zipfile, 0755);
+            (CHMOD == 1) ? chmod($zipfile, 0755) : '';
             if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
             $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$sDownloadFileName,true);
             if ($zipFlag === TRUE) 
@@ -571,7 +572,7 @@
 
                 $sPayloadUrl = $payload;
                 // Create full temp sub_folder path
-                $temp_unzip_path = $sPayloadUrl.'/'.uniqid('unzip_temp_', true)."/";
+                $temp_unzip_path = $sPayloadUrl.DIRECTORY_SEPARATOR.uniqid('unzip_temp_', true).DIRECTORY_SEPARATOR;
 
                 if($debug) { echo "Temp Unzip Path is: ".$temp_unzip_path."<br>"; }
 
@@ -604,6 +605,7 @@
                     }
 
                     $files = scandir($temp_unzip_path,1);
+                    
                     foreach ($files as $key => $value)
                     {
                        if (!in_array($value,array(".","..")))
@@ -666,7 +668,7 @@
                             $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             fwrite($myfile, $sListContent);
                             fclose($myfile);
-                            $relativePath = substr($destination.DIRECTORY_SEPARATOR.$sDownloadFileName.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$sDownloadFileName));
+                            echo $relativePath = substr($destination.DIRECTORY_SEPARATOR.$sDownloadFileName.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$sDownloadFileName));exit;
                             // Add current file to archive
                             $zip->addFile($destination."/list.txt", $relativePath);
                           }
@@ -1020,6 +1022,7 @@
                             </div>
                         </div>
                     </div>
+                    <br/>   
                     <div class="col-sm-12 folder_class">
                         <select name="folder_source" id="folder_source" class="col-sm-3 form-control extra" onchange="showData(this);">
                             <option id="check_folder">Select Payload Type</option>
