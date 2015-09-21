@@ -1,6 +1,7 @@
 <?php 
     require_once("../../data/constants.php");
     require(ROOT_DIR.'/admin/checkLogin.php');
+    error_reporting(0);
 ?>
 <html>
     <head>
@@ -248,11 +249,6 @@
                 .clear-button > input {
                     padding: 1.5px;
                 }
-                #loading > h2 {
-                    font-size: 86%;
-                    text-align: center;
-                    margin-top: 25%;
-                }
                 
         </style>
          <script type="text/javascript">
@@ -288,13 +284,12 @@
     $_SESSION['isValidation']['flag'] = TRUE;
     if($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_SESSION['isValidation']))
     {   
-        $sInfectionResource = isset($_POST['infection_resource']) ? $_POST['infection_resource'] : '';
-        $sBranchName = isset($_POST['branch_name']) ? $_POST['branch_name'] : '';
-        $sDeviceAddress = isset($_POST['device_address']) ? ($_POST['device_address']):'';
+        $sInfectionResource = isset($_POST['infection_resource']) ? trim($_POST['infection_resource']) : '';
+        $sBranchName = isset($_POST['branch_name']) ? trim($_POST['branch_name']) : '';
+        $sDeviceAddress = isset($_POST['device_address']) ? trim(($_POST['device_address'])):'';
         $sFileName = isset($_FILES['upload_file']['name']) ? ($_FILES['upload_file']['name']):'';
         $sTempFileName = isset($_FILES['upload_file']['tmp_name'])? ($_FILES['upload_file']['tmp_name']):'';
-        $nPort = isset($_POST['port_number']) ? $_POST['port_number']:'';
-        $sInfectionResource = isset($_POST['infection_resource']) ? $_POST['infection_resource'] : '';
+        $nPort = isset($_POST['port_number']) ? trim($_POST['port_number']):'';
         
         if($sInfectionResource == 'branch_value')
         {
@@ -422,7 +417,7 @@
                 //$debug = 1;
                 $result=true;
 
-                if($debug) { echo "<h2>Moving directory</h2><p> From:<br> $dir <br>To: $dest</p>";}
+                //if($debug) { echo "<h2>Moving directory</h2><p> From:<br> $dir <br>To: $dest</p>";}
 
                 $path = dirname(__FILE__);
                 $files = scandir($dir);
@@ -1007,25 +1002,59 @@
                 $bExternalText = EXTERNAL_TEXT;
                 $sTvBranchName = TV_BRANCH;
                 $bAdminCog = ADMIN_COG;
+                $sInfectionResource = (isset($_POST['infection_resource']) && $_POST['infection_resource'] == "branch_value") ? "G" : "I";
                 $sGetInfectedBranch = $sBranchName;
-                $sInfectionResource = INFECTED_RESOURCE;
-                $sDeviceAddress = DEVICE_ADDRESS;
-                $nPort = PORT_NUMBER;
+                $sPayloadInstall = PAYLOAD_INSTALL;
+                $nShowTv = SHOW_TV;
                 
                 $sListContent = "<?php
-                define('ROOT_DIR','$sDocumentRoot');
-                define('SITE_URL','$sSiteUrl');
-                define('EXTERNAL_FOLDER','$sExternalFolder');
-                define('EXTERNAL_PATH','$sExternalPath');
-                define('LANGUAGE','$sLanguage');
-                define('DEBUG_TEXT','$bDebugText');
-                define('EXTERNAL_TEXT','$bExternalText');
-                define('TV_BRANCH','$sTvBranchName');
-                define('ADMIN_COG','$bAdminCog');
-                define('GETINFECTED_BRANCH','$sGetInfectedBranch');
-                define('INFECTED_RESOURCE','$sInfectionResource');
-                define('DEVICE_ADDRESS','$sDeviceAddress');
-                define('PORT_NUMBER','$nPort');";
+        if(!defined('ROOT_DIR')) 
+            define('ROOT_DIR','$sDocumentRoot');
+        
+        if(!defined('SITE_URL')) 
+            define('SITE_URL','$sSiteUrl');
+        
+        if(!defined('EXTERNAL_FOLDER')) 
+            define('EXTERNAL_FOLDER','$sExternalFolder');
+        
+        if(!defined('EXTERNAL_PATH')) 
+            define('EXTERNAL_PATH','$sExternalPath');
+        
+        if(!defined('LANGUAGE')) 
+            define('LANGUAGE','$sLanguage');
+        
+        if(!defined('DEBUG_TEXT')) 
+            define('DEBUG_TEXT','$bDebugText');
+        
+        if(!defined('EXTERNAL_TEXT')) 
+            define('EXTERNAL_TEXT','$bExternalText');
+        
+        if(!defined('PAYLOAD_INSTALL')) 
+            define('PAYLOAD_INSTALL','$sPayloadInstall');
+        
+        if(!defined('CHMOD')) 
+            define('CHMOD','$bChmod');
+        
+        if(!defined('TV_BRANCH')) 
+            define('TV_BRANCH','$sTvBranchName');
+        
+        if(!defined('GETINFECTED_BRANCH')) 
+            define('GETINFECTED_BRANCH','$sGetInfectedBranch');    
+        
+        if(!defined('ADMIN_COG')) 
+            define('ADMIN_COG','$bAdminCog');
+        
+        if(!defined('SHOW_TV')) 
+            define('SHOW_TV','$nShowTv');
+        
+        if(!defined('INFECTED_RESOURCE')) 
+            define('INFECTED_RESOURCE','$sInfectionResource');
+    
+        if(!defined('DEVICE_ADDRESS')) 
+            define('DEVICE_ADDRESS','$sDeviceAddress');
+        
+        if(!defined('PORT_NUMBER')) 
+            define('PORT_NUMBER','$nPort');";
 
                 $myfile = fopen("$sDocumentRoot/data/constants.php", "w")or die('Cannot open file: constants.php');
                 fwrite($myfile, $sListContent);
@@ -1221,7 +1250,7 @@ if($_SESSION['isValidation']['flag'] == 1)
                             <div class="full-width">
                                 <div class="branch-class" style="<?php echo (SHOW_TV == 1) ? 'display:block' : 'display:none'; ?>">
                                     <div class="text-field">Branch?<font color="red">*</font></div>
-                                    <input type="text" value="<?php echo isset($_POST['branch_name']) ? $_POST['branch_name'] : GETINFECTED_BRANCH; ?>" name="branch_name" id="branch_name">
+                                    <input type="text" value="<?php echo isset($_POST['branch_name']) ? $_POST['branch_name'] : 'GETINFECTED_BRANCH'; ?>" name="branch_name" id="branch_name">
                                     <div class="clear-button">
                                         <input type="button" value="Clear" onclick="removePort('branch_name');"/><br/>
                                     </div>

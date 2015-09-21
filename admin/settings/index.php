@@ -23,8 +23,8 @@
             $bPayloadInstall = isset($_POST['show_payload'])? $_POST['show_payload'] : 0;
             $bTvUpdate = isset($_POST['show_tv_update']) ? $_POST['show_tv_update'] : 0;
             $bAdminCog = isset($_POST['admin_cog']) ? $_POST['admin_cog'] : 0;
-            $sTvBranchName = isset($_POST['tv_branch']) ? $_POST['tv_branch'] : '';
-            $sGetInfectedBranch = isset($_POST['getinfected_branch']) ? $_POST['getinfected_branch'] : '';
+            $sTvBranchName = isset($_POST['tv_branch']) ? trim($_POST['tv_branch']) : '';
+            $sGetInfectedBranch = isset($_POST['getinfected_branch']) ? trim($_POST['getinfected_branch']) : '';
             
             if($bExternalSource)
             {

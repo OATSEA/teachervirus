@@ -316,19 +316,19 @@ input[type="checkbox"]{
         $_SESSION['isValidation']['flag'] = TRUE;
         if($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_SESSION['isValidation']) && isset($_POST['update']))
         {
-        $sUserName = $_POST['user_name'];
-        $sRepository = $_POST['repository'];
-        $sDeviceAddress = $_POST['device_address'];
+        $sUserName = trim($_POST['user_name']);
+        $sRepository = trim($_POST['repository']);
+        $sDeviceAddress = trim($_POST['device_address']);
         $sFileName = isset($_FILES['upload_file']['name']) ? ($_FILES['upload_file']['name']):'';
         $sTempFileName = isset($_FILES['upload_file']['tmp_name'])? ($_FILES['upload_file']['tmp_name']):'';
-        $nPort = $_POST['port_number'];
-        $sInfectUserName = $_POST["infect_user_name"];
-        $sPayloadName = $_POST['payload_name'];
-        $sPayloadUrl = $_POST["payload_url"];
-        $sGooglePayloadName = $_POST['google_payload_name'];
-        $sGoogleDriveLink = $_POST['google_drive_link'];
+        $nPort = trim($_POST['port_number']);
+        $sInfectUserName = trim($_POST["infect_user_name"]);
+        $sPayloadName = trim($_POST['payload_name']);
+        $sPayloadUrl = trim($_POST["payload_url"]);
+        $sGooglePayloadName = trim($_POST['google_payload_name']);
+        $sGoogleDriveLink = trim($_POST['google_drive_link']);
         $sIsAdmin = empty($_POST['check_admin']) ? '' : $_POST['check_admin'];
-        $spayload_source=isset($_POST['payload_source'])? ($_POST['payload_source']):'';
+        $spayload_source=isset($_POST['payload_source'])? trim(($_POST['payload_source'])) :'';
         
         if($spayload_source == 'github_payloads')
         {

