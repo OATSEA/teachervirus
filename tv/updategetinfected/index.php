@@ -12,6 +12,7 @@
                     background-color: black;
                     padding: 0px;
                     margin: 0;
+                    min-height: 730px;
                     color: #fff;
                 }
                 form{
@@ -249,7 +250,6 @@
                 .clear-button > input {
                     padding: 1.5px;
                 }
-                
         </style>
          <script type="text/javascript">
             function checkLoaded(loaded){
