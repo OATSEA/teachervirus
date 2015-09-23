@@ -10,9 +10,8 @@
         <style>
                 body{
                     background-color: black;
-                    padding: 0px;
+                    padding: 0px 0px 340px;
                     margin: 0;
-                    min-height: 730px;
                     color: #fff;
                 }
                 form{
@@ -1250,7 +1249,7 @@ if($_SESSION['isValidation']['flag'] == 1)
                             <div class="full-width">
                                 <div class="branch-class" style="<?php echo (SHOW_TV == 1) ? 'display:block' : 'display:none'; ?>">
                                     <div class="text-field">Branch?<font color="red">*</font></div>
-                                    <input type="text" value="<?php echo isset($_POST['branch_name']) ? $_POST['branch_name'] : 'GETINFECTED_BRANCH'; ?>" name="branch_name" id="branch_name">
+                                    <input type="text" value="<?php echo isset($_POST['branch_name']) ? $_POST['branch_name'] : GETINFECTED_BRANCH; ?>" name="branch_name" id="branch_name">
                                     <div class="clear-button">
                                         <input type="button" value="Clear" onclick="removePort('branch_name');"/><br/>
                                     </div>

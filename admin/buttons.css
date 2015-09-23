@@ -91,9 +91,8 @@ a:hover {  color:blue;}
 /* admin index  css */
 body{
         background-color: black;
-        padding: 0px;
+        padding: 0px 0px 340px;
         margin: 0px;
-        min-height: 730px;
         color: #fff;
         text-align: center;
         
