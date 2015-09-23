@@ -92,9 +92,11 @@ a:hover {  color:blue;}
 body{
         background-color: black;
         padding: 0px;
-        margin: 0;
+        margin: 0px;
+        min-height: 730px;
         color: #fff;
         text-align: center;
+        
 }
 #getpayload_form{
     border: 1px solid #fff;
@@ -383,4 +385,9 @@ select.extra > option {
    top: 100px;
    left: 500px;
    z-index: 100;
+}
+.error-message.col-sm-12 {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
 }
