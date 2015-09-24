@@ -317,7 +317,7 @@
                                 //if($debug) { echo "<p>File $newFile already exists - Deleting</p>"; }
                                 unlink($newFile);
                             } else {
-                                if($debug) { echo "<p>File $newFile doesn't exist yet</p>"; }
+                                //if($debug) { echo "<p>File $newFile doesn't exist yet</p>"; }
                             }
 
                             // Move via rename
@@ -574,7 +574,7 @@
                 // Create full temp sub_folder path
                 $temp_unzip_path = $sPayloadUrl.DIRECTORY_SEPARATOR.uniqid('unzip_temp_', true).DIRECTORY_SEPARATOR;
 
-                if($debug) { echo "Temp Unzip Path is: ".$temp_unzip_path."<br>"; }
+                //if($debug) { echo "Temp Unzip Path is: ".$temp_unzip_path."<br>"; }
 
                 // Make the new temp sub_folder for unzipped files
                 if (!mkdir($temp_unzip_path, $nMode, true)) {
