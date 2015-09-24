@@ -302,7 +302,7 @@
                             }
 
                         } else {
-                            echo ($debug) ? "<p>$pathFile is a file</p>" : "";
+                            //echo ($debug) ? "<p>$pathFile is a file</p>" : "";
 
                             // $currentFile = realpath($file); // current location
                             $currentFile = $pathFile;
