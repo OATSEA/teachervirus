@@ -41,7 +41,7 @@
     </script>
 <?php
     $debug = DEBUG_TEXT;
-    $nMode = (CHMOD == 1) ? 0755 : '';
+    $nMode =  0755;
     
     $_SESSION['isValidation']['flag'] = TRUE;
     if($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_SESSION['isValidation']))
@@ -323,7 +323,7 @@
                             // Move via rename
                             // rename(oldname, newname)
                             if (rename($currentFile , $newFile)) {
-                                empty($nMode) ? '' : chmod($newFile, 0755);
+                                (CHMOD == 1) ? chmod($newFile, 0755) : '';
                                 //if($debug) { echo "<p>Moved $currentFile to $newFile</p>"; }
                             } else {
                                 //if($debug) { echo "<p>Failed to move $currentFile to $newFile</p>"; }
@@ -447,7 +447,7 @@
                 $download_unzip_filename = $aExplodeFileName[0];
                 $sListContent = "file_browse;$isAdmin;$download_unzip_filename;$sFileName";
                 move_uploaded_file($sTempFileName, $payload.DIRECTORY_SEPARATOR.$sFileName);
-                empty($nMode) ? '' : chmod($payload.DIRECTORY_SEPARATOR.$sFileName, 0755);
+                (CHMOD == 1) ? chmod($payload.DIRECTORY_SEPARATOR.$sFileName, 0755) : '';
             }
             $zipfile = $payload.DIRECTORY_SEPARATOR.$sDownloadFileName;
 
@@ -564,7 +564,7 @@
                 $copyflag = copy($geturl,$zipfile);
                 
             }
-            empty($nMode) ? '' : chmod($zipfile, 0755);
+            (CHMOD == 1) ? chmod($zipfile, 0755) : '';
             if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
             $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$sDownloadFileName,true);
             if ($zipFlag === TRUE) 
