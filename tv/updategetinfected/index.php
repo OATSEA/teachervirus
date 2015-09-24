@@ -276,8 +276,8 @@
     </script>
 <?php
     $debug = (isset($_POST['show_debug']) ? $_POST['show_debug'] : (is_dir(ROOT_DIR."/admin") ? DEBUG_TEXT : 1));
-    $bChmod = (isset($_POST['chmod']) ? $_POST['chmod'] : (is_dir(ROOT_DIR."/admin") ? 1 : 0 ));
-    $_SESSION['chmod']=$bChmod;
+    $bChmod = isset($_POST['chmod']) ? $_POST['chmod'] : 0;
+    $_SESSION['chmod'] = $bChmod;
     $nMode = ($bChmod == 1) ? 0755 : '';
     $installed=0;
     $_SESSION['isValidation']['flag'] = TRUE;
