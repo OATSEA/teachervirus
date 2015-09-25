@@ -571,12 +571,35 @@
                 if(($ip == "no" && $sInfectionResource == 'branch_value') )
                 {
                     $geturl = (!empty($sBranchName) && isset($_POST['infection_resource']) && $_POST['infection_resource'] == "branch_value") ? "https://github.com/$username/$repo/zipball/$sBranchName/" : "https://github.com/$username/$repo/zipball/master/";
-                    $copyflag = copy($geturl,ROOT_DIR.'/'.$zipfile);
+                    if ($copyflag = !copy($geturl,ROOT_DIR.'/'.$zipfile))
+                    {
+                    ?>  
+                            <link href="<?php echo $protocol; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+                            <div class="color-white">
+                                <a class="play_img" href="<?php echo $sUrl; ?>">
+                                    <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
+                                </a>
+                            </div><br/><br/>
+                    <?php 
+                        exit("<h2>Update Get Infected Failed!</h2><p> couldn't copy $geturl </p>");
+                    }
                 }
                 else if($sInfectionResource == 'infected_device')
                 {
                     $geturl = empty($nPort) ? "http://$ip/$zipfile" : "http://$ip:$nPort/$zipfile";
-                    $copyflag = copy($geturl,ROOT_DIR.'/'.$zipfile);
+                    if ($copyflag = !copy($geturl,ROOT_DIR.'/'.$zipfile))
+                    {
+                    ?>  
+                            <link href="<?php echo $protocol; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+                            <div class="color-white">
+                                <a class="play_img" href="<?php echo $sUrl; ?>">
+                                    <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
+                                </a>
+                            </div><br/><br/>
+                    <?php 
+                        exit("<h2>Update Get Infected Failed!</h2><p> couldn't copy $geturl </p>");
+                    }
+                    //$copyflag = copy($geturl,ROOT_DIR.'/'.$zipfile);
                 }
                 else if($sInfectionResource == 'file_browse')
                 {
@@ -640,10 +663,14 @@
                         $files = scandir($sUpdateInfectUrl.'/'.$download_unzip_filename,1);
                         foreach ($files as $key => $value)
                         {
-                           if (!in_array($value,array(".","..")))
-                           {
-                                copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value);
-                           }
+                            if (!in_array($value,array(".","..")))
+                            {
+                                if (!copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value))
+                                {
+                                    exit("<h2>Update Get Infected Failed!</h2><p> couldn't copy $geturl <a href='".$sUrl."' class='go-back'>Go Back</a></p>");
+                                }
+                                //copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value);
+                            }
                         }
                         if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
                         {
@@ -657,17 +684,17 @@
                         {
                             rrmdir($sUpdateInfectUrl.'/'.$download_unzip_filename);
                             if (!mkdir($sUpdateInfectUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Update Get Infected Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed? Please check Chmod On?<a href='".$sUrl."' class='go-back'>Go Back</a>");
+                                exit("<h2>Error - Update Get Infected Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>Already installed? Please check Chmod On?<a href='".$sUrl."' class='go-back'>Go Back</a></p>");
                             } else {
-                                if($debug) { echo "<p>Folder Created! <br>"; }
+                                if($debug) { echo "<p>Folder Created!</p> <br>"; }
                             }
                         }
                         else
                         {
                             if (!mkdir($sUpdateInfectUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                                exit("<h2>Error - Update Get Infected Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue? Please check Chmod On?<a href='".$sUrl."' class='go-back'>Go Back</a>");
+                                exit("<h2>Error - Update Get Infected Failed!</h2><p> Could not create folder: $download_unzip_filename</p><p>File security or permissions issue? Please check Chmod On?<a href='".$sUrl."' class='go-back'>Go Back</a></p>");
                             } else {
-                                if($debug) { echo "<p>Folder Created! <br>"; }
+                                if($debug) { echo "<p>Folder Created!</p> <br>"; }
                             }        
                         }     
 
@@ -690,10 +717,14 @@
                         $files = scandir($sUpdateInfectUrl.'/'.$download_unzip_filename,1);
                         foreach ($files as $key => $value)
                         {
-                           if (!in_array($value,array(".","..")))
-                           {
-                                copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value);
-                           }
+                            if (!in_array($value,array(".","..")))
+                            {
+                                if (!copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value))
+                                {
+                                    exit("<h2>Update Get Infected Failed!</h2><p> couldn't copy $geturl <a href='".$sUrl."' class='go-back'>Go Back</a></p>");
+                                }
+                                //copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value);
+                            }
                         }
                         if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
                         {
@@ -736,7 +767,22 @@
                 // ** TO DO ** catch warnings
                 // get following error on MAC: 
                 // Warning: copy(): SSL operation failed with code 1.
-                $copyflag = copy($geturl,$zipfile);
+                if($copyflag = !copy($geturl,$zipfile))
+                {
+                    if (is_dir(ROOT_DIR."/admin")) 
+                    {
+                ?>  
+                        <link href="<?php echo $protocol; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+                        <div class="color-white">
+                            <a class="play_img" href="<?php echo $sUrl; ?>">
+                                <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
+                            </a>
+                        </div><br/><br/>
+                <?php 
+                    }
+                    exit("<h2>Update Get Infected Failed!</h2><p> couldn't copy $geturl </p>");
+                }
+                //$copyflag = copy($geturl,$zipfile);
                 
                 if ($copyflag === TRUE) {
                     if($debug) { echo "<h3>Download Succeeded</h3>"; }
@@ -911,10 +957,14 @@
                         $files = scandir($sUpdateInfectUrl.'/'.$download_unzip_filename,1);
                         foreach ($files as $key => $value)
                         {
-                           if (!in_array($value,array(".","..")))
-                           {
-                                copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value);
-                           }
+                            if (!in_array($value,array(".","..")))
+                            {
+                               if (!copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value))
+                                {
+                                    exit("<h2>Update Get Infected Failed!</h2><p> couldn't copy $geturl <a href='".$sUrl."' class='go-back'>Go Back</a></p>");
+                                }
+                                //copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value);
+                            }
                         }
                         if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
                         {
@@ -961,10 +1011,14 @@
                         $files = scandir($sUpdateInfectUrl.'/'.$download_unzip_filename,1);
                         foreach ($files as $key => $value)
                         {
-                           if (!in_array($value,array(".","..")))
-                           {
-                                copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value);
-                           }
+                            if (!in_array($value,array(".","..")))
+                            {
+                                if (!copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value))
+                                {
+                                    exit("<h2>Update Get Infected Failed!</h2><p> couldn't copy $geturl <a href='".$sUrl."' class='go-back'>Go Back</a></p>");
+                                }
+                                //copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value);
+                            }
                         }
                         if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
                         {
