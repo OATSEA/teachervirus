@@ -2,6 +2,7 @@
     require_once("../../data/constants.php");
     require(ROOT_DIR.'/admin/checkLogin.php');
     PAYLOAD_INSTALL == 1;
+    error_reporting(0);
    ?>
 <html>
     <head>
@@ -553,7 +554,21 @@
 
             if(($ip == "no" || $sPayloadSource == 'infected_device') && $sPayloadSource != 'file_browse')
             {
-                $copyflag = copy($geturl,$zipfile);
+                //$copyflag = copy($geturl,$zipfile);
+                if($copyflag = !copy($geturl,$zipfile))
+                {
+                    if (is_dir(ROOT_DIR."/admin")) 
+                    {
+                ?>  
+                        <div class="color-white">
+                            <a class="play_img" href="<?php echo SITE_URL.'/admin'; ?>">
+                                <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
+                            </a>
+                        </div><br/><br/>
+                <?php 
+                    }
+                    exit("<h2>Installation FAILED!!</h2><p> couldn't copy $geturl </p>");
+                }
             }
             else if($sPayloadSource == 'file_browse')
             {
@@ -561,7 +576,21 @@
             }
             else if(file_exists($geturl))
             {
-                $copyflag = copy($geturl,$zipfile);
+                //$copyflag = copy($geturl,$zipfile);
+                if($copyflag = !copy($geturl,$zipfile))
+                {
+                    if (is_dir(ROOT_DIR."/admin")) 
+                    {
+                ?>  
+                        <div class="color-white">
+                            <a class="play_img" href="<?php echo SITE_URL.'/admin'; ?>">
+                                <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
+                            </a>
+                        </div><br/><br/>
+                <?php 
+                    }
+                    exit("<h2>Installation FAILED!!</h2><p> couldn't copy $geturl </p>");
+                }
                 
             }
             (CHMOD == 1) ? chmod($zipfile, 0755) : '';
