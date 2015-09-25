@@ -571,35 +571,12 @@
                 if(($ip == "no" && $sInfectionResource == 'branch_value') )
                 {
                     $geturl = (!empty($sBranchName) && isset($_POST['infection_resource']) && $_POST['infection_resource'] == "branch_value") ? "https://github.com/$username/$repo/zipball/$sBranchName/" : "https://github.com/$username/$repo/zipball/master/";
-                    if ($copyflag = !copy($geturl,ROOT_DIR.'/'.$zipfile))
-                    {
-                    ?>  
-                            <link href="<?php echo $protocol; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-                            <div class="color-white">
-                                <a class="play_img" href="<?php echo $sUrl; ?>">
-                                    <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
-                                </a>
-                            </div><br/><br/>
-                    <?php 
-                        exit("<h2>Update Get Infected Failed!</h2><p> couldn't copy $geturl </p>");
-                    }
+                    $copyflag = copy($geturl,ROOT_DIR.'/'.$zipfile);
                 }
                 else if($sInfectionResource == 'infected_device')
                 {
                     $geturl = empty($nPort) ? "http://$ip/$zipfile" : "http://$ip:$nPort/$zipfile";
-                    if ($copyflag = !copy($geturl,ROOT_DIR.'/'.$zipfile))
-                    {
-                    ?>  
-                            <link href="<?php echo $protocol; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-                            <div class="color-white">
-                                <a class="play_img" href="<?php echo $sUrl; ?>">
-                                    <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
-                                </a>
-                            </div><br/><br/>
-                    <?php 
-                        exit("<h2>Update Get Infected Failed!</h2><p> couldn't copy $geturl </p>");
-                    }
-                    //$copyflag = copy($geturl,ROOT_DIR.'/'.$zipfile);
+                    $copyflag = copy($geturl,ROOT_DIR.'/'.$zipfile);
                 }
                 else if($sInfectionResource == 'file_browse')
                 {
@@ -767,22 +744,7 @@
                 // ** TO DO ** catch warnings
                 // get following error on MAC: 
                 // Warning: copy(): SSL operation failed with code 1.
-                if($copyflag = !copy($geturl,$zipfile))
-                {
-                    if (is_dir(ROOT_DIR."/admin")) 
-                    {
-                ?>  
-                        <link href="<?php echo $protocol; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-                        <div class="color-white">
-                            <a class="play_img" href="<?php echo $sUrl; ?>">
-                                <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
-                            </a>
-                        </div><br/><br/>
-                <?php 
-                    }
-                    exit("<h2>Update Get Infected Failed!</h2><p> couldn't copy $geturl </p>");
-                }
-                //$copyflag = copy($geturl,$zipfile);
+                $copyflag = copy($geturl,$zipfile);
                 
                 if ($copyflag === TRUE) {
                     if($debug) { echo "<h3>Download Succeeded</h3>"; }
