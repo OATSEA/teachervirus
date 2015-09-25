@@ -567,7 +567,7 @@
             (CHMOD == 1) ? chmod($zipfile, 0755) : '';
             if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
             $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$sDownloadFileName,true);
-            if ($zipFlag === TRUE) 
+            if ($zipFlag === TRUE && $copyflag == TRUE) 
             {
 
                 $sPayloadUrl = $payload;
