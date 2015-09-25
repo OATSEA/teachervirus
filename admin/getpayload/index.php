@@ -554,21 +554,7 @@
 
             if(($ip == "no" || $sPayloadSource == 'infected_device') && $sPayloadSource != 'file_browse')
             {
-                //$copyflag = copy($geturl,$zipfile);
-                if($copyflag = !copy($geturl,$zipfile))
-                {
-                    if (is_dir(ROOT_DIR."/admin")) 
-                    {
-                ?>  
-                        <div class="color-white">
-                            <a class="play_img" href="<?php echo SITE_URL.'/admin'; ?>">
-                                <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
-                            </a>
-                        </div><br/><br/>
-                <?php 
-                    }
-                    exit("<h2>Installation FAILED!!</h2><p> couldn't copy $geturl </p>");
-                }
+                $copyflag = copy($geturl,$zipfile);
             }
             else if($sPayloadSource == 'file_browse')
             {
@@ -576,22 +562,7 @@
             }
             else if(file_exists($geturl))
             {
-                //$copyflag = copy($geturl,$zipfile);
-                if($copyflag = !copy($geturl,$zipfile))
-                {
-                    if (is_dir(ROOT_DIR."/admin")) 
-                    {
-                ?>  
-                        <div class="color-white">
-                            <a class="play_img" href="<?php echo SITE_URL.'/admin'; ?>">
-                                <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
-                            </a>
-                        </div><br/><br/>
-                <?php 
-                    }
-                    exit("<h2>Installation FAILED!!</h2><p> couldn't copy $geturl </p>");
-                }
-                
+                $copyflag = copy($geturl,$zipfile);
             }
             (CHMOD == 1) ? chmod($zipfile, 0755) : '';
             if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
