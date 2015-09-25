@@ -282,7 +282,7 @@
     $installed=0;
     $_SESSION['isValidation']['flag'] = TRUE;
     if($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_SESSION['isValidation']))
-    {   
+    {
         $sInfectionResource = isset($_POST['infection_resource']) ? trim($_POST['infection_resource']) : '';
         $sBranchName = isset($_POST['branch_name']) ? trim($_POST['branch_name']) : '';
         $sDeviceAddress = isset($_POST['device_address']) ? trim(($_POST['device_address'])):'';
@@ -330,7 +330,7 @@
                      }
                      else 
                      {
-                         unlink($dir."/".$object); 
+                        unlink($dir."/".$object); 
                      }
                    } 
                  } 
@@ -1175,12 +1175,8 @@ if($_SESSION['isValidation']['flag'] == 1)
                 }
                 if(boxId == "remove_previous_install")
                 {
-                    document.getElementById("delete_data").checked = true;
-                    document.getElementById("delete_payload").checked = true;
                     document.getElementById("admin_payload").checked = true;
                     document.getElementById("delete_content").checked = true;
-                    document.getElementById("delete_data").value = 1;
-                    document.getElementById("delete_payload").value = 1;
                     document.getElementById("admin_payload").value = 1;
                     document.getElementById("delete_content").value = 1;
                 }
@@ -1203,43 +1199,23 @@ if($_SESSION['isValidation']['flag'] == 1)
             function showMain(mainId)
             {
                 var buttonId = document.getElementById('show_settings');
-                var deleteButtonId = document.getElementById('show_delete_option');
-                var divId = document.getElementById('delete_file');
                 if(mainId != "")
                 {
                     document.getElementById(mainId).style.display = "block";
                     document.getElementById("setting_value").value = 'main';
                     buttonId.value= 'Hide Advanced Settings';
-                    deleteButtonId.value = 'Hide Options';
-                    divId.style.display = 'block';
                 }
                 else
                 {
                     document.getElementById("setting_value").value = 'main';
                     buttonId.value= 'Show Advanced Settings';
-                    deleteButtonId.value = 'Show Options';
-                    divId.style.display = 'none';
                 }
             }
-            function disableDelete(isInstalledInfect)
-            {
-                if(isInstalledInfect == 1)
-                {
-                    document.getElementById("delete_data").checked = false;
-                    document.getElementById("delete_payload").checked = false;
-                    document.getElementById("admin_payload").checked = false;
-                    document.getElementById("delete_content").checked = false;
-                    document.getElementById("delete_data").value = 0;
-                    document.getElementById("delete_payload").value = 0;
-                    document.getElementById("admin_payload").value = 0;
-                    document.getElementById("delete_content").value = 0;
-                }
-            }
+            
             window.onload = function ()
             {
                 showData("<?php echo isset($_POST['infection_resource']) ? $_POST['infection_resource'] : (INFECTED_RESOURCE == "G") ? 'branch_value' : 'infected_device'; ?>");
                 showMain("<?php echo isset($_POST['setting_value']) ? $_POST['setting_value'] : ''?>");
-                disableDelete("<?php echo is_dir(ROOT_DIR."/admin") ? 1 : 0; ?>")
             }
             function toggleVisibility(id,inputid) 
             {
@@ -1353,26 +1329,10 @@ if($_SESSION['isValidation']['flag'] == 1)
                         </div>
                     </div>    
                     <div class="full-width">
-                        <?php 
-                            if($bChmod == 0 )
-                            {   
-                        ?>
-                                <div>
-                                    <b>Chmod?</b>
-                                    <input type="checkbox" name="chmod" id="chmod" value="<?php echo isset($_POST['chmod']) ? $_POST['chmod'] : CHMOD; ?>" <?php echo (isset($_POST['chmod']) && $_POST['chmod'] == 1) ? "checked='checked'" : (CHMOD == 1) ? "checked='checked'" : ""; ?> onclick="changeValue('chmod');">
-                                </div>
-                        <?php  
-                            }
-                            else
-                            {
-                        ?>
-                                <div style="display: none;">
-                                    <b>Chmod?</b>
-                                    <input type="checkbox" name="chmod" id="chmod" value="<?php echo isset($_POST['chmod']) ? $_POST['chmod'] : CHMOD; ?>" <?php echo (isset($_POST['chmod']) && $_POST['chmod'] == 1) ? "checked='checked'" : (CHMOD == 1) ? "checked='checked'" : ""; ?> onclick="changeValue('chmod');">
-                                </div>
-                        <?php 
-                        }
-                        ?>
+                        <div style="display: none;">
+                            <b>Chmod?</b>
+                            <input type="checkbox" name="chmod" id="chmod" value="<?php echo isset($_POST['chmod']) ? $_POST['chmod'] : CHMOD; ?>" <?php echo (isset($_POST['chmod']) && $_POST['chmod'] == 1) ? "checked='checked'" : (CHMOD == 1) ? "checked='checked'" : ""; ?> onclick="changeValue('chmod');">
+                        </div>
                     </div>
                     <div class="full-width">
                         <div class="mandatory"><font color="red">*</font> Indicates mandatory field</div>
