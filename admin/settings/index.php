@@ -84,6 +84,7 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
 
         if($_SESSION['isValidation']['flag'] == 1 || count($_SESSION['isValidation']) > 1)
         {
+            $sTvplayerLocation = TVPLAYER_LOCATION;
     ?>
             <script type="text/javascript">
                
@@ -280,7 +281,7 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                             <label class="col-sm-12 control-label">Tv Player Location</label>
                             <label class="col-sm-5 control-label"><?php echo ROOT_DIR.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR;?></label>
                             <div class="col-sm-7 folder_text">
-                                <input type="text" name="tvplayer_location" class="form-control" value="<?php echo isset($_POST['tvplayer_location']) ? $_POST['tvplayer_location'] : TVPLAYER_LOCATION ; ?>" ></label>
+                                <input type="text" name="tvplayer_location" class="form-control" value="<?php echo (isset($_POST['tvplayer_location']) ? $_POST['tvplayer_location'] : (empty($sTvplayerLocation) ? '' : $sTvplayerLocation)) ; ?>" ></label>
                             </div>
                         </div>
                 
