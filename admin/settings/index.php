@@ -19,6 +19,7 @@
             $sLanguage = isset($_POST['language']) ? $_POST['language'] : 0;
             $bShowDebugText = isset($_POST['show_debug']) ? $_POST['show_debug'] : 0;
             $sFolderLocation = isset($_POST['folder_location'])? $_POST['folder_location'] : '';
+            $sTvplayerLocation = isset($_POST['tvplayer_location'])? $_POST['tvplayer_location'] : '';
             $bExternalSource = isset($_POST['external_source'])? $_POST['external_source'] : 0;
             $bPayloadInstall = isset($_POST['show_payload'])? $_POST['show_payload'] : 0;
             $bTvUpdate = isset($_POST['show_tv_update']) ? $_POST['show_tv_update'] : 0;
@@ -46,6 +47,8 @@
                     $sInfectionResource = INFECTED_RESOURCE;
                     $sDeviceAddress = DEVICE_ADDRESS;
                     $nPort = PORT_NUMBER;
+                    $bChmod = CHMOD;
+                    $sTvplayerLocation = TVPLAYER_LOCATION;
                 }
                 $sListContent = "<?php
 define('ROOT_DIR','$sDocumentRoot');
@@ -56,12 +59,14 @@ define('LANGUAGE','$sLanguage');
 define('DEBUG_TEXT','$bShowDebugText');
 define('EXTERNAL_TEXT','$bExternalSource');
 define('PAYLOAD_INSTALL','$bPayloadInstall');
+define('CHMOD','$bChmod');
 define('TV_BRANCH','$sTvBranchName');
 define('ADMIN_COG','$bAdminCog');
 define('SHOW_TV','$bTvUpdate');
 define('INFECTED_RESOURCE','$sInfectionResource');
 define('DEVICE_ADDRESS','$sDeviceAddress');
 define('PORT_NUMBER','$nPort');
+define('TVPLAYER_LOCATION','$sTvplayerLocation');
 define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                 $myfile = fopen("$sDestination", "w");
                 fwrite($myfile, $sListContent);
@@ -74,6 +79,8 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
         }
         if($_SESSION['isValidation']['flag'] == 1)
             unset($_SESSION['isValidation']['folder_location_required']);
+     
+            unset($_SESSION['isValidation']['tvplayer_location_required']);
 
         if($_SESSION['isValidation']['flag'] == 1 || count($_SESSION['isValidation']) > 1)
         {
@@ -269,6 +276,14 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                             <label class="start_payload">Show admin cog to student?</label>
                         </div>
                     </div>
+                        <div class="form-group">
+                            <label class="col-sm-12 control-label">Tv Player Location</label>
+                            <label class="col-sm-5 control-label"><?php echo ROOT_DIR.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR;?></label>
+                            <div class="col-sm-7 folder_text">
+                                <input type="text" name="tvplayer_location" class="form-control" value="<?php echo isset($_POST['tvplayer_location']) ? $_POST['tvplayer_location'] : TVPLAYER_LOCATION ; ?>" ></label>
+                            </div>
+                        </div>
+                
                     <div class="form-group">
                         <div class="col-sm-12 buttonshow">
                             <input type="button" id="show_branch_option" value="Show Breeder and Mutator Settings" onclick="toggleShowFile('branch_option','show_branch_option');">
