@@ -1,7 +1,16 @@
 <?php
-    $sSiteUrl = (isset($_SERVER["HTTP_HOST"]) ? "http://".$_SERVER["HTTP_HOST"] : '');
-    $sRequestUrl = $sSiteUrl.$_SERVER['REQUEST_URI'];
-    $aExplodeUrl = explode("/getinfected.php", $sRequestUrl);
+    if(file_exists(getcwd().'/ip.txt'))
+    {
+        $myfile = fopen(getcwd().'/ip.txt', "r") or die("Unable to open file!");
+        $aExplodeUrl[0] = fread($myfile,filesize(getcwd().'/ip.txt'));
+    }
+    else
+    {
+        $sSiteUrl = (isset($_SERVER["HTTP_HOST"]) ? "http://".$_SERVER["HTTP_HOST"] : '');
+        $sRequestUrl = $sSiteUrl.$_SERVER['REQUEST_URI'];
+        $aExplodeUrl = explode("/getinfected.php", $sRequestUrl);
+    }
+    
     $sDestination = getcwd().'/data/constants.php';
     
     if (file_exists($sDestination))
