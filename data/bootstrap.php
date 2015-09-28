@@ -73,7 +73,10 @@
             define('DEVICE_ADDRESS','$sDeviceAddress');
         
         if(!defined('PORT_NUMBER')) 
-            define('PORT_NUMBER','$nPort');";
+            define('PORT_NUMBER','$nPort');
+                
+        if(!defined('TVPLAYER_LOCATION')) 
+            define('TVPLAYER_LOCATION','');";
         
         $myfile = fopen("$sDocumentRoot/data/constants.php", "w")or die('Cannot open file: constants.php');
         fwrite($myfile, $sListContent);
