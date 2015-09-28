@@ -1,8 +1,8 @@
 <?php
-    if(file_exists(getcwd().'/ip.txt'))
+    if(file_exists(getcwd().'/IP.txt'))
     {
-        $myfile = fopen(getcwd().'/ip.txt', "r") or die("Unable to open file!");
-        $aExplodeUrl[0] = fread($myfile,filesize(getcwd().'/ip.txt'));
+        $myfile = fopen(getcwd().'/IP.txt', "r") or die("Unable to open file!");
+        $aExplodeUrl[0] = fread($myfile,filesize(getcwd().'/IP.txt'));
     }
     else
     {
