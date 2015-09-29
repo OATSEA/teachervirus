@@ -1021,55 +1021,59 @@
                 $sGetInfectedBranch = $sBranchName;
                 $sPayloadInstall = PAYLOAD_INSTALL;
                 $nShowTv = SHOW_TV;
+                $sTvplayerLocation = TVPLAYER_LOCATION;
                 
                 $sListContent = "<?php
-        if(!defined('ROOT_DIR')) 
-            define('ROOT_DIR','$sDocumentRoot');
-        
-        if(!defined('SITE_URL')) 
-            define('SITE_URL','$sSiteUrl');
-        
-        if(!defined('EXTERNAL_FOLDER')) 
-            define('EXTERNAL_FOLDER','$sExternalFolder');
-        
-        if(!defined('EXTERNAL_PATH')) 
-            define('EXTERNAL_PATH','$sExternalPath');
-        
-        if(!defined('LANGUAGE')) 
-            define('LANGUAGE','$sLanguage');
-        
-        if(!defined('DEBUG_TEXT')) 
-            define('DEBUG_TEXT','$bDebugText');
-        
-        if(!defined('EXTERNAL_TEXT')) 
-            define('EXTERNAL_TEXT','$bExternalText');
-        
-        if(!defined('PAYLOAD_INSTALL')) 
-            define('PAYLOAD_INSTALL','$sPayloadInstall');
-        
-        if(!defined('CHMOD')) 
-            define('CHMOD','$bChmod');
-        
-        if(!defined('TV_BRANCH')) 
-            define('TV_BRANCH','$sTvBranchName');
-        
-        if(!defined('GETINFECTED_BRANCH')) 
-            define('GETINFECTED_BRANCH','$sGetInfectedBranch');    
-        
-        if(!defined('ADMIN_COG')) 
-            define('ADMIN_COG','$bAdminCog');
-        
-        if(!defined('SHOW_TV')) 
-            define('SHOW_TV','$nShowTv');
-        
-        if(!defined('INFECTED_RESOURCE')) 
-            define('INFECTED_RESOURCE','$sInfectionResource');
-    
-        if(!defined('DEVICE_ADDRESS')) 
-            define('DEVICE_ADDRESS','$sDeviceAddress');
-        
-        if(!defined('PORT_NUMBER')) 
-            define('PORT_NUMBER','$nPort');";
+if(!defined('ROOT_DIR')) 
+    define('ROOT_DIR','$sDocumentRoot');
+
+if(!defined('SITE_URL')) 
+    define('SITE_URL','$sSiteUrl');
+
+if(!defined('EXTERNAL_FOLDER')) 
+    define('EXTERNAL_FOLDER','$sExternalFolder');
+
+if(!defined('EXTERNAL_PATH')) 
+    define('EXTERNAL_PATH','$sExternalPath');
+
+if(!defined('LANGUAGE')) 
+    define('LANGUAGE','$sLanguage');
+
+if(!defined('DEBUG_TEXT')) 
+    define('DEBUG_TEXT','$bDebugText');
+
+if(!defined('EXTERNAL_TEXT')) 
+    define('EXTERNAL_TEXT','$bExternalText');
+
+if(!defined('PAYLOAD_INSTALL')) 
+    define('PAYLOAD_INSTALL','$sPayloadInstall');
+
+if(!defined('CHMOD')) 
+    define('CHMOD','$bChmod');
+
+if(!defined('TV_BRANCH')) 
+    define('TV_BRANCH','$sTvBranchName');
+
+if(!defined('GETINFECTED_BRANCH')) 
+    define('GETINFECTED_BRANCH','$sGetInfectedBranch');    
+
+if(!defined('ADMIN_COG')) 
+    define('ADMIN_COG','$bAdminCog');
+
+if(!defined('SHOW_TV')) 
+    define('SHOW_TV','$nShowTv');
+
+if(!defined('INFECTED_RESOURCE')) 
+    define('INFECTED_RESOURCE','$sInfectionResource');
+
+if(!defined('DEVICE_ADDRESS')) 
+    define('DEVICE_ADDRESS','$sDeviceAddress');
+
+if(!defined('PORT_NUMBER')) 
+    define('PORT_NUMBER','$nPort');
+
+if(!defined('TVPLAYER_LOCATION'))
+    define('TVPLAYER_LOCATION','$sTvplayerLocation');";
 
                 $myfile = fopen("$sDocumentRoot/data/constants.php", "w")or die('Cannot open file: constants.php');
                 fwrite($myfile, $sListContent);
