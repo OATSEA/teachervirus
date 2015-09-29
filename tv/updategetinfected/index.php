@@ -1,7 +1,7 @@
 <?php 
     require_once("../../data/constants.php");
     require(ROOT_DIR.'/admin/checkLogin.php');
-    error_reporting(0);
+    //error_reporting(0);
 ?>
 <html>
     <head>
@@ -425,7 +425,7 @@
                     if (substr( $file ,0,1) != ".") {
                         $pathFile = $dir.'/'.$file;
                         if (is_dir($pathFile)) {
-                            if($debug) { echo "<p><b>Directory:</b> $pathFile</p>"; }
+                            //if($debug) { echo "<p><b>Directory:</b> $pathFile</p>"; }
 
                             $newDir = $dest."/".$file;
 
@@ -449,7 +449,7 @@
                                 //if($debug) { echo "<p>File $newFile already exists - Deleting</p>"; }
                                 unlink($newFile);
                             } else {
-                                if($debug) { echo "<p>File $newFile doesn't exist yet</p>"; }
+                                //if($debug) { echo "<p>File $newFile doesn't exist yet</p>"; }
                             }
 
                             // Move via rename
