@@ -26,6 +26,10 @@
             }
         </script>
         <style>
+            #loading
+            {
+                margin-top: 20px;
+            }
             #loading-image {
                 position: absolute;
                 top: 100px;
@@ -35,8 +39,8 @@
         </style>
     </head>
     <body class="main" onLoad="checkLoaded(false);">
-    <div id="loading">Installing...</div>
-    <div id="loading-image" style="display:none;"><img src="<?php echo SITE_URL; ?>/images/loading.gif"></div>
+        <div id="loading"><img src="<?php echo SITE_URL; ?>/images/loading_spinner.gif"><br/>Installing...</div>
+    <div id="loading-image" style="display:none;"></div>
     <script>
         checkLoaded(false);
     </script>

@@ -265,7 +265,7 @@
         </script>
     </head>
     <body class="main" onload="checkLoaded(false);">
-    <div id="loading">
+    <div id="loading"><img src="<?php echo SITE_URL; ?>/images/loading_spinner.gif"><br/>
         <?php 
         
             echo (is_dir(ROOT_DIR."/admin")) ? "Updating..." : "Installing...";
