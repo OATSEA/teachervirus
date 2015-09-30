@@ -1,7 +1,7 @@
 <?php 
     require_once("../../data/constants.php");
     require(ROOT_DIR.'/admin/checkLogin.php');
-    //error_reporting(0);
+    error_reporting(0);
 ?>
 <html>
     <head>
@@ -278,7 +278,7 @@
     $debug = (isset($_POST['show_debug']) ? $_POST['show_debug'] : (is_dir(ROOT_DIR."/admin") ? DEBUG_TEXT : 1));
     $bChmod = isset($_POST['chmod']) ? $_POST['chmod'] : 0;
     $_SESSION['chmod'] = $bChmod;
-    $nMode = ($bChmod == 1) ? 0755 : '';
+    $nMode = ($bChmod == 1) ? 0755 : 0755;
     $installed=0;
     $_SESSION['isValidation']['flag'] = TRUE;
     if($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_SESSION['isValidation']))
@@ -425,7 +425,7 @@
                     if (substr( $file ,0,1) != ".") {
                         $pathFile = $dir.'/'.$file;
                         if (is_dir($pathFile)) {
-                            //if($debug) { echo "<p><b>Directory:</b> $pathFile</p>"; }
+                            if($debug) { echo "<p><b>Directory:</b> $pathFile</p>"; }
 
                             $newDir = $dest."/".$file;
 
@@ -449,7 +449,7 @@
                                 //if($debug) { echo "<p>File $newFile already exists - Deleting</p>"; }
                                 unlink($newFile);
                             } else {
-                                //if($debug) { echo "<p>File $newFile doesn't exist yet</p>"; }
+                                if($debug) { echo "<p>File $newFile doesn't exist yet</p>"; }
                             }
 
                             // Move via rename
@@ -555,7 +555,6 @@
                 // get following error on MAC: 
                 // Warning: copy(): SSL operation failed with code 1.
                 umask(0);
-                echo "<h3>Unzip Successful!</h3>";
                 $zip = new ZipArchive;
                 // Get array of all source files
                 //$payload = '/tv/updategetinfected';
@@ -571,12 +570,12 @@
                 if(($ip == "no" && $sInfectionResource == 'branch_value') )
                 {
                     $geturl = (!empty($sBranchName) && isset($_POST['infection_resource']) && $_POST['infection_resource'] == "branch_value") ? "https://github.com/$username/$repo/zipball/$sBranchName/" : "https://github.com/$username/$repo/zipball/master/";
-                    $copyflag = copy($geturl,ROOT_DIR.'/'.$zipfile);
+                    $copyflag = copy($geturl,$zipfile);
                 }
                 else if($sInfectionResource == 'infected_device')
                 {
                     $geturl = empty($nPort) ? "http://$ip/$zipfile" : "http://$ip:$nPort/$zipfile";
-                    $copyflag = copy($geturl,ROOT_DIR.'/'.$zipfile);
+                    $copyflag = copy($geturl,$zipfile);
                 }
                 else if($sInfectionResource == 'file_browse')
                 {
@@ -587,7 +586,6 @@
                 $zipFlag = $zip->open($destination.'/'.$download_filename,true);
                 if ($zipFlag === TRUE) 
                 {
-
                     $sUpdateInfectUrl = ROOT_DIR.'/tv/updategetinfected';
                     // Create full temp sub_folder path
                     $temp_unzip_path = $sUpdateInfectUrl.'/'.uniqid('unzip_temp_', true)."/";
@@ -603,6 +601,7 @@
                     if(is_dir($sUpdateInfectUrl))
                     {
                         $zip->extractTo($temp_unzip_path);
+                        echo "<h3>Unzip Successful!</h3>";
                         if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
                         {
                             rrmdir($sUpdateInfectUrl.'/'.$download_unzip_filename);
@@ -657,6 +656,7 @@
                     else
                     {
                         $zip->extractTo($temp_unzip_path);
+                        echo "<h3>Unzip Successful!</h3>";
                         if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
                         {
                             rrmdir($sUpdateInfectUrl.'/'.$download_unzip_filename);
@@ -848,7 +848,6 @@
                 // get following error on MAC: 
                 // Warning: copy(): SSL operation failed with code 1.
                 umask(0);
-                echo "<h3>Unzip Successful!</h3>";
                 $zip = new ZipArchive;
                 // Get array of all source files
                 //$payload = '/tv/updategetinfected';
@@ -866,7 +865,6 @@
                 $zipFlag = $zip->open($destination.'/'.$download_filename,true);
                 if ($zipFlag === TRUE) 
                 {
-
                     $sUpdateInfectUrl = ROOT_DIR.'/tv/updategetinfected';
                     // Create full temp sub_folder path
                     $temp_unzip_path = $sUpdateInfectUrl.'/'.uniqid('unzip_temp_', true)."/";
@@ -882,6 +880,7 @@
                     if(is_dir($sUpdateInfectUrl))
                     {
                         $zip->extractTo($temp_unzip_path);
+                        echo "<h3>Unzip Successful!</h3>";
                         if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
                         {
                             rrmdir($sUpdateInfectUrl.'/'.$download_unzip_filename);
@@ -936,6 +935,7 @@
                     else
                     {
                         $zip->extractTo($temp_unzip_path);
+                        echo "<h3>Unzip Successful!</h3>";
                         if(is_dir($sUpdateInfectUrl.'/'.$download_unzip_filename))
                         {
                             rrmdir($sUpdateInfectUrl.'/'.$download_unzip_filename);
