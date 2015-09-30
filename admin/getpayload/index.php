@@ -1,8 +1,15 @@
-<?php 
+<?php
     require_once("../../data/constants.php");
     require(ROOT_DIR.'/admin/checkLogin.php');
     PAYLOAD_INSTALL == 1;
     error_reporting(0);
+    if(file_exists(ROOT_DIR.'/IP.txt'))
+    {
+        $myfile = fopen(ROOT_DIR.'/IP.txt', "r") or die("Unable to open file!");
+        $protocol = fread($myfile,filesize(ROOT_DIR.'/IP.txt'));
+        $protocol = trim($protocol);
+        define('SITE_URL',$protocol);
+    }
    ?>
 <html>
     <head>
