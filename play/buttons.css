@@ -59,7 +59,7 @@ img {
 
 }
 .imgholder {}
-.mybutton {width: 20%; display: inline-block;padding:5px;}
+.mybutton {width: 100%; display: inline-block;padding:10px;}
 
 a { color: #fff;}
 a:hover {  color:blue;}
@@ -79,4 +79,18 @@ a:hover {  color:blue;}
 }
 .mainNav:hover {
     color: blue;
+}
+.full-width{
+    display: inline-block;
+}
+.half-width{
+    width: 240px;
+}
+.half-width a label{
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer; cursor: hand;
+}
+.half-width a label:hover{
+    display: inline-block;
 }

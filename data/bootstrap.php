@@ -42,8 +42,8 @@ if(!defined('EXTERNAL_PATH'))
 if(!defined('LANGUAGE'))
     define('LANGUAGE','en');
         
-if(!defined('DEBUG_TEXT'))
-    define('DEBUG_TEXT','0');
+if(!defined('PAYLOAD_LABEL'))
+    define('PAYLOAD_LABEL','0');
         
 if(!defined('EXTERNAL_TEXT'))
     define('EXTERNAL_TEXT','0');

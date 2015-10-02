@@ -53,8 +53,10 @@ img {
 
 }
 .imgholder {}
-.mybutton {width: 20%; display: inline-block;padding:5px;}
-
+.mybutton {width: 17%; display: inline-block;padding:11px;}
+.payload-label{
+   
+}
 a { color: #fff;}
 a:hover {  color:blue;}
 

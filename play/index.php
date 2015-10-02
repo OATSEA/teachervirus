@@ -53,16 +53,31 @@
 
             if ($svgTest)
             {
-                echo '<a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.'/'.$svgText.'" /></a>';
+                echo '<div class="full-width"><div class="half-width"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.'/'.$svgText.'" />';
+                $aPayloadLabel = explode('-',$dir);
+                echo '<label class="payload-label">';
+                echo (PAYLOAD_LABEL == 1) ? substr($aPayloadLabel[2],0,13) : '';
+                echo '</label></a>';
+                echo '</div></div>';
             }
             else if($imgTest)
             {
-                echo '<a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.'/'.$imgText.'" /></a>';
+                echo '<div class="full-width"><div class="half-width"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.'/'.$imgText.'" >';
+                $aPayloadLabel = explode('-',$dir);
+                echo '<label class="payload-label">';
+                echo (PAYLOAD_LABEL == 1) ? substr($aPayloadLabel[2],0,13) : '';
+                echo '</label></a>';
+                echo '</div></div>';
             }
             else
             {
                 // Icon provided so use the default
-                echo '<a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.svg" /></a>';
+                echo '<div class="full-width"><div class="half-width"<a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.svg" />';
+                $aPayloadLabel = explode('-',$dir);
+                echo '<label class="payload-label">';
+                echo (PAYLOAD_LABEL == 1) ? substr($aPayloadLabel[2],0,13) : '';
+                echo '</label></a>';
+                echo '</div></div>';
             }
         }
     ?>

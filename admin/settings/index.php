@@ -27,6 +27,7 @@
         {
             $sLanguage = isset($_POST['language']) ? $_POST['language'] : 0;
             $bShowDebugText = isset($_POST['show_debug']) ? $_POST['show_debug'] : 0;
+            $bShowLabel = isset($_POST['show_label']) ? $_POST['show_label'] : 0;
             $sFolderLocation = isset($_POST['folder_location'])? $_POST['folder_location'] : '';
             $sTvplayerLocation = isset($_POST['tvplayer_location'])? $_POST['tvplayer_location'] : '';
             $bExternalSource = isset($_POST['external_source'])? $_POST['external_source'] : 0;
@@ -73,6 +74,7 @@ define('EXTERNAL_FOLDER','$sFolderLocation');
 define('EXTERNAL_PATH','$sDocumentRoot/$sFolderLocation');
 define('LANGUAGE','$sLanguage');
 define('DEBUG_TEXT','$bShowDebugText');
+define('PAYLOAD_LABEL','$bShowLabel');
 define('EXTERNAL_TEXT','$bExternalSource');
 define('PAYLOAD_INSTALL','$bPayloadInstall');
 define('CHMOD','$bChmod');
@@ -344,6 +346,12 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                         <div class="col-sm-12">
                             <input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($bShowDebugText) ? $bShowDebugText : DEBUG_TEXT; ?>" <?php echo ((isset($bShowDebugText) && $bShowDebugText == 1) || (DEBUG_TEXT == '1')) ? "checked='checked'" : ""; ?> onClick="changeValue('show_debug');">
                             <label class="start_payload">Show Debug Comments</label>
+                        </div>
+                    </div>
+                    <div class="form-group tv-left">
+                        <div class="col-sm-12">
+                            <input type="checkbox" name="show_label" id="show_label" value="<?php echo isset($bShowLabel) ? $bShowLabel : PAYLOAD_LABEL; ?>" <?php echo ((isset($bShowLabel) && $bShowLabel == 1) || (PAYLOAD_LABEL == '1')) ? "checked='checked'" : ""; ?> onClick="changeValue('show_label');">
+                            <label class="start_payload">Show labels on payloads?</label>
                         </div>
                     </div>
                 </div>
