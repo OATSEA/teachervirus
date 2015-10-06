@@ -1101,7 +1101,7 @@ if(!defined('TVPLAYER_LOCATION'))
             echo '</noscript>';
         }
     }
-if($_SESSION['isValidation']['flag'] == 1) 
+    if($_SESSION['isValidation']['flag'] == 1) 
         unset($_SESSION['isValidation']['user_name_required'],$_SESSION['isValidation']['repository_required'],$_SESSION['isValidation']['branch_name'],$_SESSION['isValidation']['device_address'],$_SESSION['isValidation']['upload_file']);
 
     if($_SESSION['isValidation']['flag'] == 1 || count($_SESSION['isValidation']) > 1)
@@ -1146,24 +1146,6 @@ if($_SESSION['isValidation']['flag'] == 1)
                 {
                     document.getElementById(boxId).value = 0;
                 }
-                if(boxId == "remove_previous_install")
-                {
-                    document.getElementById("admin_payload").checked = true;
-                    document.getElementById("delete_content").checked = true;
-                    document.getElementById("admin_payload").value = 1;
-                    document.getElementById("delete_content").value = 1;
-                }
-                if(boxId == "download_latest_version")
-                {
-                    if (document.getElementById(boxId).checked)
-                    {
-                        document.getElementById("infection_sources").style.display = "block";
-                    }
-                    else
-                    {
-                        document.getElementById("infection_sources").style.display = "none";
-                    }
-                }
             }
             function removePort(textId)
             {
@@ -1204,21 +1186,6 @@ if($_SESSION['isValidation']['flag'] == 1)
                     buttonId.value= 'Hide Advanced Settings';
                     divId.style.display = 'block';
                 }
-            }
-            function toggleDeleteFile(id,buttonid)
-            {
-                 var divId = document.getElementById(id);
-                 var buttonId = document.getElementById(buttonid);
-                 if (divId.style.display == 'block' || divId.style.display=='')
-                {
-                    buttonId.value = 'Show Options';
-                    divId.style.display = 'none';
-                }
-                else 
-                {
-                    buttonId.value = 'Hide Options';
-                    divId.style.display = 'block';
-               }
             }
         </script>
     <?php 

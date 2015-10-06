@@ -58,17 +58,17 @@
     $_SESSION['isValidation']['flag'] = TRUE;
     if($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_SESSION['isValidation']))
     {
-        $sUserName = trim($_POST['user_name']);
-        $sRepository = trim($_POST['repository']);
-        $sDeviceAddress = trim($_POST['device_address']);
+        $sUserName = isset($_POST['user_name']) ? trim($_POST['user_name']) : '';
+        $sRepository = isset($_POST['repository']) ? trim($_POST['repository']) : '';
+        $sDeviceAddress = isset($_POST['device_address']) ? trim($_POST['device_address']) : '';
         $sFileName = isset($_FILES['upload_file']['name']) ? $_FILES['upload_file']['name']:'';
         $sTempFileName = isset($_FILES['upload_file']['tmp_name'])? $_FILES['upload_file']['tmp_name'] : '';
-        $nPort = trim($_POST['port_number']);
-        $sInfectUserName = trim($_POST["infect_user_name"]);
-        $sPayloadName = trim($_POST['payload_name']);
-        $sPayloadUrl = trim($_POST["payload_url"]);
-        $sGooglePayloadName = trim($_POST['google_payload_name']);
-        $sGoogleDriveLink = trim($_POST['google_drive_link']);
+        $nPort = isset($_POST['port_number']) ? trim($_POST['port_number']) : '';
+        $sInfectUserName = isset($_POST['infect_user_name']) ? trim($_POST["infect_user_name"]) : '';
+        $sPayloadName = isset($_POST['payload_name']) ? trim($_POST['payload_name']) : '';
+        $sPayloadUrl = isset($_POST['payload_url']) ? trim($_POST["payload_url"]) : '';
+        $sGooglePayloadName = isset($_POST['google_payload_name']) ? trim($_POST['google_payload_name']) : '';
+        $sGoogleDriveLink = isset($_PST['google_drive_link']) ? trim($_POST['google_drive_link']) : '';
         $sIsAdmin = empty($_POST['check_admin']) ? '' : $_POST['check_admin'];
         $sPayloadSource = isset($_POST['payload_source'])? $_POST['payload_source'] : '';
         $sFolderSource = isset($_POST['folder_source'])? $_POST['folder_source'] : '';
@@ -268,6 +268,7 @@
 
             //----------
             //Make a new directory with optional error messages
+            
             function makeDIR($directory,$debugtxt=0,$nMode) {
                 // Create payload directory if it doesn't exist:
                 if (file_exists($directory)) {
@@ -456,10 +457,32 @@
                 makeDIR($payload, 1, $nMode);
                 $sDownloadFileName = $sFileName;
                 $aExplodeFileName = explode(".zip", $sFileName);
-                $download_unzip_filename = $aExplodeFileName[0];
-                $sListContent = "file_browse;$isAdmin;$download_unzip_filename;$sFileName";
-                move_uploaded_file($sTempFileName, $payload.DIRECTORY_SEPARATOR.$sFileName);
-                (CHMOD == 1) ? chmod($payload.DIRECTORY_SEPARATOR.$sFileName, 0755) : '';
+                if((isset($aExplodeFileName[1]) && $aExplodeFileName[1] != "") || !isset($aExplodeFileName[1]))
+                {
+                    $sDownloadFileName = $sFileName.'.zip';
+                    $download_unzip_filename = $aExplodeFileName[0];
+                    $sListContent = "file_browse;$isAdmin;$download_unzip_filename;$sDownloadFileName";
+                    move_uploaded_file($sTempFileName, $payload.DIRECTORY_SEPARATOR.$sDownloadFileName);
+                    (CHMOD == 1) ? chmod($payload.DIRECTORY_SEPARATOR.$sDownloadFileName, 0755) : '';
+                    
+                    $zip = new ZipArchive;
+                    if ($zip->open($payload.DIRECTORY_SEPARATOR.$sDownloadFileName, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE)
+                    {
+                        $zip->addFile($payload.DIRECTORY_SEPARATOR.$sDownloadFileName, $sFileName);
+                        $zip->close();
+                    }
+                    else
+                    {
+                        exit('<h3>Payload $sDownloadFileName</h3><h4> Installed via $payload.DIRECTORY_SEPARATOR.$sDownloadFileName FAILED!!</h4><div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                    }
+                }
+                else
+                {
+                    $download_unzip_filename = $aExplodeFileName[0];
+                    $sListContent = "file_browse;$isAdmin;$download_unzip_filename;$sFileName";
+                    move_uploaded_file($sTempFileName, $payload.DIRECTORY_SEPARATOR.$sFileName);
+                    (CHMOD == 1) ? chmod($payload.DIRECTORY_SEPARATOR.$sFileName, 0755) : '';
+                }
             }
             $zipfile = $payload.DIRECTORY_SEPARATOR.$sDownloadFileName;
 
@@ -551,6 +574,7 @@
             // get following error on MAC: 
             umask(0);
             $zip = new ZipArchive;
+            
             // Get array of all source files
             $files = scandir($payload);
             // Identify directories
@@ -595,7 +619,7 @@
                 }
 
                 if(is_dir($sPayloadUrl))
-                {
+                {   
                     $zip->extractTo($temp_unzip_path);
                     if(is_dir($sPayloadUrl.'/'.$download_unzip_filename))
                     {
@@ -621,20 +645,34 @@
                     {
                        if (!in_array($value,array(".","..")))
                        {
-                          if (is_dir($temp_unzip_path . $value))
-                          {
-                            moveDIR($temp_unzip_path . $value,$sPayloadUrl.'/'.$download_unzip_filename,$debug);
-                            $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
-                            fwrite($myfile, $sListContent);
-                            fclose($myfile);
+                            if (is_dir($temp_unzip_path . $value))
+                            {
+                                moveDIR($temp_unzip_path . $value,$sPayloadUrl.'/'.$download_unzip_filename,$debug);
+                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                fwrite($myfile, $sListContent);
+                                fclose($myfile);
 
-                            $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
-                            fwrite($myfile, $sListContent);
-                            fclose($myfile);
-                            $relativePath = substr($destination.DIRECTORY_SEPARATOR.$sDownloadFileName.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$sDownloadFileName));
-                            // Add current file to archive
-                            $zip->addFile($destination."/list.txt", $relativePath);
-                          }
+                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                fwrite($myfile, $sListContent);
+                                fclose($myfile);
+                                $relativePath = substr($destination.DIRECTORY_SEPARATOR.$sDownloadFileName.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$sDownloadFileName));
+                                // Add current file to archive
+                                $zip->addFile($destination."/list.txt", $relativePath);
+                            }
+                            else if($sPayloadSource == 'file_browse')
+                            {
+                                moveDIR($temp_unzip_path,$sPayloadUrl.'/'.$download_unzip_filename,$debug);
+                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                fwrite($myfile, $sListContent);
+                                fclose($myfile);
+
+                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                fwrite($myfile, $sListContent);
+                                fclose($myfile);
+                                $relativePath = substr($destination.DIRECTORY_SEPARATOR.$sDownloadFileName."list.txt", strlen($destination.DIRECTORY_SEPARATOR.$sDownloadFileName));
+                                // Add current file to archive
+                                $zip->addFile($destination."/list.txt", $relativePath);
+                            }
                        }
                     }
                     if(is_dir($temp_unzip_path))
@@ -899,6 +937,8 @@
                 showData("<?php echo isset($_POST['folder_source']) ? $_POST['folder_source'] : ''; ?>");
             });
         </script>
+        <?php ini_set('post_max_size', '64M');
+              ini_set('upload_max_filesize', '64M');?>
         <div class="color-white">
             <a class="play_img" href="<?php echo SITE_URL.'/admin'; ?>">
                 <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
