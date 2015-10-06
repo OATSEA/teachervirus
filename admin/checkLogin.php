@@ -5,6 +5,6 @@
     if(isset($_SESSION['isLoggedIn']) && $_SESSION['isLoggedIn'] != 1)
     {
         session_destroy();
-        header("Location:".SITE_URL."/admin");
+        header("Location:".$sSiteUrl."/admin");
     }
 ?>

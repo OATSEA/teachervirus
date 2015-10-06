@@ -1,12 +1,12 @@
 <?php
     require_once("../../data/constants.php");
     error_reporting(0);
+    $sSiteUrl = SITE_URL;
     if(file_exists(ROOT_DIR.'/IP.txt'))
     {
         $myfile = fopen(ROOT_DIR.'/IP.txt', "r") or die("Unable to open file!");
         $protocol = fread($myfile,filesize(ROOT_DIR.'/IP.txt'));
-        $protocol = trim($protocol);
-        define('SITE_URL',$protocol);
+        $sSiteUrl = trim($protocol);
     }
     require(ROOT_DIR.'/admin/checkLogin.php');
     if(session_status()!=PHP_SESSION_ACTIVE) session_start(); 
@@ -19,18 +19,18 @@
     <title>Pattern Lock</title>
 </head>
 <body class="main" >
-    <link rel="stylesheet" type="text/css" href="<?php echo SITE_URL; ?>/admin/changePassword/_style/changePassword.css"/>
-    <link href="<?php echo SITE_URL; ?>/admin/buttons.css" rel="stylesheet">
-    <link href="<?php echo SITE_URL; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <script src="<?php echo SITE_URL; ?>/admin/changePassword/_script/changePassword.js"></script>
-    <script src="<?php echo SITE_URL; ?>/admin/changePassword/js/jquery-1.11.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo $sSiteUrl; ?>/admin/changePassword/_style/changePassword.css"/>
+    <link href="<?php echo $sSiteUrl; ?>/admin/buttons.css" rel="stylesheet">
+    <link href="<?php echo $sSiteUrl; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <script src="<?php echo $sSiteUrl; ?>/admin/changePassword/_script/changePassword.js"></script>
+    <script src="<?php echo $sSiteUrl; ?>/admin/changePassword/js/jquery-1.11.1.js"></script>
     <script>
         function submitform(){
            return true;
         }
     </script>
     <?php
-        $protocol .= SITE_URL."/admin";
+        $protocol .= $sSiteUrl."/admin";
     ?>
 <?php
     if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['old_password']) && isset($_SESSION['pattern_password']) && (md5($_POST['old_password']) == $_SESSION['pattern_password']))

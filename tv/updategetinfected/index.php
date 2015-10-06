@@ -2,12 +2,12 @@
     require_once("../../data/constants.php");
     require(ROOT_DIR.'/admin/checkLogin.php');
     error_reporting(0);
+    $sSiteUrl = SITE_URL;
     if(file_exists(ROOT_DIR.'/IP.txt'))
     {
         $myfile = fopen(ROOT_DIR.'/IP.txt', "r") or die("Unable to open file!");
         $protocol = fread($myfile,filesize(ROOT_DIR.'/IP.txt'));
-        $protocol = trim($protocol);
-        define('SITE_URL',$protocol);
+        $sSiteUrl = trim($protocol);
     }
 ?>
 <html>
@@ -272,7 +272,7 @@
         </script>
     </head>
     <body class="main" onload="checkLoaded(false);">
-    <div id="loading"><img src="<?php echo SITE_URL; ?>/images/loading_spinner.gif"><br/>
+    <div id="loading"><img src="<?php echo $sSiteUrl; ?>/images/loading_spinner.gif"><br/>
         <?php 
         
             echo (is_dir(ROOT_DIR."/admin")) ? "Updating..." : "Installing...";
@@ -456,7 +456,7 @@
                                 //if($debug) { echo "<p>File $newFile already exists - Deleting</p>"; }
                                 unlink($newFile);
                             } else {
-                                //if($debug) { echo "<p>File $newFile doesn't exist yet</p>"; }
+                                if($debug) { echo "<p>File $newFile doesn't exist yet</p>"; }
                             }
 
                             // Move via rename
@@ -550,7 +550,7 @@
                 $download_unzip_filename = $aExplodeFileName[0];
             }
             $zipfile = $sUpdateinfectedDir.$download_filename;
-            $sUrl = (is_dir(ROOT_DIR."/admin")) ? SITE_URL."/admin" : ROOT_DIR."/getinfected.php";
+            $sUrl = (is_dir(ROOT_DIR."/admin")) ? $sSiteUrl."/admin" : ROOT_DIR."/getinfected.php";
             // Check for IP param and set $ip if param provided
             // ** TO DO **
             // Download file if OATSEA-teachervirus.zip doesn't already exist
@@ -722,7 +722,7 @@
                 echo "<h2>Update Successfully</h2>";
                 if (is_dir(ROOT_DIR."/admin")) 
                 {
-                    echo '<link href="'.SITE_URL.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+                    echo '<link href="'.$sSiteUrl.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
                             <div class="color-white">
                                 <a class="play_img" href="'.$sUrl.'">
                                     <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
@@ -835,7 +835,7 @@
                         // As download failed delete empty zip file!
                         if ($debug) { echo "<h2>Download with CURL failed</h2>";}
                         echo "<h3>Update Failed!</h3><p>Couldn't download with either copy or curl</p>";
-                            echo '<link href="'.SITE_URL.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+                            echo '<link href="'.$sSiteUrl.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
                                     <div class="color-white">
                                         <a class="play_img" href="'.$sUrl.'">
                                             <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
@@ -1001,7 +1001,7 @@
                 echo "<h2>Update Successfully</h2>";
                 if (is_dir(ROOT_DIR."/admin")) 
                 {
-                    echo '<link href="'.SITE_URL.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+                    echo '<link href="'.$sSiteUrl.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
                             <div class="color-white">
                                 <a class="play_img" href="'.$sUrl.'">
                                     <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
@@ -1016,7 +1016,7 @@
                 }
                 
 //                $sDocumentRoot = ROOT_DIR;
-//                $sSiteUrl = SITE_URL;
+//                $sSiteUrl = $sSiteUrl;
 //                $sExternalFolder = EXTERNAL_FOLDER;
 //                $sExternalPath = EXTERNAL_PATH;
 //                $sLanguage = LANGUAGE;
@@ -1109,7 +1109,7 @@
         $_SESSION['isLoggedIn'] = isset($_SESSION['isLoggedIn']) ? $_SESSION['isLoggedIn'] : FALSE;
         if((is_dir(ROOT_DIR."/admin") && (isset($_SESSION['isLoggedIn']) && !$_SESSION['isLoggedIn'])) || (isset($_GET['isValidUser']) && (isset($_SESSION['isLoggedIn']) && !$_SESSION['isLoggedIn'])))
         {
-            redirect(SITE_URL."/admin");
+            redirect($sSiteUrl."/admin");
         }
         else if(!$installed)
         {
@@ -1192,9 +1192,9 @@
         if (is_dir(ROOT_DIR."/admin")) 
         {
     ?>
-            <link href="<?php echo SITE_URL; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+            <link href="<?php echo $sSiteUrl; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
             <div class="color-white">
-                <a class="play_img" href="<?php echo SITE_URL.'/admin'; ?>">
+                <a class="play_img" href="<?php echo $sSiteUrl.'/admin'; ?>">
                     <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
                 </a>
             </div><br/><br/>

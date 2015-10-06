@@ -6,19 +6,18 @@
             require_once("../../data/constants.php");
             require(ROOT_DIR.'/admin/checkLogin.php');
             error_reporting(0);
+            $sSiteUrl = SITE_URL;
             if(file_exists(ROOT_DIR.'/IP.txt'))
             {
                 $myfile = fopen(ROOT_DIR.'/IP.txt', "r") or die("Unable to open file!");
                 $protocol = fread($myfile,filesize(ROOT_DIR.'/IP.txt'));
-                $protocol = trim($protocol);
-                define('SITE_URL',$protocol);
-
+                $sSiteUrl = trim($protocol);
             }
         ?>
-       <link href="<?php echo SITE_URL; ?>/css/bootstrap.min.css" rel="stylesheet">
-       <link href="<?php echo SITE_URL; ?>/admin/buttons.css" rel="stylesheet">
-       <link href="<?php echo SITE_URL; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-       <script src="<?php echo SITE_URL; ?>/js/jquery.js" type="text/javascript"></script>
+       <link href="<?php echo $sSiteUrl; ?>/css/bootstrap.min.css" rel="stylesheet">
+       <link href="<?php echo $sSiteUrl; ?>/admin/buttons.css" rel="stylesheet">
+       <link href="<?php echo $sSiteUrl; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+       <script src="<?php echo $sSiteUrl; ?>/js/jquery.js" type="text/javascript"></script>
     </head>
     <body>
     <?php
@@ -54,9 +53,7 @@
                 {
                     $myfile = fopen(ROOT_DIR.'/IP.txt', "r") or die("Unable to open file!");
                     $protocol = fread($myfile,filesize(ROOT_DIR.'/IP.txt'));
-                    $protocol = trim($protocol);
-                    define('SITE_URL',$protocol);
-
+                    $sSiteUrl = trim($protocol);
                 }
                 if(file_exists($sDestination))
                 {

@@ -3,7 +3,13 @@
     error_reporting(E_ALL ^ E_WARNING);
     require_once("../../data/constants.php");
     require(ROOT_DIR.'/admin/checkLogin.php');
-
+    $sSiteUrl = SITE_URL;
+    if(file_exists(ROOT_DIR.'/IP.txt'))
+    {
+        $myfile = fopen(ROOT_DIR.'/IP.txt', "r") or die("Unable to open file!");
+        $protocol = fread($myfile,filesize(ROOT_DIR.'/IP.txt'));
+        $sSiteUrl = trim($protocol);
+    }
 
     $sPayloadName = $sPayloadUrl = $sIsAdmin = '';
     function listFolderFiles($dir,$sHiddenName,$sCheckId)
@@ -281,13 +287,13 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
                 return false;
             }
         </script>
-        <link href="<?php echo SITE_URL; ?>/css/bootstrap.min.css" rel="stylesheet">
-        <link href="<?php echo SITE_URL; ?>/admin/buttons.css" rel="stylesheet">
+        <link href="<?php echo $sSiteUrl; ?>/css/bootstrap.min.css" rel="stylesheet">
+        <link href="<?php echo $sSiteUrl; ?>/admin/buttons.css" rel="stylesheet">
         
     </head>
     <body class="main">
         <div class="color-white">
-            <a class="play_img" href="<?php echo SITE_URL; ?>">
+            <a class="play_img" href="<?php echo $sSiteUrl; ?>">
                 <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
             </a>
         </div><br/><br/>

@@ -1,12 +1,12 @@
 <?php
     require_once("../data/constants.php");
     error_reporting(0);
+    $sSiteUrl = SITE_URL;
     if(file_exists(ROOT_DIR.'/IP.txt'))
     {
         $myfile = fopen(ROOT_DIR.'/IP.txt', "r") or die("Unable to open file!");
         $protocol = fread($myfile,filesize(ROOT_DIR.'/IP.txt'));
-        $protocol = trim($protocol);
-        define('SITE_URL',$protocol);
+        $sSiteUrl = trim($protocol);
     }
 ?>
 <!DOCTYPE html>
@@ -15,13 +15,13 @@
         <title>Icons Menu</title>
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-        <link href="<?php echo SITE_URL; ?>/admin/buttons.css" rel="stylesheet">
-        <link href="<?php echo SITE_URL; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="<?php echo SITE_URL; ?>/admin/changePassword/_style/changePassword.css"/>
-        <script src="<?php echo SITE_URL; ?>/admin/changePassword/js/jquery-1.11.1.js"></script>
-        <script src='<?php echo SITE_URL; ?>/js/jquery.imagefit.js'></script>
-        <script src="<?php echo SITE_URL; ?>/admin/buttons.js"></script>
-        <script src="<?php echo SITE_URL; ?>/admin/changePassword/_script/changePassword.js"></script>
+        <link href="<?php echo $sSiteUrl; ?>/admin/buttons.css" rel="stylesheet">
+        <link href="<?php echo $sSiteUrl; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="<?php echo $sSiteUrl; ?>/admin/changePassword/_style/changePassword.css"/>
+        <script src="<?php echo $sSiteUrl; ?>/admin/changePassword/js/jquery-1.11.1.js"></script>
+        <script src='<?php echo $sSiteUrl; ?>/js/jquery.imagefit.js'></script>
+        <script src="<?php echo $sSiteUrl; ?>/admin/buttons.js"></script>
+        <script src="<?php echo $sSiteUrl; ?>/admin/changePassword/_script/changePassword.js"></script>
         <script>$(document).ready(function() { setup(); }); </script>
     </head>
     <body class="main" >
@@ -52,10 +52,10 @@
                 {
                     $rootdir = preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) )."*";
 
-                    $playURL = SITE_URL.'/play';
-                    $sChangePasswordURL =  SITE_URL.'/admin/changePassword';//str_replace('admin', 'admin/changePassword', $thisURL);
-                    $sInfectedURL =  SITE_URL.'/admin/getinfected';//str_replace('admin', 'admin/getinfected', $thisURL);
-                    $sSettingURL =  SITE_URL.'/admin/settings';//str_replace('admin', 'admin/settings', $thisURL);
+                    $playURL = $sSiteUrl.'/play';
+                    $sChangePasswordURL =  $sSiteUrl.'/admin/changePassword';//str_replace('admin', 'admin/changePassword', $thisURL);
+                    $sInfectedURL =  $sSiteUrl.'/admin/getinfected';//str_replace('admin', 'admin/getinfected', $thisURL);
+                    $sSettingURL =  $sSiteUrl.'/admin/settings';//str_replace('admin', 'admin/settings', $thisURL);
                     
                     require(ROOT_DIR.'/admin/header.php');
                     
@@ -88,7 +88,7 @@
                     </script>
 
                     <div class="color-white">
-                        <a class="play_img" href="<?php echo SITE_URL.'/play'; ?>">
+                        <a class="play_img" href="<?php echo $sSiteUrl.'/play'; ?>">
                             <i class="mainNav fa fa-play-circle-o fa-3x"></i>
                         </a>
                         <h2>Please Login</h2>
@@ -162,7 +162,7 @@
                     define("PASSWORD", $sPassword);
                     ?>';
                     fwrite($handle, $txt);
-                    header("Location:".SITE_URL."/admin");
+                    header("Location:".$sSiteUrl."/admin");
                 }
                 else if($nConfirmPasswordFlag == 0)
                 {
