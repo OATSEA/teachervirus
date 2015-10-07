@@ -306,7 +306,7 @@
                     if (substr( $file ,0,1) != ".") {
                         $pathFile = $dir.'/'.$file;
                         if (is_dir($pathFile)) {
-                            if($debug) { echo "<p><b>Directory:</b> $pathFile</p>"; }
+                            //if($debug) { echo "<p><b>Directory:</b> $pathFile</p>"; }
 
                             $newDir = $dest."/".$file;
 
