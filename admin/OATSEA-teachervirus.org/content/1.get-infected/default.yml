@@ -10,8 +10,8 @@ content: |
   
     <div class="jumbotron"><h1>For Android . . </h1>
 
-  <p><b>Download, Install and Start</b> the <a href="/infect/teachervirus.apk">Teacher Virus App (APK file)</a></p>
-  <p><a class="btn lrg btn-success" href="/infect/teachervirus.apk">Get Teacher Virus for Android</a></p>
+  <p><b>Download, Install and Start</b> the <a href="../../infect/teachervirus.apk">Teacher Virus App (APK file)</a></p>
+  <p><a class="btn lrg btn-success" href="../../infect/teachervirus.apk">Get Teacher Virus for Android</a></p>
   
   <p><b>Note:</b> You will need to authorise installation of non marketplace apps in your Android Settings</p>
   <p>If you have any problems - talk to us by registering officially for the Alpha.
@@ -21,7 +21,7 @@ content: |
   
   **Step 1:** Download & Install a Web server of your choice (e.g. Apache or Lighttpd and PHP) on the device of your choice (e.g. Raspberry Pi, laptop/desktop). 
   
-  **Step 2:** Download and unzip <a href="/infect/getinfected.php.zip">getinfected.php</a> to the "root" of your web server's public folder (e.g. htdocs, public_html or /var/www on raspberry Pi)
+  **Step 2:** Download and unzip <a href="../../infect/getinfected.php.zip">getinfected.php</a> to the "root" of your web server's public folder (e.g. htdocs, public_html or /var/www on raspberry Pi)
   
   **Step 3:** Open a web browser and access that file on your webserver (http://localhost/getinfected.php) and it will install Teacher Virus from GitHub. 
   
