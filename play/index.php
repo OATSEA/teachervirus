@@ -73,7 +73,7 @@
             {
                 // Icon provided so use the default
                 
-                echo '<div class="full-width"><div class="half-width"<a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.svg" />';
+                echo '<div class="full-width"><div class="half-width"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.svg" />';
                 $aPayloadLabel = explode('.',$dir);
                 echo '<label class="payload-label">';
                 echo (PAYLOAD_LABEL == 1) ? substr($aPayloadLabel[0],0,13) : '';
