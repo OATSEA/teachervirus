@@ -13,6 +13,11 @@ content: |
       </div>
      </div>  
     </div>  
+    <div  class="jumbotron">
+        <h1><b class="glyphicon glyphicon-play-circle"></b> Just Play!</h1>
+        <p>Play the Teacher Virus Alpha Locally: </p>
+        <p><a class="btn lrg btn-success" href="/play" role="button"><b class="glyphicon glyphicon-play-circle"></b> Play »</a></p>
+    </div>
     <div class="row">
         <div class="col-sm-4 center">
           <b class="glyphicon glyphicon-play-circle bigicon"></b>
@@ -34,8 +39,3 @@ content: |
     </div>
         
     ---
-    <div  class="jumbotron">
-        <h1><b class="glyphicon glyphicon-play-circle"></b> Just Play!</h1>
-        <p>Play the Teacher Virus Alpha Locally: </p>
-        <p><a class="btn lrg btn-success" href="/play" role="button"><b class="glyphicon glyphicon-play-circle"></b> Play »</a></p>
-    </div>

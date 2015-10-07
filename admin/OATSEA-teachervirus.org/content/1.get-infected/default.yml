@@ -9,16 +9,13 @@ content: |
   </div>
   
     <div class="jumbotron"><h1>For Android . . </h1>
-  <p><b>Step 1:</b> Download, Install and Start a Web server on your Android device - For example <a href="/infect/DroidPHP.apk" >DroidPHP</a></p>
-  <p><a class="btn lrg btn-success" href="/infect/DroidPHP.apk" >Get DropidPHP</a></p>
-  <p><b>Step 2:</b> Download, Install and Start the <a href="/infect/teachervirus.apk">Teacher Virus App (APK file)</a></p>
+
+  <p><b>Download, Install and Start</b> the <a href="/infect/teachervirus.apk">Teacher Virus App (APK file)</a></p>
   <p><a class="btn lrg btn-success" href="/infect/teachervirus.apk">Get Teacher Virus for Android</a></p>
   
   <p><b>Note:</b> You will need to authorise installation of non marketplace apps in your Android Settings</p>
   <p>If you have any problems - talk to us by registering officially for the Alpha.
   </div>
-  
-  
   
   ##Other Devices?
   
