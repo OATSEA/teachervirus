@@ -4,7 +4,7 @@ content: |
       <H1>Payloads</h1>
         <p>Payloads are the point of Teacher Virus.</p>
         <p>You can get an idea how they work from the online Teacher Virus demo:</p>
-         <p><a class="btn lrg btn-success" href="/play" role="button"><b class="glyphicon glyphicon-play-circle"></b> Play Teacher Virus Payloads »</a></p>
+         <p><a class="btn lrg btn-success" href="../../play" role="button"><b class="glyphicon glyphicon-play-circle"></b> Play Teacher Virus Payloads »</a></p>
         <p>We refer to the educational apps, games and content that are available on Teacher Virus as <b>"Payloads"</b>.  Other systems call this stuff apps, components, modules, blocks, pages etc.</p>
         <p>Any "thing" written in HTML 5 (Javascript) / PHP and shared on Github can be provided as a Teacher Virus payload.  If you'd like your contribution included for others to play with then contact us and join the Alpha.</p>
         <p>We don't have all the answers on how to create the <b>best free education on the planet</b>.  That's why we're instead focusing on ways to enable you to do it and have it easily distributed and curated!<p>
