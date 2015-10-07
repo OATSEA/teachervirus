@@ -1,4 +1,5 @@
 <?php
+    error_reporting(0);
     if(file_exists(getcwd().'/IP.txt'))
     {
         $myfile = fopen(getcwd().'/IP.txt', "r") or die("Unable to open file!");
@@ -54,29 +55,21 @@ if(!defined('PAYLOAD_INSTALL'))
 if(!defined('CHMOD'))
     define('CHMOD','$bChmod');
         
-if(!defined('TV_BRANCH'))
-    define('TV_BRANCH','$sTvBranchName');
+define('TV_BRANCH','$sTvBranchName');
         
-if(!defined('GETINFECTED_BRANCH'))
-    define('GETINFECTED_BRANCH','master');
+define('GETINFECTED_BRANCH','master');
         
-if(!defined('ADMIN_COG'))
-    define('ADMIN_COG','1');
+define('ADMIN_COG','1');
         
-if(!defined('SHOW_TV'))
-    define('SHOW_TV','0');
+define('SHOW_TV','0');
         
-if(!defined('INFECTED_RESOURCE'))
-    define('INFECTED_RESOURCE','$sInfectionResource');
+define('INFECTED_RESOURCE','$sInfectionResource');
     
-if(!defined('DEVICE_ADDRESS'))
-    define('DEVICE_ADDRESS','$sDeviceAddress');
+define('DEVICE_ADDRESS','$sDeviceAddress');
         
-if(!defined('PORT_NUMBER'))
-    define('PORT_NUMBER','$nPort');
+define('PORT_NUMBER','$nPort');
                 
-if(!defined('TVPLAYER_LOCATION'))
-    define('TVPLAYER_LOCATION','');";
+define('TVPLAYER_LOCATION','');";
         
         $myfile = fopen("$sDocumentRoot/data/constants.php", "w")or die('Cannot open file: constants.php');
         fwrite($myfile, $sListContent);

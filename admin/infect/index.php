@@ -1,3 +1,32 @@
+<html>
+    <head>
+        <title></title>
+<?php
+    require_once("../../data/constants.php");
+    require(ROOT_DIR.'/admin/checkLogin.php');
+    $sSiteUrl = SITE_URL;
+    if(file_exists(ROOT_DIR.'/IP.txt'))
+    {
+        $myfile = fopen(ROOT_DIR.'/IP.txt', "r") or die("Unable to open file!");
+        $protocol = fread($myfile,filesize(ROOT_DIR.'/IP.txt'));
+        $sSiteUrl = trim($protocol);
+    }
+?>
+        <link href="<?php echo $sSiteUrl; ?>/admin/buttons.css" rel="stylesheet">
+        <link href="<?php echo $sSiteUrl; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="<?php echo $sSiteUrl; ?>/admin/changePassword/_style/changePassword.css"/>
+        <script src="<?php echo $sSiteUrl; ?>/admin/changePassword/js/jquery-1.11.1.js"></script>
+        <script src='<?php echo $sSiteUrl; ?>/js/jquery.imagefit.js'></script>
+        <script src="<?php echo $sSiteUrl; ?>/admin/buttons.js"></script>
+        <script src="<?php echo $sSiteUrl; ?>/admin/changePassword/_script/changePassword.js"></script>
+    </head>
+    <body style="text-align: left;padding-left: 20px;">
+        <div class="color-white">
+            <a class="play_img" href="<?php echo $sSiteUrl.'/admin'; ?>">
+                <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
+            </a>
+        </div>
+                    
 <?php
     // Explain how to be infectious
     // Provide IP address of device on local network
@@ -9,8 +38,8 @@
     // doesn't work though
 
     // May have to do this functionality via native Android?
-    require_once("../../data/constants.php");
-    require(ROOT_DIR.'/admin/checkLogin.php');
+    
+    
     $debug = 1;
 
     if(isset($_SERVER["SERVER_ADDR"])){
@@ -60,7 +89,7 @@
     // } // END win or linux check
 
     // Alternative from http://stackoverflow.com/questions/3219178/php-how-to-get-local-ip-of-system
-    $myIP3 = getHostByName(getHostName());
+    $myIP3 = getHostByName(getHostName()).':8080';
 
     echo "<!DOCTYPE html><html><title>Be Infectious</title></head><body>
       <h1>Be Infectious!</h1>
@@ -74,3 +103,5 @@
       </body></html>
       ";
 ?>
+</body>
+</html>

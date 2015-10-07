@@ -82,15 +82,13 @@ a:hover {  color:blue;}
 }
 .full-width{
     display: inline-block;
+    width: 20%;
 }
-.half-width{
-    width: 240px;
-}
-.half-width a label{
+.full-width a label{
     display: inline-block;
     text-decoration: none;
     cursor: pointer; cursor: hand;
 }
-.half-width a label:hover{
+.full-width a label:hover{
     display: inline-block;
 }

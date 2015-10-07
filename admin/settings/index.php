@@ -87,8 +87,8 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                 fwrite($myfile, $sListContent);
                 fclose($myfile);
                 echo '<h2>Settings Saved Successfully!!</h2>'
-                    . '<div class="admin_img"><a href="'.SITE_URL.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
-                    . '<div class="play_img"><a href="'.SITE_URL.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>';
+                    . '<div class="admin_img"><a href="'.$sSiteUrl.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
+                    . '<div class="play_img"><a href="'.$sSiteUrl.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>';
                 die();
             }
         }
@@ -158,7 +158,7 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                 
             </script>
             <div class="color-white">
-                <a class="play_img" href="<?php echo SITE_URL.'/admin'; ?>">
+                <a class="play_img" href="<?php echo $sSiteUrl.'/admin'; ?>">
                     <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
                 </a>
             </div>
@@ -291,13 +291,19 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                             <label class="start_payload">Show admin cog to student?</label>
                         </div>
                     </div>
-                        <div class="form-group">
-                            <label class="col-sm-12 control-label">Tv Player Location</label>
-                            <label class="col-sm-5 control-label"><?php echo ROOT_DIR.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR;?></label>
-                            <div class="col-sm-7 folder_text">
-                                <input type="text" name="tvplayer_location" class="form-control" value="<?php echo isset($_POST['tvplayer_location']) ? $_POST['tvplayer_location'] : TVPLAYER_LOCATION ; ?>" ></label>
-                            </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input type="checkbox" name="show_label" id="show_label" value="<?php echo isset($bShowLabel) ? $bShowLabel : PAYLOAD_LABEL; ?>" <?php echo ((isset($bShowLabel) && $bShowLabel == 1) || (PAYLOAD_LABEL == '1')) ? "checked='checked'" : ""; ?> onClick="changeValue('show_label');">
+                            <label class="start_payload">Show labels on payloads?</label>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-12 control-label">Tv Player Location</label>
+                        <label class="col-sm-5 control-label"><?php echo ROOT_DIR.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR;?></label>
+                        <div class="col-sm-7 folder_text">
+                            <input type="text" name="tvplayer_location" class="form-control" value="<?php echo isset($_POST['tvplayer_location']) ? $_POST['tvplayer_location'] : TVPLAYER_LOCATION ; ?>" ></label>
+                        </div>
+                    </div>
                 
                     <div class="form-group">
                         <div class="col-sm-12 buttonshow">
@@ -343,12 +349,6 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                         <div class="col-sm-12">
                             <input type="checkbox" name="show_debug" id="show_debug" value="<?php echo isset($bShowDebugText) ? $bShowDebugText : DEBUG_TEXT; ?>" <?php echo ((isset($bShowDebugText) && $bShowDebugText == 1) || (DEBUG_TEXT == '1')) ? "checked='checked'" : ""; ?> onClick="changeValue('show_debug');">
                             <label class="start_payload">Show Debug Comments</label>
-                        </div>
-                    </div>
-                    <div class="form-group tv-left">
-                        <div class="col-sm-12">
-                            <input type="checkbox" name="show_label" id="show_label" value="<?php echo isset($bShowLabel) ? $bShowLabel : PAYLOAD_LABEL; ?>" <?php echo ((isset($bShowLabel) && $bShowLabel == 1) || (PAYLOAD_LABEL == '1')) ? "checked='checked'" : ""; ?> onClick="changeValue('show_label');">
-                            <label class="start_payload">Show labels on payloads?</label>
                         </div>
                     </div>
                 </div>
