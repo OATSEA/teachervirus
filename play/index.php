@@ -28,6 +28,7 @@
         $payloadsDir = str_replace("play", (EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : '/payloads', $rootdir);
         $payloadsPath = str_replace("play", (EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : 'payloads',preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) ));
         $payloadsURL = $sSiteUrl.'/'.((EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : 'payloads');
+        $sDefaultPath = str_replace("play", (EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/play' : 'play',preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) ));
         $adminURL =  $sSiteUrl.'/admin';
         if(ADMIN_COG == 1)
         {
@@ -73,7 +74,7 @@
             {
                 // Icon provided so use the default
                 
-                echo '<div class="full-width"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.'/'.'default.svg" />';
+                echo '<div class="full-width"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$sDefaultPath.'/'.'default.svg" />';
                 $aPayloadLabel = explode('.',$dir);
                 echo '<label class="payload-label">';
                 echo (PAYLOAD_LABEL == 1) ? ucfirst(substr($aPayloadLabel[0],0,13)) : '';
