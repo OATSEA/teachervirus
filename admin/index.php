@@ -56,6 +56,8 @@
                     $sChangePasswordURL =  $sSiteUrl.'/admin/changePassword';//str_replace('admin', 'admin/changePassword', $thisURL);
                     $sInfectedURL =  $sSiteUrl.'/admin/getinfected';//str_replace('admin', 'admin/getinfected', $thisURL);
                     $sSettingURL =  $sSiteUrl.'/admin/settings';//str_replace('admin', 'admin/settings', $thisURL);
+                    $sOatseaTeachervirusURL =  $sSiteUrl.'/admin/OATSEA-teachervirus.org';
+                    $sInfectURL =  $sSiteUrl.'/admin/infect';
                     
                     require(ROOT_DIR.'/admin/header.php');
                     
@@ -77,6 +79,8 @@
                     (isset($sChangePasswordURL) && !empty($sChangePasswordURL)) ? '<a href="'.$sChangePasswordURL.'"><img class="mybutton" alt="Change Password" src="'.$sChangePasswordURL.'icon.png" /></a>' : '';
                     (isset($sInfectedURL) && !empty($sInfectedURL)) ? '<a href="'.$sInfectedURL.'"><img class="mybutton" alt="Get Infected" src="'.$sInfectedURL.'icon.png" /></a>' : '';
                     (isset($sSettingURL) && !empty($sSettingURL)) ? '<a href="'.$sSettingURL.'"><img class="mybutton" alt="Settings" src="'.$sSettingURL.'icon.png" /></a>' : '';
+                    (isset($sOatseaTeachervirusURL) && !empty($sOatseaTeachervirusURL)) ? '<a href="'.$sOatseaTeachervirusURL.'"><img class="mybutton" alt="Settings" src="'.$sOatseaTeachervirusURL.'icon.png" /></a>' : '';
+                    (isset($sInfectURL) && !empty($sInfectURL)) ? '<a href="'.$sInfectURL.'"><img class="mybutton" alt="Settings" src="'.$sInfectURL.'icon.png" /></a>' : '';
                 }
                 else
                 {
