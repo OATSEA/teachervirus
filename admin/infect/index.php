@@ -5,11 +5,17 @@
     require_once("../../data/constants.php");
     require(ROOT_DIR.'/admin/checkLogin.php');
     $sSiteUrl = SITE_URL;
+    if(isset($_SERVER["SERVER_ADDR"])){
+      $myIP = $_SERVER['SERVER_ADDR'];
+    } else {
+      $myIP = "SERVER_ADDR not SET";
+    } // END isset
     if(file_exists(ROOT_DIR.'/IP.txt'))
     {
         $myfile = fopen(ROOT_DIR.'/IP.txt', "r") or die("Unable to open file!");
         $protocol = fread($myfile,filesize(ROOT_DIR.'/IP.txt'));
         $sSiteUrl = trim($protocol);
+        $myIP = $sSiteUrl.":8080";
     }
 ?>
         <link href="<?php echo $sSiteUrl; ?>/admin/buttons.css" rel="stylesheet">
@@ -42,11 +48,6 @@
     
     $debug = 1;
 
-    if(isset($_SERVER["SERVER_ADDR"])){
-      $myIP = $_SERVER['SERVER_ADDR'];
-    } else {
-      $myIP = "SERVER_ADDR not SET";
-    } // END isset
     /*
     if(stristr(PHP_OS, 'WIN')) {
       //  Rather hacky way to handle windows servers
@@ -89,7 +90,7 @@
     // } // END win or linux check
 
     // Alternative from http://stackoverflow.com/questions/3219178/php-how-to-get-local-ip-of-system
-    $myIP3 = getHostByName(getHostName()).':8080';
+    $myIP3 = getHostByName(getHostName());
 
     echo "<!DOCTYPE html><html><title>Be Infectious</title></head><body>
       <h1>Be Infectious!</h1>
