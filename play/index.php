@@ -28,7 +28,7 @@
         $payloadsDir = str_replace("play", (EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : '/payloads', $rootdir);
         $payloadsPath = str_replace("play", (EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : 'payloads',preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) ));
         $payloadsURL = $sSiteUrl.'/'.((EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : 'payloads');
-        $sDefaultPath = str_replace("play", (EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/play' : 'play',preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) ));
+        $sDefaultPath = $sSiteUrl.'/'.((EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/play' : 'play');
         $adminURL =  $sSiteUrl.'/admin';
         if(ADMIN_COG == 1)
         {
