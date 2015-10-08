@@ -18,11 +18,11 @@
     {
         $sRootDir = ROOT_DIR;
         $sExternalPathLocation = ROOT_DIR.'/'.EXTERNAL_PATH;
-        $sInfectionResource = INFECTED_RESOURCE;
-        $sTvBranchName = TV_BRANCH;
+        $sInfectionResource = isset($_SESSION['infection_resource']) ? $_SESSION['infection_resource'] : '';
+        $sTvBranchName = isset($_SESSION['teachervirus_branch']) ? $_SESSION['teachervirus_branch'] : 'master';
+        $sDeviceAddress = isset($_SESSION['device_address']) ? $_SESSION['device_address'] : '';
+        $nPort = isset($_SESSION['port_number']) ? $_SESSION['port_number'] : '';
         $sGetInfectedBranch = GETINFECTED_BRANCH;
-        $sDeviceAddress = DEVICE_ADDRESS;
-        $nPort = PORT_NUMBER;
         
         $sLanguage = LANGUAGE;
         $bShowDebugText = DEBUG_TEXT;
@@ -70,7 +70,7 @@ define('PORT_NUMBER','$nPort');
                 
 define('TVPLAYER_LOCATION','$sTvplayerLocation');";
         
-        $myfile = fopen("$sDocumentRoot/data/constants.php", "w")or die('Cannot open file: constants.php');
+        $myfile = fopen("$sRootDir/data/constants.php", "w")or die('Cannot open file: constants.php');
         fwrite($myfile, $sListContent);
         fclose($myfile);
         require($sDestination);
