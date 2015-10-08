@@ -16,48 +16,51 @@
     
     if (file_exists($sDestination))
     {
-        $sDocumentRoot = getcwd();
-        $sInfectionResource = isset($_SESSION['infection_resource']) ? $_SESSION['infection_resource'] : '';
-        $sTvBranchName = isset($_SESSION['teachervirus_branch']) ? $_SESSION['teachervirus_branch'] : 'master';
-        $sDeviceAddress = isset($_SESSION['device_address']) ? $_SESSION['device_address'] : '';
-        $nPort = isset($_SESSION['port_number']) ? $_SESSION['port_number'] : '';
+        $sRootDir = ROOT_DIR;
+        $sExternalPathLocation = ROOT_DIR.'/'.EXTERNAL_PATH;
+        $sInfectionResource = INFECTED_RESOURCE;
+        $sTvBranchName = TV_BRANCH;
+        $sGetInfectedBranch = GETINFECTED_BRANCH;
+        $sDeviceAddress = DEVICE_ADDRESS;
+        $nPort = PORT_NUMBER;
         
-        $bChmod = isset($_SESSION['chmod']) ? $_SESSION['chmod'] : '0';
+        $sLanguage = LANGUAGE;
+        $bShowDebugText = DEBUG_TEXT;
+        $bShowLabel = PAYLOAD_LABEL;
+        $sFolderLocation = EXTERNAL_FOLDER;
+        $sTvplayerLocation = TVPLAYER_LOCATION;
+        $bExternalSource = EXTERNAL_TEXT;
+        $bPayloadInstall = PAYLOAD_INSTALL;
+        $bTvUpdate = SHOW_TV;
+        $bAdminCog = ADMIN_COG;
+        
+        $bChmod = CHMOD;
         $sListContent = "<?php
-if(!defined('ROOT_DIR'))
-    define('ROOT_DIR','$sDocumentRoot');
+define('ROOT_DIR','$sRootDir');
         
-if(!defined('SITE_URL'))
-    define('SITE_URL','$aExplodeUrl[0]');
+define('SITE_URL','$aExplodeUrl[0]');
         
-if(!defined('EXTERNAL_FOLDER'))
-    define('EXTERNAL_FOLDER','');
+define('EXTERNAL_FOLDER','$sFolderLocation');
         
-if(!defined('EXTERNAL_PATH'))
-    define('EXTERNAL_PATH','$sDocumentRoot');
+define('EXTERNAL_PATH','$sExternalPathLocation');
         
-if(!defined('LANGUAGE'))
-    define('LANGUAGE','en');
+define('LANGUAGE','$sLanguage');
         
-if(!defined('PAYLOAD_LABEL'))
-    define('PAYLOAD_LABEL','0');
+define('PAYLOAD_LABEL','$bShowLabel');
         
-if(!defined('EXTERNAL_TEXT'))
-    define('EXTERNAL_TEXT','0');
+define('EXTERNAL_TEXT','$bExternalSource');
         
-if(!defined('PAYLOAD_INSTALL'))
-    define('PAYLOAD_INSTALL','0');
+define('PAYLOAD_INSTALL','$bPayloadInstall');
         
-if(!defined('CHMOD'))
-    define('CHMOD','$bChmod');
+define('CHMOD','$bChmod');
         
 define('TV_BRANCH','$sTvBranchName');
         
-define('GETINFECTED_BRANCH','master');
+define('GETINFECTED_BRANCH','$sGetInfectedBranch');
         
-define('ADMIN_COG','1');
+define('ADMIN_COG','$bAdminCog');
         
-define('SHOW_TV','0');
+define('SHOW_TV','$bTvUpdate');
         
 define('INFECTED_RESOURCE','$sInfectionResource');
     
@@ -65,7 +68,7 @@ define('DEVICE_ADDRESS','$sDeviceAddress');
         
 define('PORT_NUMBER','$nPort');
                 
-define('TVPLAYER_LOCATION','');";
+define('TVPLAYER_LOCATION','$sTvplayerLocation');";
         
         $myfile = fopen("$sDocumentRoot/data/constants.php", "w")or die('Cannot open file: constants.php');
         fwrite($myfile, $sListContent);
