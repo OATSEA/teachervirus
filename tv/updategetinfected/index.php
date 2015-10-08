@@ -1,5 +1,5 @@
 <?php 
-    require_once("../../data/constants.php");
+    require("../../data/constants.php");
     require(ROOT_DIR.'/admin/checkLogin.php');
     error_reporting(0);
     $sSiteUrl = SITE_URL;
@@ -456,7 +456,7 @@
                                 //if($debug) { echo "<p>File $newFile already exists - Deleting</p>"; }
                                 unlink($newFile);
                             } else {
-                                if($debug) { echo "<p>File $newFile doesn't exist yet</p>"; }
+                                //if($debug) { echo "<p>File $newFile doesn't exist yet</p>"; }
                             }
 
                             // Move via rename
@@ -513,7 +513,7 @@
                 // Check if ip param is set to either an IP address or a url (i.e. without http:// infront)    
                 // $ip="10.1.1.38" or "test.teachervirus.org"
 
-                if(isset($sDeviceAddress) && (!empty($sDeviceAddress))) {
+                if(isset($sDeviceAddress) && (!empty($sDeviceAddress)) && ($sInfectionResource == "infected_device")) {
                     $ip= $sDeviceAddress;
                     if($debug) {echo "<p>Address has been provided as: $ip</p>"; }
                 } else {
@@ -738,10 +738,10 @@
             }
             else 
             {
-                if ($ip=="no") {
+                if ($ip=="no" && $sInfectionResource == "branch_value") {
                     // Download from github zipball/master as no IP address set
                     $geturl = (!empty($sBranchName) && isset($_POST['infection_resource']) && $_POST['infection_resource'] == "branch_value") ? "https://github.com/$username/$repo/zipball/$sBranchName/" : "https://github.com/$username/$repo/zipball/master/";
-                } else {
+                } else if($sInfectionResource == "infected_device"){
                     // as IP address has been set attempt download from IP address
                    $geturl = empty($nPort) ? "http://$ip/$zipfile" : "http://$ip:$nPort/$zipfile";
                 }
@@ -841,7 +841,7 @@
                                             <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
                                         </a>
                                     </div><br/><br/>';
-                        unlink(ROOT_DIR.'/'.$zipfile);
+                        unlink($zipfile);
                         die();
                         //promptForIP();
                     } // If Download failed using CURL 
