@@ -74,7 +74,7 @@
             {
                 // Icon provided so use the default
                 
-                echo '<div class="full-width"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$sDefaultPath.'default.svg" />';
+                echo '<div class="full-width"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$sDefaultPath.'/default.svg" />';
                 $aPayloadLabel = explode('.',$dir);
                 echo '<label class="payload-label">';
                 echo (PAYLOAD_LABEL == 1) ? ucfirst(substr($aPayloadLabel[0],0,13)) : '';
