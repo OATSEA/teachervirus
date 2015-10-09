@@ -30,12 +30,14 @@
         $payloadsURL = $sSiteUrl.'/'.((EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : 'payloads');
         $sDefaultPath = $sSiteUrl.'/'.((EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/play' : 'play');
         $adminURL =  $sSiteUrl.'/admin';
+        $sClass = '';
         if(ADMIN_COG == 1)
         {
             echo '<div class="color-white"><a class="admin_img" href="'.$adminURL.'"><i class="mainNav fa fa-cog fa-3x"></i></a></div><br/><br/>';
         }
         else
         {
+            $sClass = 'play-icon';
             echo '<div class="color-white"></div>';
         }
         if(glob($payloadsDir, GLOB_ONLYDIR)==FALSE){
@@ -58,7 +60,7 @@
 
             if ($svgTest)
             {
-                echo '<div class="full-width"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.'/'.$svgText.'" />';
+                echo '<div class="full-width '.$sClass.'"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.'/'.$svgText.'" />';
                 $aPayloadLabel = explode('-',$dir);
                 $aPayloadLabel = array_reverse($aPayloadLabel);
                 echo '<label class="payload-label">';
@@ -68,7 +70,7 @@
             }
             else if($imgTest)
             {
-                echo '<div class="full-width"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.'/'.$imgText.'" >';
+                echo '<div class="full-width '.$sClass.'"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.'/'.$imgText.'" >';
                 $aPayloadLabel = explode('-',$dir);
                 $aPayloadLabel = array_reverse($aPayloadLabel);
                 echo '<label class="payload-label">';
@@ -79,7 +81,7 @@
             else
             {
                 // Icon provided so use the default
-                echo '<div class="full-width"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$sDefaultPath.'/default.png" />';
+                echo '<div class="full-width '.$sClass.'"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$sDefaultPath.'/default.png" />';
                 $aPayloadLabel = explode('-',$dir);
                 $aPayloadLabel = array_reverse($aPayloadLabel);
                 echo '<label class="payload-label">';
