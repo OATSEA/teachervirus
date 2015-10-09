@@ -34,6 +34,10 @@
         {
             echo '<div class="color-white"><a class="admin_img" href="'.$adminURL.'"><i class="mainNav fa fa-cog fa-3x"></i></a></div><br/><br/>';
         }
+        else
+        {
+            echo '<div class="color-white"></div>';
+        }
         if(glob($payloadsDir, GLOB_ONLYDIR)==FALSE){
           $path = $sSiteUrl."/admin/getpayload";
            echo '<div><h2> You have Not Installed Any Payloads Please <a href='.$path.'></h2></div><div><font size="6">Click Here</font></div></a>
@@ -75,7 +79,7 @@
             else
             {
                 // Icon provided so use the default
-                echo '<div class="full-width"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$sDefaultPath.'/default.svg" />';
+                echo '<div class="full-width"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$sDefaultPath.'/default.png" />';
                 $aPayloadLabel = explode('-',$dir);
                 $aPayloadLabel = array_reverse($aPayloadLabel);
                 echo '<label class="payload-label">';
