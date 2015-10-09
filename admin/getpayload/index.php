@@ -60,6 +60,7 @@
     {
         $sUserName = isset($_POST['user_name']) ? trim($_POST['user_name']) : '';
         $sRepository = isset($_POST['repository']) ? trim($_POST['repository']) : '';
+        $sPayloadGithub = isset($_POST['payload_github']) ? trim($_POST['payload_github']) : '';
         $sDeviceAddress = isset($_POST['device_address']) ? trim($_POST['device_address']) : '';
         $sFileName = isset($_FILES['upload_file']['name']) ? $_FILES['upload_file']['name']:'';
         $sTempFileName = isset($_FILES['upload_file']['tmp_name'])? $_FILES['upload_file']['tmp_name'] : '';
@@ -427,7 +428,13 @@
                     $payload = EXTERNAL_PATH.'/payloads';
                 }
             }
-            if(!empty($sUserName))
+            if(!empty($sPayloadGithub))
+            {
+                $sDownloadFileName = $sPayloadGithub.".zip";
+                $download_unzip_filename = $sPayloadGithub;
+                $sListContent = "github_payloads;$isAdmin;$sPayloadGithub";
+            }
+            else if(!empty($sUserName))
             {
                 $sDownloadFileName = $sUserName."-".$sRepository.".zip";
                 $download_unzip_filename = $sUserName."-".$sRepository;
@@ -544,7 +551,9 @@
             if ($ip == "no")
             {
                 // Download from github zipball/master as no IP address set
-                $geturl = "https://github.com/$sUserName/$sRepository/zipball/$nPayloadInstall/";
+                
+            $geturl = "https://github.com/$sUserName/$sRepository/zipball/$nPayloadInstall/";
+                  
             }
             else 
             {
@@ -983,6 +992,12 @@
                             <div class="error-message">
                                 <?php echo isset($_SESSION['isValidation']['repository_required']) ? $_SESSION['isValidation']['repository_required'] : '';?>
                             </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-12 control-label">Payload Name</label>
+                        <div class="col-sm-12">    
+                            <input type="text" class="form-control" name="payload_github" value="<?php echo isset($sPayloadGithub) ? $sPayloadGithub : ''; ?>">
                         </div>
                     </div>
                     <?php if(PAYLOAD_INSTALL == 1){?>
