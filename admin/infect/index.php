@@ -15,7 +15,7 @@
         $myfile = fopen(ROOT_DIR.'/IP.txt', "r") or die("Unable to open file!");
         $protocol = fread($myfile,filesize(ROOT_DIR.'/IP.txt'));
         $sSiteUrl = trim($protocol);
-        $myIP = $sSiteUrl.":8080";
+        $myIP = $sSiteUrl;
     }
 ?>
         <link href="<?php echo $sSiteUrl; ?>/admin/buttons.css" rel="stylesheet">
@@ -77,16 +77,16 @@
     } else {
     */
       // ASSUME Linux only
-      if ($debug) { echo "<p>Linux OS</p>";}
-      $ifconfig = shell_exec('/sbin/ifconfig eth0');
+//      if ($debug) { echo "<p>Linux OS</p>";}
+//      $ifconfig = shell_exec('/sbin/ifconfig eth0');
 
-      if ($ifconfig) {
-        if ($debug) { echo "<p>IFCONFIG: $ifconfig</p>";}
-        preg_match('/addr:([\d\.]+)/', $ifconfig, $match);
-        $myIP2 = $match[1];
-      } else {
-        $myIP2 = "ifconfig failed";
-      } // END check ifconfig worked
+//      if ($ifconfig) {
+//        if ($debug) { echo "<p>IFCONFIG: $ifconfig</p>";}
+//        preg_match('/addr:([\d\.]+)/', $ifconfig, $match);
+//        $myIP2 = $match[1];
+//      } else {
+//        $myIP2 = "ifconfig failed";
+//      } // END check ifconfig worked
     // } // END win or linux check
 
     // Alternative from http://stackoverflow.com/questions/3219178/php-how-to-get-local-ip-of-system
@@ -95,11 +95,9 @@
     echo "<!DOCTYPE html><html><title>Be Infectious</title></head><body>
       <h1>Be Infectious!</h1>
       <p>To infect another device provide the owner/administrator with the IP Address:</p>
-      <p><b> $myIP </b></p>
+      <p style='font-size:25px;'><b> $myIP </b></p>
       <p>or</p>
-      <p><b> $myIP2 </b></p>
-      <p>or</p>
-      <p><b> $myIP3 </b></p>
+      <p style='font-size:25px;'><b> $myIP3 </b></p>
       <hr>
       </body></html>
       ";

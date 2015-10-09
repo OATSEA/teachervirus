@@ -56,8 +56,9 @@
             {
                 echo '<div class="full-width"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.'/'.$svgText.'" />';
                 $aPayloadLabel = explode('-',$dir);
+                $aPayloadLabel = array_reverse($aPayloadLabel);
                 echo '<label class="payload-label">';
-                echo (PAYLOAD_LABEL == 1) ? ucfirst(substr($aPayloadLabel[2],0,13)) : '';
+                echo (PAYLOAD_LABEL == 1) ? ucfirst(substr($aPayloadLabel[0],0,13)) : '';
                 echo '</label></a>';
                 echo '</div>';
             }
@@ -65,17 +66,18 @@
             {
                 echo '<div class="full-width"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.'/'.$imgText.'" >';
                 $aPayloadLabel = explode('-',$dir);
+                $aPayloadLabel = array_reverse($aPayloadLabel);
                 echo '<label class="payload-label">';
-                echo (PAYLOAD_LABEL == 1) ? ucfirst(substr($aPayloadLabel[2],0,13)) : '';
+                echo (PAYLOAD_LABEL == 1) ? ucfirst(substr($aPayloadLabel[0],0,13)) : '';
                 echo '</label></a>';
                 echo '</div>';
             }
             else
             {
                 // Icon provided so use the default
-                
                 echo '<div class="full-width"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$sDefaultPath.'/default.svg" />';
-                $aPayloadLabel = explode('.',$dir);
+                $aPayloadLabel = explode('-',$dir);
+                $aPayloadLabel = array_reverse($aPayloadLabel);
                 echo '<label class="payload-label">';
                 echo (PAYLOAD_LABEL == 1) ? ucfirst(substr($aPayloadLabel[0],0,13)) : '';
                 echo '</label></a>';

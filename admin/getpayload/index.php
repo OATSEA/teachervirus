@@ -61,7 +61,9 @@
         $sUserName = isset($_POST['user_name']) ? trim($_POST['user_name']) : '';
         $sRepository = isset($_POST['repository']) ? trim($_POST['repository']) : '';
         $sPayloadGithub = isset($_POST['payload_github']) ? trim($_POST['payload_github']) : '';
+        $sFilePayload = isset($_POST['file_payload']) ? trim($_POST['file_payload']) : '';
         $sDeviceAddress = isset($_POST['device_address']) ? trim($_POST['device_address']) : '';
+        $sDevicePayload = isset($_POST['device_payload']) ? trim($_POST['device_payload']) : '';
         $sFileName = isset($_FILES['upload_file']['name']) ? $_FILES['upload_file']['name']:'';
         $sTempFileName = isset($_FILES['upload_file']['tmp_name'])? $_FILES['upload_file']['tmp_name'] : '';
         $nPort = isset($_POST['port_number']) ? trim($_POST['port_number']) : '';
@@ -440,9 +442,18 @@
                 $download_unzip_filename = $sUserName."-".$sRepository;
                 $sListContent = "github_payloads;$isAdmin;$sUserName;$sRepository";
             }
-            else if(!empty($sDeviceAddress))
+            else if(!empty($sDevicePayload))
             {
+                $sDownloadFileName = $sDevicePayload.".zip";
+                $download_unzip_filename = $sDevicePayload;
+                $sPort = empty($nPort) ? 'none' : $nPort;
+                $sListContent = "infected_device;$isAdmin;$sDeviceAddress;$sPort;$download_unzip_filename";
+                $sDeviceDownloadFileName = $sInfectUserName.".zip";
+            }
+            else if(!empty($sDeviceAddress))
+            {   
                 $sDownloadFileName = $sInfectUserName.".zip";
+                $sDeviceDownloadFileName = $sInfectUserName.".zip";
                 $download_unzip_filename = $sInfectUserName;
                 $sPort = empty($nPort) ? 'none' : $nPort;
                 $sListContent = "infected_device;$isAdmin;$sDeviceAddress;$sPort;$download_unzip_filename";
@@ -458,6 +469,38 @@
                 $sDownloadFileName = $sGooglePayloadName.".zip";
                 $download_unzip_filename = $sGooglePayloadName;
                 $sListContent = "google_drive;$isAdmin;$download_unzip_filename;$sGoogleDriveLink";
+            }
+            else if(!empty($sFilePayload))
+            {
+                makeDIR($payload, 1, $nMode);
+                $sDownloadFileName = $sFilePayload.".zip";
+                $aExplodeFileName = explode(".zip", $sDownloadFileName);
+                if((isset($aExplodeFileName[1]) && $aExplodeFileName[1] != "") || !isset($aExplodeFileName[1]))
+                {
+                    $sDownloadFileName = $sFilePayload.'.zip';
+                    $download_unzip_filename = $sFilePayload;
+                    $sListContent = "file_browse;$isAdmin;$download_unzip_filename;$sDownloadFileName";
+                    move_uploaded_file($sTempFileName, $payload.DIRECTORY_SEPARATOR.$sDownloadFileName);
+                    (CHMOD == 1) ? chmod($payload.DIRECTORY_SEPARATOR.$sDownloadFileName, 0755) : '';
+                    
+                    $zip = new ZipArchive;
+                    if ($zip->open($payload.DIRECTORY_SEPARATOR.$sDownloadFileName, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE)
+                    {
+                        $zip->addFile($payload.DIRECTORY_SEPARATOR.$sDownloadFileName, $sFilePayload);
+                        $zip->close();
+                    }
+                    else
+                    {
+                        exit('<h3>Payload $sDownloadFileName</h3><h4> Installed via $payload.DIRECTORY_SEPARATOR.$sDownloadFileName FAILED!!</h4><div class="admin_img"><a href="'.$sSiteUrl.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                    }
+                }
+                else
+                {
+                    $download_unzip_filename = $aExplodeFileName[0];
+                    $sListContent = "file_browse;$isAdmin;$download_unzip_filename";
+                    move_uploaded_file($sTempFileName, $payload.DIRECTORY_SEPARATOR.$sDownloadFileName);
+                    (CHMOD == 1) ? chmod($payload.DIRECTORY_SEPARATOR.$sDownloadFileName, 0755) : '';
+                }
             }
             else if(!empty($sFileName))
             {
@@ -551,14 +594,12 @@
             if ($ip == "no")
             {
                 // Download from github zipball/master as no IP address set
-                
-            $geturl = "https://github.com/$sUserName/$sRepository/zipball/$nPayloadInstall/";
-                  
+                $geturl = "https://github.com/$sUserName/$sRepository/zipball/$nPayloadInstall/";
             }
             else 
             {
                 // as IP address has been set attempt download from IP address
-                $geturl = empty($nPort) ? "http://$ip/payloads/$sDownloadFileName" : "http://$ip:$nPort/payloads/$sDownloadFileName";
+                $geturl = empty($nPort) ? "http://$ip/payloads/$sDeviceDownloadFileName" : "http://$ip:$nPort/payloads/$sDeviceDownloadFileName";
             }
             if(!empty($sPayloadName))
             {
@@ -593,9 +634,8 @@
             $destination = $payload;
             if (!file_exists($destination))
                 mkdir($destination, $nMode, true);
-
+            
             $copyflag = FALSE;
-
             if(($ip == "no" || $sPayloadSource == 'infected_device') && $sPayloadSource != 'file_browse')
             {
                 $copyflag = copy($geturl,$zipfile);
@@ -1038,17 +1078,14 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-12 control-label">Payload Name</label>
+                                <div class="col-sm-12">    
+                                    <input type="text" class="form-control" name="device_payload" value="<?php echo isset($sDevicePayload) ? $sDevicePayload : ''; ?>">
+                                </div>
+                        </div>
                     </div>
                     <div id="website_url" style="display:none" class="source">
-                        <div class="form-group">
-                            <label class="col-sm-12 control-label">Payload Name <font style="color:red">*</font></label>
-                            <div class="col-sm-12">  
-                                <input type="text" class="form-control" name="payload_name" value="<?php echo isset($sPayloadName) ? $sPayloadName: '';?>">
-                                <div class="error-message">
-                                    <?php echo isset($_SESSION['isValidation']['payload_name']) ? $_SESSION['isValidation']['payload_name'] : '';?>
-                                </div>
-                            </div>
-                        </div>
                         <div class="form-group">
                             <label class="urlwebsite control-label">URL <font style="color:red">*</font></label>
                             <div class="col-sm-12">
@@ -1058,17 +1095,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-12 control-label">Local Folder / URL <font style="color:red">*</font></label>
+                            <div class="col-sm-12">  
+                                <input type="text" class="form-control" name="payload_name" value="<?php echo isset($sPayloadName) ? $sPayloadName: '';?>">
+                                <div class="error-message">
+                                    <?php echo isset($_SESSION['isValidation']['payload_name']) ? $_SESSION['isValidation']['payload_name'] : '';?>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
                    <div id="google_drive" style="display:none" class="source">
-                        <div class="form-group">
-                            <label class="col-sm-12 control-label">Payload Name<font style="color:red">*</font></label>
-                                <div class="col-sm-12">
-                                        <input type="text" class="form-control" name="google_payload_name" value="<?php echo isset($sGooglePayloadName) ? $sGooglePayloadName: '';?>">
-                                    <div class="error-message">
-                                        <?php echo isset($_SESSION['isValidation']['google_payload_name']) ? $_SESSION['isValidation']['google_payload_name'] : '';?>
-                                    </div>
-                                </div>
-                        </div>
                         <div class="form-group">
                             <label class="col-sm-12 control-label">Google Drive Link<font style="color:red">*</font> </label>  
                             <div class="col-sm-12">
@@ -1079,12 +1117,29 @@
                             </div>
                             <div class="col-sm-12 example1">Note: Provide the Google Drive Link obtained from "get link" option in Drive.</div>
                         </div>
+                       <div class="form-group">
+                            <label class="col-sm-12 control-label">Local Folder / URL <font style="color:red">*</font></label>
+                                <div class="col-sm-12">
+                                        <input type="text" class="form-control" name="google_payload_name" value="<?php echo isset($sGooglePayloadName) ? $sGooglePayloadName: '';?>">
+                                    <div class="error-message">
+                                        <?php echo isset($_SESSION['isValidation']['google_payload_name']) ? $_SESSION['isValidation']['google_payload_name'] : '';?>
+                                    </div>
+                                </div>
+                        </div>
+                       
+                       
                     </div>
                     <div id="file_browse" style="display:none;" class="source">
                         <div class="col-sm-12">
                             <input type="file" name="upload_file" value="<?php echo isset($sFileName) ? $sFileName: '';?>Browse">
                             <div class="error-message">
                                 <?php echo isset($_SESSION['isValidation']['upload_file']) ? $_SESSION['isValidation']['upload_file'] : '';?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-12 control-label">Payload Name</label>
+                            <div class="col-sm-12">    
+                                <input type="text" class="form-control" name="file_payload" value="<?php echo isset($sFilePayload) ? $sFilePayload : ''; ?>">
                             </div>
                         </div>
                     </div>
