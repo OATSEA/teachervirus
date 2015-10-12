@@ -37,7 +37,7 @@
         }
         else
         {
-            $sClass = ' play-icon';
+            $sClass = '';
             echo '<div class="color-white"></div>';
         }
         if(glob($payloadsDir, GLOB_ONLYDIR)==FALSE){
