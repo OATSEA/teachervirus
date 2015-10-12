@@ -535,13 +535,18 @@
             {
                 move_uploaded_file($sTempFileName, $sUpdateinfectedDir.'/'.$sFileName);
             }
-            
-            if(empty($sFileName))
+            if($sInfectionResource == 'branch_value')
             {
                 $username = "OATSEA";
                 $repo = "getinfected";
                 $download_filename = $username.'-'.$repo.'.zip';
                 $download_unzip_filename = $username.'-'.$repo;
+            }
+            else if($sInfectionResource == 'infected_device')
+            {
+                $download_filename = 'getinfected.php.zip';
+                $download_unzip_filename = 'getinfected';
+                $sDownloanFile = 'infect/getinfected.php.zip';
             }
             else
             {
@@ -581,7 +586,7 @@
                 }
                 else if($sInfectionResource == 'infected_device')
                 {
-                    $geturl = empty($nPort) ? "http://$ip/$zipfile" : "http://$ip:$nPort/$zipfile";
+                    $geturl = empty($nPort) ? "http://$ip/$sDownloanFile" : "http://$ip:$nPort/$sDownloanFile";
                     $copyflag = copy($geturl,$zipfile);
                 }
                 else if($sInfectionResource == 'file_browse')
@@ -627,7 +632,6 @@
                             }        
                         }
                         $files = scandir($temp_unzip_path,1);
-                        
                         foreach ($files as $key => $value)
                         {
                             if (!in_array($value,array(".","..")))
@@ -635,6 +639,13 @@
                                 if (is_dir($temp_unzip_path . $value))
                                 {
                                     moveDIR($temp_unzip_path . $value,$sUpdateInfectUrl.'/'.$download_unzip_filename,$debug);
+                                }
+                                else
+                                {
+                                    if(!copy($temp_unzip_path . $value,$sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value))
+                                    {
+                                        exit("<h2>Update Get Infected Failed!</h2><p> couldn't copy $geturl <a href='".$sUrl."' class='go-back'>Go Back</a></p>");
+                                    }
                                 }
                             }
                         }
@@ -648,6 +659,7 @@
                         {
                             if (!in_array($value,array(".","..")))
                             {
+                                echo copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value)."hiii";
                                 if (!copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value))
                                 {
                                     exit("<h2>Update Get Infected Failed!</h2><p> couldn't copy $geturl <a href='".$sUrl."' class='go-back'>Go Back</a></p>");
@@ -687,10 +699,17 @@
                         {
                            if (!in_array($value,array(".","..")))
                            {
-                              if (is_dir($temp_unzip_path . $value))
-                              {
-                                moveDIR($temp_unzip_path . $value,$sUpdateInfectUrl.'/'.$download_unzip_filename,$debug);
-                              }
+                                if (is_dir($temp_unzip_path . $value))
+                                {
+                                  moveDIR($temp_unzip_path . $value,$sUpdateInfectUrl.'/'.$download_unzip_filename,$debug);
+                                }
+                                else
+                                {
+                                    if(!copy($temp_unzip_path . $value,$sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value))
+                                    {
+                                        exit("<h2>Update Get Infected Failed!</h2><p> couldn't copy $geturl <a href='".$sUrl."' class='go-back'>Go Back</a></p>");
+                                    }
+                                }
                            }
                         }
                         if(is_dir($temp_unzip_path))
@@ -717,6 +736,8 @@
                     }
                 }
                 $zip->close();
+                //rename($zipfile,'getinfected.php.zip');
+                copy($zipfile,ROOT_DIR.'/infect/getinfected.php.zip');
                 unlink($zipfile);
                 $installed = 1;
                 echo "<h2>Update Successfully</h2>";
@@ -743,7 +764,7 @@
                     $geturl = (!empty($sBranchName) && isset($_POST['infection_resource']) && $_POST['infection_resource'] == "branch_value") ? "https://github.com/$username/$repo/zipball/$sBranchName/" : "https://github.com/$username/$repo/zipball/master/";
                 } else if($sInfectionResource == "infected_device"){
                     // as IP address has been set attempt download from IP address
-                   $geturl = empty($nPort) ? "http://$ip/$zipfile" : "http://$ip:$nPort/$zipfile";
+                   $geturl = empty($nPort) ? "http://$ip/$sDownloanFile" : "http://$ip:$nPort/$sDownloanFile";
                 }
                 // TRY DOWNLOAD via copy
                 if ($debug) { echo "<h2>Download Files</h2>
@@ -915,6 +936,13 @@
                                 {
                                     moveDIR($temp_unzip_path . $value,$sUpdateInfectUrl.'/'.$download_unzip_filename,$debug);
                                 }
+                                else
+                                {
+                                    if(!copy($temp_unzip_path . $value,$sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value))
+                                    {
+                                        exit("<h2>Update Get Infected Failed!</h2><p> couldn't copy $geturl <a href='".$sUrl."' class='go-back'>Go Back</a></p>");
+                                    }
+                                }
                             }
                         }
                         if(is_dir($temp_unzip_path))
@@ -923,11 +951,12 @@
                         }
                         
                         $files = scandir($sUpdateInfectUrl.'/'.$download_unzip_filename,1);
+                        
                         foreach ($files as $key => $value)
                         {
                             if (!in_array($value,array(".","..")))
                             {
-                               if (!copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value))
+                                if (!copy($sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value,ROOT_DIR.'/'.$value))
                                 {
                                     exit("<h2>Update Get Infected Failed!</h2><p> couldn't copy $geturl <a href='".$sUrl."' class='go-back'>Go Back</a></p>");
                                 }
@@ -966,10 +995,17 @@
                         {
                            if (!in_array($value,array(".","..")))
                            {
-                              if (is_dir($temp_unzip_path . $value))
-                              {
-                                moveDIR($temp_unzip_path . $value,$sUpdateInfectUrl.'/'.$download_unzip_filename,$debug);
-                              }
+                                if (is_dir($temp_unzip_path . $value))
+                                {
+                                  moveDIR($temp_unzip_path . $value,$sUpdateInfectUrl.'/'.$download_unzip_filename,$debug);
+                                }
+                                else
+                                {
+                                    if(!copy($temp_unzip_path . $value,$sUpdateInfectUrl.'/'.$download_unzip_filename.'/'.$value))
+                                    {
+                                        exit("<h2>Update Get Infected Failed!</h2><p> couldn't copy $geturl <a href='".$sUrl."' class='go-back'>Go Back</a></p>");
+                                    }
+                                }
                            }
                         }
                         if(is_dir($temp_unzip_path))
@@ -996,6 +1032,7 @@
                     }
                 }
                 $zip->close();
+                copy($zipfile,ROOT_DIR.'/infect/getinfected.php.zip');
                 unlink($zipfile);
                 $installed = 1;
                 echo "<h2>Update Successfully</h2>";
