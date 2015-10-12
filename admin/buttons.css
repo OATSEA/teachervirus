@@ -397,3 +397,7 @@ select.extra > option {
     margin-top: 15px;
     width: 21.5%;
 }
+.col-sm-5.button-setting {
+    margin: 0px;
+    padding: 0px;
+}

@@ -303,11 +303,12 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                         <div class="col-sm-7 folder_text">
                             <input type="text" name="tvplayer_location" class="form-control" value="<?php echo isset($_POST['tvplayer_location']) ? $_POST['tvplayer_location'] : TVPLAYER_LOCATION ; ?>" ></label>
                         </div>
-                    </div>
-                
+                    </div><br/>
                     <div class="form-group">
-                        <div class="col-sm-12 buttonshow">
-                            <input type="button" id="show_branch_option" value="Show Breeder and Mutator Settings" onclick="toggleShowFile('branch_option','show_branch_option');">
+                        <div class="col-sm-12">
+                            <div class="col-sm-5 button-setting">
+                                <input type="button" id="show_branch_option" class="form-control" value="Show Breeder and Mutator Settings" onclick="toggleShowFile('branch_option','show_branch_option');">
+                            </div>
                         </div>
                     </div> 
                 <div id="branch_option" style="display:none">
