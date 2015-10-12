@@ -30,7 +30,7 @@
         }
     </script>
     <?php
-        $protocol .= $sSiteUrl."/admin";
+        $protocol = $sSiteUrl."/admin";
     ?>
 <?php
     if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['old_password']) && isset($_SESSION['pattern_password']) && (md5($_POST['old_password']) == $_SESSION['pattern_password']))
