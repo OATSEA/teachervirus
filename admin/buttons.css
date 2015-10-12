@@ -53,7 +53,7 @@ img {
 
 }
 .imgholder {}
-.mybutton {width: 20%; display: inline-block;padding:11px;}
+.mybutton {width: 92.5%; display: inline-block;padding:11px;}
 .payload-label{
    
 }
@@ -391,4 +391,9 @@ select.extra > option {
     margin: 0px;
     padding: 0px;
     width: 100%;
+}
+.full-width{
+    display: inline-block;
+    margin-top: 15px;
+    width: 21.5%;
 }

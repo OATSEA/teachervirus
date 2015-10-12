@@ -66,6 +66,7 @@
                         $dir = basename($dir); 
                         $imgText = $dir."/icon.png";
                         $imgTest = file_exists( $imgText);
+                        echo "<div class='full-width'>";
                         if ($imgTest)
                         {
                             echo '<a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$imgText.'" /></a>';
@@ -75,6 +76,7 @@
                             // Icon provided so use the default
                             echo '<a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.png" /></a>';
                         }
+                        echo "</div>";
                     }
                     (isset($sChangePasswordURL) && !empty($sChangePasswordURL)) ? '<a href="'.$sChangePasswordURL.'"><img class="mybutton" alt="Change Password" src="'.$sChangePasswordURL.'icon.png" /></a>' : '';
                     (isset($sInfectedURL) && !empty($sInfectedURL)) ? '<a href="'.$sInfectedURL.'"><img class="mybutton" alt="Get Infected" src="'.$sInfectedURL.'icon.png" /></a>' : '';
