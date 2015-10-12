@@ -26,7 +26,6 @@
         
         $sLanguage = LANGUAGE;
         $bShowDebugText = DEBUG_TEXT;
-        $bShowLabel = PAYLOAD_LABEL;
         $sFolderLocation = EXTERNAL_FOLDER;
         $sTvplayerLocation = TVPLAYER_LOCATION;
         $bExternalSource = EXTERNAL_TEXT;
@@ -46,7 +45,7 @@ define('EXTERNAL_PATH','$sExternalPathLocation');
         
 define('LANGUAGE','$sLanguage');
         
-define('PAYLOAD_LABEL','$bShowLabel');
+define('PAYLOAD_LABEL','1');
         
 define('EXTERNAL_TEXT','$bExternalSource');
         
@@ -101,7 +100,7 @@ if(!defined('LANGUAGE'))
     define('LANGUAGE','en');
         
 if(!defined('PAYLOAD_LABEL'))
-    define('PAYLOAD_LABEL','0');
+    define('PAYLOAD_LABEL','1');
         
 if(!defined('EXTERNAL_TEXT'))
     define('EXTERNAL_TEXT','0');

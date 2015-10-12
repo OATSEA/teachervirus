@@ -22,7 +22,7 @@
         <script src="<?php echo $sSiteUrl; ?>/play/buttons.js"></script>
         <script>$(document).ready(function() { setup(); }); </script>
     </head>
-    <body class="main>
+    <body class="main pay-label">
     <?php
         $rootdir = preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) )."*";
         $payloadsDir = str_replace("play", (EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : '/payloads', $rootdir);
@@ -37,7 +37,7 @@
         }
         else
         {
-            $sClass = 'play-icon';
+            $sClass = ' play-icon';
             echo '<div class="color-white"></div>';
         }
         if(glob($payloadsDir, GLOB_ONLYDIR)==FALSE){
@@ -60,7 +60,7 @@
 
             if ($svgTest)
             {
-                echo '<div class="full-width '.$sClass.'"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.'/'.$svgText.'" />';
+                echo '<div class="full-width'.$sClass.'"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.'/'.$svgText.'" />';
                 $aPayloadLabel = explode('-',$dir);
                 $aPayloadLabel = array_reverse($aPayloadLabel);
                 echo '<label class="payload-label">';
@@ -70,7 +70,7 @@
             }
             else if($imgTest)
             {
-                echo '<div class="full-width '.$sClass.'"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.'/'.$imgText.'" >';
+                echo '<div class="full-width'.$sClass.'"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$payloadsURL.'/'.$imgText.'" >';
                 $aPayloadLabel = explode('-',$dir);
                 $aPayloadLabel = array_reverse($aPayloadLabel);
                 echo '<label class="payload-label">';
@@ -81,7 +81,7 @@
             else
             {
                 // Icon provided so use the default
-                echo '<div class="full-width '.$sClass.'"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$sDefaultPath.'/default.png" />';
+                echo '<div class="full-width'.$sClass.'"><a href="'.$payloadsURL.'/'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$sDefaultPath.'/default.png" />';
                 $aPayloadLabel = explode('-',$dir);
                 $aPayloadLabel = array_reverse($aPayloadLabel);
                 echo '<label class="payload-label">';

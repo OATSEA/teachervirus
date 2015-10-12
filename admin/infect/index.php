@@ -95,7 +95,7 @@
     echo "<!DOCTYPE html><html><title>Be Infectious</title></head><body>
       <h1>Be Infectious!</h1>
       <p>To infect another device provide the owner/administrator with the IP Address:</p>
-      <p style='font-size:25px;'><b> $myIP </b></p>
+      <p style='font-size:25px;'><b> $myIP</b></p>
       <p>or</p>
       <p style='font-size:25px;'><b> $myIP3 </b></p>
       <hr>
