@@ -99,15 +99,8 @@ body{
         text-align: center;
         
 }
-#getpayload_form{
-    border: 1px solid #fff;
-    font-size: 20px !important;
-    height: auto;
-    margin: 20px auto;
-    padding: 20px;
-    width: 70%;
-    text-align: left;
-}
+
+
 #getsetting_form{
     border: 1px solid #fff;
     font-size: 20px !important;
@@ -117,6 +110,26 @@ body{
     width: 70%;
     text-align: left;
 }
+@media only screen and (min-width:320px) and (max-width:768px)
+{
+#getsetting_form {
+    border: 1px solid #fff;
+    font-size: 20px !important;
+    height: auto;
+    margin: 20px auto;
+    padding: 20px;
+    text-align: left;
+    width: 100%;
+}
+}
+@media only screen and (min-width:800px) and (max-width:800px)
+{
+.form-control { 
+    width: 116%;
+}
+}
+
+
 label{
     font-weight: normal;
     line-height: 35px;
@@ -292,7 +305,7 @@ input[type="text"] {
 }
 .start_payload
 {
-    margin: 10px 0px 0px 16px;
+    margin: 10px 0px 0px 7px;
 }
 .title h2 {
  margin: auto 0px;
