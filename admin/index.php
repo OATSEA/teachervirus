@@ -61,12 +61,12 @@
                         $imgTest = file_exists( $imgText);
                         if ($imgTest)
                         {
-                            echo '<a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$imgText.'" width="21%" /></a>';
+                            echo '<a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$imgText.'" /></a>';
                         }
                         else
                         {
                             // Icon provided so use the default
-                            echo '<a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.png" width="21%"/></a>';
+                            echo '<a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.png" /></a>';
                         }
                     }
                 }
