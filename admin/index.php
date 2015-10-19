@@ -22,7 +22,6 @@
         <script src='<?php echo $sSiteUrl; ?>/js/jquery.imagefit.js'></script>
         <script src="<?php echo $sSiteUrl; ?>/admin/buttons.js"></script>
         <script src="<?php echo $sSiteUrl; ?>/admin/changePassword/_script/changePassword.js"></script>
-        <script>$(document).ready(function() { setup(); }); </script>
     </head>
     <body class="main" >
         <?php
@@ -53,36 +52,23 @@
                     $rootdir = preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) )."*";
 
                     $playURL = $sSiteUrl.'/play';
-                    $sChangePasswordURL =  $sSiteUrl.'/admin/changePassword';//str_replace('admin', 'admin/changePassword', $thisURL);
-                    $sInfectedURL =  $sSiteUrl.'/admin/getinfected';//str_replace('admin', 'admin/getinfected', $thisURL);
-                    $sSettingURL =  $sSiteUrl.'/admin/settings';//str_replace('admin', 'admin/settings', $thisURL);
-                    $sOatseaTeachervirusURL =  $sSiteUrl.'/admin/OATSEA-teachervirus.org';
-                    $sInfectURL =  $sSiteUrl.'/admin/infect';
                     
                     require(ROOT_DIR.'/admin/header.php');
-                    
                     foreach(glob($rootdir, GLOB_ONLYDIR) as $dir)
                     { 
                         $dir = basename($dir); 
                         $imgText = $dir."/icon.png";
                         $imgTest = file_exists( $imgText);
-                        echo "<div class='full-width'>";
                         if ($imgTest)
                         {
-                            echo '<a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$imgText.'" /></a>';
+                            echo '<a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$imgText.'" width="21%" /></a>';
                         }
                         else
                         {
                             // Icon provided so use the default
-                            echo '<a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.png" /></a>';
+                            echo '<a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.png" width="21%"/></a>';
                         }
-                        echo "</div>";
                     }
-                    (isset($sChangePasswordURL) && !empty($sChangePasswordURL)) ? '<a href="'.$sChangePasswordURL.'"><img class="mybutton" alt="Change Password" src="'.$sChangePasswordURL.'icon.png" /></a>' : '';
-                    (isset($sInfectedURL) && !empty($sInfectedURL)) ? '<a href="'.$sInfectedURL.'"><img class="mybutton" alt="Get Infected" src="'.$sInfectedURL.'icon.png" /></a>' : '';
-                    (isset($sSettingURL) && !empty($sSettingURL)) ? '<a href="'.$sSettingURL.'"><img class="mybutton" alt="Settings" src="'.$sSettingURL.'icon.png" /></a>' : '';
-                    (isset($sOatseaTeachervirusURL) && !empty($sOatseaTeachervirusURL)) ? '<a href="'.$sOatseaTeachervirusURL.'"><img class="mybutton" alt="Settings" src="'.$sOatseaTeachervirusURL.'icon.png" /></a>' : '';
-                    (isset($sInfectURL) && !empty($sInfectURL)) ? '<a href="'.$sInfectURL.'"><img class="mybutton" alt="Settings" src="'.$sInfectURL.'icon.png" /></a>' : '';
                 }
                 else
                 {
