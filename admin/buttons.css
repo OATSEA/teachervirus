@@ -428,3 +428,10 @@ select.extra > option {
     margin: 0px;
     padding: 0px;
 }
+.full-width{
+    display: inline-block;
+    margin-right: 10px;
+    margin-top: 15px;
+    width: 21%;
+}
+

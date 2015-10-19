@@ -61,12 +61,12 @@
                         $imgTest = file_exists( $imgText);
                         if ($imgTest)
                         {
-                            echo '<div style="width:21.5%;display: inline-block;"><a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$imgText.'" /></a>';
+                            echo '<div class="full-width"><a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$imgText.'" /></a></div>';
                         }
                         else
                         {
                             // Icon provided so use the default
-                            echo '<a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.png" /></a>';
+                            echo '<div class="full-width"><a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="default.png" /></a></div>';
                         }
                     }
                 }
