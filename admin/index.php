@@ -61,7 +61,7 @@
                         $imgTest = file_exists( $imgText);
                         if ($imgTest)
                         {
-                            echo '<div style="width:21%"><a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$imgText.'" /></a>';
+                            echo '<div style="width:21.5%;display: inline-block;"><a href="'.$dir.'"><img class="mybutton" alt="'.$dir.'" src="'.$imgText.'" /></a>';
                         }
                         else
                         {
