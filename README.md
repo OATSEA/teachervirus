@@ -21,14 +21,14 @@ That script fetches the core Teacher Virus files from either github or an infect
 
 **NOTE:** Teacher Virus is only viral from a philosophical perspective - it can not infect a device without the consent of the administrator/owner of the device (installation action required).
 
-At the heart of teachervirus is the installation and management of "payloads" which are our version of components/plugins/apps that server an educational purpose.
+At the heart of teachervirus is the installation and management of "payloads" which are our version of components/plugins/apps that serve an educational purpose.
 
 ##Assumptions
 To keep things simple we make the following assumptions at this point:
-* the webserver will be installed prior to installation.
-* getinfected.php will be in the root folder of the webserver.
-* Teacher Virus will be installed in the root of the webserver.
-* The system will not be used on production devices or on a "public" network.
+* the webserver will be installed prior to installation (or on Android will be using the Teacher Virus Android App which is based on DroidPHP).
+* getinfected.php will be in the root folder of the webserver (included in the Android Teacher Virus app).
+* Teacher Virus will be installed in the root of the webserver (although efforts have been made to allow subfolder installs).
+* The system will not be used on production devices or on a "public" network (additional security required such as the use of a .htaccess).
 * student's will have dedicated devices (i.e thus don't need to "Sign in")
 
 ##What's New? 
