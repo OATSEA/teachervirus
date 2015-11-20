@@ -2,8 +2,8 @@
     <head>
         <title></title>
 <?php
-    require_once("../../data/constants.php");
-    require(ROOT_DIR.'/admin/checkLogin.php');
+    require_once("../../../data/UUID/constants.php");
+    require(ROOT_DIR.'/tv/admin/buttons/checkLogin.php');
     $sSiteUrl = SITE_URL;
     if(isset($_SERVER["SERVER_ADDR"])){
       $myIP = $_SERVER['SERVER_ADDR'];
@@ -18,17 +18,17 @@
         $myIP = $sSiteUrl;
     }
 ?>
-        <link href="<?php echo $sSiteUrl; ?>/admin/buttons.css" rel="stylesheet">
-        <link href="<?php echo $sSiteUrl; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="<?php echo $sSiteUrl; ?>/admin/changePassword/_style/changePassword.css"/>
-        <script src="<?php echo $sSiteUrl; ?>/admin/changePassword/js/jquery-1.11.1.js"></script>
-        <script src='<?php echo $sSiteUrl; ?>/js/jquery.imagefit.js'></script>
-        <script src="<?php echo $sSiteUrl; ?>/admin/buttons.js"></script>
-        <script src="<?php echo $sSiteUrl; ?>/admin/changePassword/_script/changePassword.js"></script>
+        <link href="<?php echo $sSiteUrl; ?>/tv/admin/buttons/buttons.css" rel="stylesheet">
+        <link href="<?php echo $sSiteUrl; ?>/tv/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="<?php echo $sSiteUrl; ?>/tv/admin/changePassword/_style/changePassword.css"/>
+        <script src="<?php echo $sSiteUrl; ?>/tv/admin/changePassword/js/jquery-1.11.1.js"></script>
+        <script src='<?php echo $sSiteUrl; ?>/tv/js/jquery.imagefit.js'></script>
+        <script src="<?php echo $sSiteUrl; ?>/tv/admin/buttons/buttons.js"></script>
+        <script src="<?php echo $sSiteUrl; ?>/tv/admin/changePassword/_script/changePassword.js"></script>
     </head>
     <body style="text-align: left;padding-left: 20px;">
         <div class="color-white">
-            <a class="play_img" href="<?php echo $sSiteUrl.'/admin'; ?>">
+            <a class="play_img" href="<?php echo $sSiteUrl.'/tv/admin/buttons'; ?>">
                 <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
             </a>
         </div>

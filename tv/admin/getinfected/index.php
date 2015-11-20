@@ -1,5 +1,5 @@
 <?php
-    require_once("../../data/constants.php");
+    require_once("../../../data/UUID/constants.php");
     error_reporting(0);
     $sSiteUrl = SITE_URL;
     if(file_exists(ROOT_DIR.'/IP.txt'))
