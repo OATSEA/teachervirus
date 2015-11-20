@@ -12,7 +12,7 @@
         $aExplodeUrl = explode("/getinfected.php", $sRequestUrl);
     }
     
-    $sDestination = getcwd().'/data/constants.php';
+    $sDestination = getcwd().'/data/UUID/constants.php';
     
     if (file_exists($sDestination)) 
     {
@@ -69,7 +69,7 @@ define('PORT_NUMBER','$nPort');
                 
 define('TVPLAYER_LOCATION','$sTvplayerLocation');";
         
-        $myfile = fopen("$sRootDir/data/constants.php", "w")or die('Cannot open file: constants.php');
+        $myfile = fopen("$sRootDir/data/UUID/constants.php", "w")or die('Cannot open file: constants.php');
         fwrite($myfile, $sListContent);
         fclose($myfile);
         require($sDestination);
@@ -127,7 +127,7 @@ define('PORT_NUMBER','$nPort');
                 
 define('TVPLAYER_LOCATION','');";
         
-        $myfile = fopen("$sDocumentRoot/data/constants.php", "w")or die('Cannot open file: constants.php');
+        $myfile = fopen("$sDocumentRoot/data/UUID/constants.php", "w")or die('Cannot open file: constants.php');
         fwrite($myfile, $sListContent);
         fclose($myfile);
         require($sDestination);
