@@ -1,4 +1,4 @@
 <?php
 // Default play home page
-echo "Data Directory holds data that should be retained on a payload by payload basis.";
+echo "Data/UUID/play Directory holds data that should be retained on a payload by payload basis.";
 ?>
