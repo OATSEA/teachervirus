@@ -3,8 +3,16 @@
     <head>
        <meta charset="utf-8">
         <?php
-            require_once("../../data/constants.php");
-            require(ROOT_DIR.'/admin/checkLogin.php');
+            if(file_exists('../../../.general.txt'))
+            {
+                $myfile = fopen('../../../.general.txt', "r") or die("Unable to open file!");
+                $protocol = fread($myfile,filesize('../../../.general.txt'));
+                $constant = explode(';',$protocol);
+                $constantpath = $constant[1];
+                
+            }
+            require_once("../../../data/$constantpath/constants.php");
+            require(ROOT_DIR.'/tv/admin/buttons/checkLogin.php');
             error_reporting(0);
             $sSiteUrl = SITE_URL;
             if(file_exists(ROOT_DIR.'/IP.txt'))
@@ -14,10 +22,10 @@
                 $sSiteUrl = trim($protocol);
             }
         ?>
-       <link href="<?php echo $sSiteUrl; ?>/css/bootstrap.min.css" rel="stylesheet">
-       <link href="<?php echo $sSiteUrl; ?>/admin/buttons.css" rel="stylesheet">
-       <link href="<?php echo $sSiteUrl; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-       <script src="<?php echo $sSiteUrl; ?>/js/jquery.js" type="text/javascript"></script>
+       <link href="<?php echo $sSiteUrl; ?>/tv/css/bootstrap.min.css" rel="stylesheet">
+       <link href="<?php echo $sSiteUrl; ?>/tv/admin/buttons/buttons.css" rel="stylesheet">
+       <link href="<?php echo $sSiteUrl; ?>/tv/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+       <script src="<?php echo $sSiteUrl; ?>/tv/js/jquery.js" type="text/javascript"></script>
     </head>
     <body>
     <?php
@@ -48,7 +56,7 @@
             if($_SESSION['isValidation']['flag'] == 1)
             {
                 $sSiteUrl = (isset($_SERVER["HTTP_HOST"]) ? "http://".$_SERVER["HTTP_HOST"] : '');
-                $sDestination = ROOT_DIR.'/data/constants.php';
+                $sDestination = ROOT_DIR.'/data/'.$constantpath.'/constants.php';
                 if(file_exists(ROOT_DIR.'/IP.txt'))
                 {
                     $myfile = fopen(ROOT_DIR.'/IP.txt', "r") or die("Unable to open file!");
@@ -87,8 +95,8 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                 fwrite($myfile, $sListContent);
                 fclose($myfile);
                 echo '<h2>Settings Saved Successfully!!</h2>'
-                    . '<div class="admin_img"><a href="'.$sSiteUrl.'/admin" class="btn btn-lg btn-primary color-white">Admin</a></div>'
-                    . '<div class="play_img"><a href="'.$sSiteUrl.'/play" class="btn btn-lg btn-primary color-white">Play</a></div>';
+                    . '<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons" class="btn btn-lg btn-primary color-white">Admin</a></div>'
+                    . '<div class="play_img"><a href="'.$sSiteUrl.'/tv/play" class="btn btn-lg btn-primary color-white">Play</a></div>';
                 die();
             }
         }
@@ -158,7 +166,7 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                 
             </script>
             <div class="color-white">
-                <a class="play_img" href="<?php echo $sSiteUrl.'/admin'; ?>">
+                <a class="play_img" href="<?php echo $sSiteUrl.'/tv/admin/buttons'; ?>">
                     <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
                 </a>
             </div>
