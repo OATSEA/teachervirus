@@ -1,9 +1,9 @@
 <?php
     error_reporting(0);
-     if(file_exists('../.general.txt'))
+     if(file_exists('../../.general.txt'))
     {
-        $myfile = fopen('../.general.txt', "r") or die("Unable to open file!");
-        $protocol = fread($myfile,filesize('../.general.txt'));
+        $myfile = fopen('../../.general.txt', "r") or die("Unable to open file!");
+        $protocol = fread($myfile,filesize('../../.general.txt'));
         $constant = explode(';',$protocol);
         $constantpath = $constant[1];
     }
