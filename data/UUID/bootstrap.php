@@ -1,12 +1,6 @@
 <?php
     error_reporting(0);
-     if(file_exists('../../.general.txt'))
-    {
-        $myfile = fopen('../../.general.txt', "r") or die("Unable to open file!");
-        $protocol = fread($myfile,filesize('../../.general.txt'));
-        $constant = explode(';',$protocol);
-        $constantpath = $constant[1];
-    }
+     
     if(file_exists(getcwd().'/IP.txt'))
     {
         $myfile = fopen(getcwd().'/IP.txt', "r") or die("Unable to open file!");
@@ -19,7 +13,7 @@
         $aExplodeUrl = explode("/getinfected.php", $sRequestUrl);
     }
     
-    $sDestination = getcwd().'/data/'.$constantpath.'/constants.php';
+    $sDestination = getcwd().'/data/UUID/constants.php';
     
     if (file_exists($sDestination)) 
     {
@@ -76,7 +70,7 @@ define('PORT_NUMBER','$nPort');
                 
 define('TVPLAYER_LOCATION','$sTvplayerLocation');";
         
-        $myfile = fopen("$sRootDir/data/$constantpath/constants.php", "w")or die('Cannot open file: constants.php');
+        $myfile = fopen("$sRootDir/data/UUID/constants.php", "w")or die('Cannot open file: constants.php');
         fwrite($myfile, $sListContent);
         fclose($myfile);
         require($sDestination);
@@ -134,7 +128,7 @@ define('PORT_NUMBER','$nPort');
                 
 define('TVPLAYER_LOCATION','');";
         
-        $myfile = fopen("$sDocumentRoot/data/$constantpath/constants.php", "w")or die('Cannot open file: constants.php');
+        $myfile = fopen("$sDocumentRoot/data/UUID/constants.php", "w")or die('Cannot open file: constants.php');
         fwrite($myfile, $sListContent);
         fclose($myfile);
         require($sDestination);
