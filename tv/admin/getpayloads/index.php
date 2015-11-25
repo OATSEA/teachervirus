@@ -384,16 +384,7 @@
             }
             $isAdmin = strtoupper(substr($payload,0,1));
             
-            if($sFolderSource == 'admin' || $sFolderSource == 'play')
-            {
-               $payload = ROOT_DIR.DIRECTORY_SEPARATOR.'/tv/'.$payload; 
-            }
-            else
-            {
-               $payload = ROOT_DIR.DIRECTORY_SEPARATOR.$payload; 
-            }
-            
-            
+            $payload = ROOT_DIR.DIRECTORY_SEPARATOR.$payload;
             
             if(EXTERNAL_TEXT == 1 && ($sFolderSource == "/tv/play" || $sFolderSource == "content" || $sFolderSource == "data"))
             {
@@ -436,9 +427,9 @@
                     }  
                     $payload = EXTERNAL_PATH.'/data/'.$sNewFolderName;
                 }
-                else if($sFolderSource == "/tv/play/")
+                else if($sFolderSource == "/tv/play")
                 {
-                    $payload = EXTERNAL_PATH.'/tv/play/';
+                    $payload = EXTERNAL_PATH.'/tv/play';
                 }
             }
             if(!empty($sPayloadGithub))
@@ -546,7 +537,7 @@
                 }
             }
           $zipfile = $payload.DIRECTORY_SEPARATOR.$sDownloadFileName;
-          
+
             //-----------
             // CHECK for Play Dir
             // -----------
