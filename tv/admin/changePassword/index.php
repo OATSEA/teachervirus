@@ -1,5 +1,12 @@
 <?php
-    require_once("../../../data/UUID/constants.php");
+    if(file_exists('../../../.general.txt'))
+    {
+        $myfile = fopen('../../../.general.txt', "r") or die("Unable to open file!");
+        $protocol = fread($myfile,filesize('../../../.general.txt'));
+        $constant = explode(';',$protocol);
+        $constantpath = $constant[1];
+    }
+    require_once("../../../data/$constantpath/constants.php");
     error_reporting(0);
     $sSiteUrl = SITE_URL;
     if(file_exists(ROOT_DIR.'/IP.txt'))
@@ -142,7 +149,7 @@
     }
     if(isset($_SESSION['password_changed']) && $_SESSION['password_changed'])
     {
-        $sDirName = ROOT_DIR."/data/UUID/admin/";
+        $sDirName = ROOT_DIR."/data/$constantpath/admin/";
         $username_password = 'username_password.php';
         unlink($sDirName.$username_password);
         $handle = fopen($sDirName.$username_password, 'w')or die('Cannot open file:  '.$username_password); ;

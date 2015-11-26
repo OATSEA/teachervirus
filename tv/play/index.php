@@ -1,5 +1,12 @@
 <?php
-    require_once("../../data/UUID/constants.php");
+    if(file_exists('../../.general.txt'))
+    {
+        $myfile = fopen('../../.general.txt', "r") or die("Unable to open file!");
+        $protocol = fread($myfile,filesize('../../.general.txt'));
+        $constant = explode(';',$protocol);
+        $constantpath = $constant[1];
+    }
+    require_once("../../data/$constantpath/constants.php");
     error_reporting(0);
     $sSiteUrl = SITE_URL;
     if(file_exists(ROOT_DIR.'/IP.txt'))
@@ -25,10 +32,10 @@
     <body class="main pay-label">
     <?php
         $rootdir = preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) )."*";
-        $payloadsDir = str_replace("play", (EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : '/payloads', $rootdir);
-        $payloadsPath = str_replace("play", (EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : 'payloads',preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) ));
-        $payloadsURL = $sSiteUrl.'/'.((EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/payloads' : 'payloads');
-        $sDefaultPath = $sSiteUrl.'/'.((EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/play' : 'play');
+        $payloadsDir = str_replace("/tv/play", (EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/tv/play' : '/tv/play', $rootdir);
+        $payloadsPath = str_replace("/tv/play", (EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/tv/play' : '/tv/play',preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , realpath( getcwd() ) ));
+        $payloadsURL = $sSiteUrl.'/'.((EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/tv/play' : '/tv/play');
+        $sDefaultPath = $sSiteUrl.'/'.((EXTERNAL_TEXT == 1) ? EXTERNAL_FOLDER.'/tv/play' : '/tv/play');
         $adminURL =  $sSiteUrl.'/tv/admin/buttons';
         if(ADMIN_COG == 1)
         {

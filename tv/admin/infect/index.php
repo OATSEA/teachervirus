@@ -2,7 +2,14 @@
     <head>
         <title></title>
 <?php
-    require_once("../../../data/UUID/constants.php");
+    if(file_exists('../../../.general.txt'))
+    {
+        $myfile = fopen('../../../.general.txt', "r") or die("Unable to open file!");
+        $protocol = fread($myfile,filesize('../../../.general.txt'));
+        $constant = explode(';',$protocol);
+        $constantpath = $constant[1];
+    }
+    require_once("../../../data/$constantpath/constants.php");
     require(ROOT_DIR.'/tv/admin/buttons/checkLogin.php');
     $sSiteUrl = SITE_URL;
     if(isset($_SERVER["SERVER_ADDR"])){

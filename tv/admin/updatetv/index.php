@@ -1,6 +1,14 @@
 <?php 
-    require("../../data/constants.php");
-    require(ROOT_DIR.'/admin/checkLogin.php');
+    if(file_exists('../../../.general.txt'))
+    {
+        $myfile = fopen('../../../.general.txt', "r") or die("Unable to open file!");
+        $protocol = fread($myfile,filesize('../../../.general.txt'));
+        $constant = explode(';',$protocol);
+        $constantpath = $constant[1];
+
+    }
+    require("../../../data/$constantpath/constants.php");
+    require(ROOT_DIR.'/tv/admin/buttons/checkLogin.php');
     error_reporting(0);
     $sSiteUrl = SITE_URL;
     if(file_exists(ROOT_DIR.'/IP.txt'))
@@ -275,14 +283,14 @@
     <div id="loading"><img src="<?php echo $sSiteUrl; ?>/images/loading_spinner.gif"><br/>
         <?php 
         
-            echo (is_dir(ROOT_DIR."/admin")) ? "Updating..." : "Installing...";
+            echo (is_dir(ROOT_DIR."/tv/admin")) ? "Updating..." : "Installing...";
         ?>
     </div>
     <script>
         checkLoaded(false);
     </script>
 <?php
-    $debug = (isset($_POST['show_debug']) ? $_POST['show_debug'] : (is_dir(ROOT_DIR."/admin") ? DEBUG_TEXT : 1));
+    $debug = (isset($_POST['show_debug']) ? $_POST['show_debug'] : (is_dir(ROOT_DIR."/tv/admin") ? DEBUG_TEXT : 1));
     $bChmod = isset($_POST['chmod']) ? $_POST['chmod'] : 0;
     $_SESSION['chmod'] = $bChmod;
     $nMode = ($bChmod == 1) ? 0755 : 0755;
@@ -527,7 +535,7 @@
             // ------------------------------------
             if ($debug) { echo "<h2>Attempting to update Get Infected</h2>"; }
 
-            $sUpdateinfectedDir = ROOT_DIR.'/tv/updategetinfected/';
+            $sUpdateinfectedDir = ROOT_DIR.'/tv/admin/updatetv/';
             // default destination for downloaded zipped files
 
             
@@ -555,7 +563,7 @@
                 $download_unzip_filename = $aExplodeFileName[0];
             }
             $zipfile = $sUpdateinfectedDir.$download_filename;
-            $sUrl = (is_dir(ROOT_DIR."/admin")) ? $sSiteUrl."/admin" : ROOT_DIR."/getinfected.php";
+            $sUrl = (is_dir(ROOT_DIR."/tv/admin/updatetv")) ? $sSiteUrl."/tv/admin/updatetv" : ROOT_DIR."/getinfected.php";
             // Check for IP param and set $ip if param provided
             // ** TO DO **
             // Download file if OATSEA-teachervirus.zip doesn't already exist
@@ -573,7 +581,7 @@
                 // Identify directories
                 $sFolderPath = ROOT_DIR;
 
-                $destination = $sFolderPath.'/tv/updategetinfected';
+                $destination = $sFolderPath.'/tv/admin/updatetv';
                 if (!file_exists($destination))
                     mkdir($destination,0775,true);
 
@@ -598,7 +606,7 @@
                 $zipFlag = $zip->open($destination.'/'.$download_filename,true);
                 if ($zipFlag === TRUE) 
                 {
-                    $sUpdateInfectUrl = ROOT_DIR.'/tv/updategetinfected';
+                    $sUpdateInfectUrl = ROOT_DIR.'/tv/admin/updatetv';
                     // Create full temp sub_folder path
                     $temp_unzip_path = $sUpdateInfectUrl.'/'.uniqid('unzip_temp_', true)."/";
 
@@ -741,9 +749,9 @@
                 unlink($zipfile);
                 $installed = 1;
                 echo "<h2>Update Successfully</h2>";
-                if (is_dir(ROOT_DIR."/admin")) 
+                if (is_dir(ROOT_DIR."/tv/admin")) 
                 {
-                    echo '<link href="'.$sSiteUrl.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+                    echo '<link href="'.$sSiteUrl.'/tv/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
                             <div class="color-white">
                                 <a class="play_img" href="'.$sUrl.'">
                                     <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
@@ -856,7 +864,7 @@
                         // As download failed delete empty zip file!
                         if ($debug) { echo "<h2>Download with CURL failed</h2>";}
                         echo "<h3>Update Failed!</h3><p>Couldn't download with either copy or curl</p>";
-                            echo '<link href="'.$sSiteUrl.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+                            echo '<link href="'.$sSiteUrl.'/tv/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
                                     <div class="color-white">
                                         <a class="play_img" href="'.$sUrl.'">
                                             <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
@@ -882,7 +890,7 @@
                 // Identify directories
                 $sFolderPath = ROOT_DIR;
 
-                $destination = $sFolderPath.'/tv/updategetinfected';
+                $destination = $sFolderPath.'/tv/admin/updatetv';
                 if (!file_exists($destination))
                     mkdir($destination,0775,true);
 
@@ -893,7 +901,7 @@
                 $zipFlag = $zip->open($destination.'/'.$download_filename,true);
                 if ($zipFlag === TRUE) 
                 {
-                    $sUpdateInfectUrl = ROOT_DIR.'/tv/updategetinfected';
+                    $sUpdateInfectUrl = ROOT_DIR.'/tv/admin/updatetv';
                     // Create full temp sub_folder path
                     $temp_unzip_path = $sUpdateInfectUrl.'/'.uniqid('unzip_temp_', true)."/";
 
@@ -1036,9 +1044,9 @@
                 unlink($zipfile);
                 $installed = 1;
                 echo "<h2>Update Successfully</h2>";
-                if (is_dir(ROOT_DIR."/admin")) 
+                if (is_dir(ROOT_DIR."/tv/admin")) 
                 {
-                    echo '<link href="'.$sSiteUrl.'/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+                    echo '<link href="'.$sSiteUrl.'/tv/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
                             <div class="color-white">
                                 <a class="play_img" href="'.$sUrl.'">
                                     <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
@@ -1144,9 +1152,9 @@
     if($_SESSION['isValidation']['flag'] == 1 || count($_SESSION['isValidation']) > 1)
     {
         $_SESSION['isLoggedIn'] = isset($_SESSION['isLoggedIn']) ? $_SESSION['isLoggedIn'] : FALSE;
-        if((is_dir(ROOT_DIR."/admin") && (isset($_SESSION['isLoggedIn']) && !$_SESSION['isLoggedIn'])) || (isset($_GET['isValidUser']) && (isset($_SESSION['isLoggedIn']) && !$_SESSION['isLoggedIn'])))
+        if((is_dir(ROOT_DIR."/tv/admin/buttons") && (isset($_SESSION['isLoggedIn']) && !$_SESSION['isLoggedIn'])) || (isset($_GET['isValidUser']) && (isset($_SESSION['isLoggedIn']) && !$_SESSION['isLoggedIn'])))
         {
-            redirect($sSiteUrl."/admin");
+            redirect($sSiteUrl."/tv/admin/buttons");
         }
         else if(!$installed)
         {
@@ -1226,12 +1234,12 @@
             }
         </script>
     <?php 
-        if (is_dir(ROOT_DIR."/admin")) 
+        if (is_dir(ROOT_DIR."/tv/admin")) 
         {
     ?>
-            <link href="<?php echo $sSiteUrl; ?>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+            <link href="<?php echo $sSiteUrl; ?>/tv/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
             <div class="color-white">
-                <a class="play_img" href="<?php echo $sSiteUrl.'/admin'; ?>">
+                <a class="play_img" href="<?php echo $sSiteUrl.'/tv/admin/buttons'; ?>">
                     <i class="mainNav fa fa-arrow-circle-left fa-3x"></i>
                 </a>
             </div><br/><br/>
