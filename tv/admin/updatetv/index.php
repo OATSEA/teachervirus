@@ -589,7 +589,7 @@
 
                 if(($ip == "no" && $sInfectionResource == 'branch_value') )
                 {
-                    $geturl = (!empty($sBranchName) && isset($_POST['infection_resource']) && $_POST['infection_resource'] == "branch_value") ? "https://github.com/$username/$repo/zipball/$sBranchName/" : "https://github.com/$username/$repo/zipball/master/";
+                    $geturl = (!empty($sBranchName) && isset($_POST['infection_resource']) && $_POST['infection_resource'] == "branch_value") ? "https://github.com/$username/$repo/zipball/$sBranchName/" : "https://github.com/$username/$repo/zipball/dev/";
                     $copyflag = copy($geturl,$zipfile);
                 }
                 else if($sInfectionResource == 'infected_device')
@@ -769,7 +769,7 @@
             {
                 if ($ip=="no" && $sInfectionResource == "branch_value") {
                     // Download from github zipball/master as no IP address set
-                    $geturl = (!empty($sBranchName) && isset($_POST['infection_resource']) && $_POST['infection_resource'] == "branch_value") ? "https://github.com/$username/$repo/zipball/$sBranchName/" : "https://github.com/$username/$repo/zipball/master/";
+                    $geturl = (!empty($sBranchName) && isset($_POST['infection_resource']) && $_POST['infection_resource'] == "branch_value") ? "https://github.com/$username/$repo/zipball/$sBranchName/" : "https://github.com/$username/$repo/zipball/dev/";
                 } else if($sInfectionResource == "infected_device"){
                     // as IP address has been set attempt download from IP address
                    $geturl = empty($nPort) ? "http://$ip/$sDownloanFile" : "http://$ip:$nPort/$sDownloanFile";
