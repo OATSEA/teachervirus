@@ -1,6 +1,13 @@
 <?php
-    require_once("../../data/constants.php");
-    require(ROOT_DIR.'/admin/checkLogin.php');
+    if(file_exists('../../../.general.txt'))
+    {
+        $myfile = fopen('../../../.general.txt', "r") or die("Unable to open file!");
+        $protocol = fread($myfile,filesize('../../../.general.txt'));
+        $constant = explode(';',$protocol);
+        $constantpath = $constant[1];
+    }
+    require_once("../../../data/$constantpath/constants.php");
+    require(ROOT_DIR.'/tv/admin/buttons/checkLogin.php');
     
     $_SESSION['isValidation']['flag'] = TRUE;
     if($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_SESSION['isValidation']))

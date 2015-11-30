@@ -1,5 +1,12 @@
 <?php
-    require_once("../../../data/UUID/constants.php");
+    if(file_exists('../../../.general.txt'))
+    {
+        $myfile = fopen('../../../.general.txt', "r") or die("Unable to open file!");
+        $protocol = fread($myfile,filesize('../../../.general.txt'));
+        $constant = explode(';',$protocol);
+        $constantpath = $constant[1];
+    }
+    require_once("../../../data/$constantpath/constants.php");
     require(ROOT_DIR.'/tv/admin/buttons/checkLogin.php');
     PAYLOAD_INSTALL == 1;
     error_reporting(0);
@@ -217,7 +224,8 @@
                  rmdir($dir); 
                } 
             } // END RRMDIR
-
+    // Function to Copy folders and files       
+    
             // getpayload is the initial payload PHP Installation script that is used to install the core Payload files.
             // Created: May 2015
             // Contributors: Harry Longworth
@@ -283,7 +291,7 @@
                     if (!mkdir($directory, $nMode, true)) {
                         if ($debugtxt) { 
                             echo "<p>Error: Could not create folder <b>$directory</b> - check file permissions";
-                            echo '<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>';
+                            echo '<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>';
                         }
                         $result= false;
                     } else { 
@@ -379,57 +387,66 @@
             $payload = $sFolderSource;
             if(($sFolderSource == 'data' || $sFolderSource == 'content') && !empty($sNewFolderName))
             {
-                $payload = $sFolderSource.'/'.$sNewFolderName;
+                $payload = 'infect/payloads/'.$sNewFolderName;
                 
             }
             $isAdmin = strtoupper(substr($payload,0,1));
             
-            $payload = ROOT_DIR.DIRECTORY_SEPARATOR.$payload;
+            if($sFolderSource == 'admin' || $sFolderSource == 'play' || $sFolderSource == 'tv')
+            {
+               $payload = ROOT_DIR.DIRECTORY_SEPARATOR.'infect/payloads';
+               
+            }
+            else
+            {
+               $payload = ROOT_DIR.DIRECTORY_SEPARATOR.$payload; 
+            }
             
-            if(EXTERNAL_TEXT == 1 && ($sFolderSource == "/tv/play" || $sFolderSource == "content" || $sFolderSource == "data"))
+            
+            
+            if(EXTERNAL_TEXT == 1 && ($sFolderSource == "content" || $sFolderSource == "data"))
             {
                 if(!is_dir(EXTERNAL_PATH))
                 {
                     mkdir(EXTERNAL_PATH, $nMode, true);
-                    mkdir(EXTERNAL_PATH.'/tv/play', $nMode, true);
-                    mkdir(EXTERNAL_PATH.'/content', $nMode, true);
-                    mkdir(EXTERNAL_PATH.'/data', $nMode, true);
+                    mkdir(EXTERNAL_PATH.'/infect/payloads/', $nMode, true);
+                    mkdir(EXTERNAL_PATH.'/infect/payloads/', $nMode, true);
                 }
                 if($sFolderSource == 'content' && isset($_POST['install_source']) && $_POST['install_source'] != "new_folder")
                 {
-                    if(!is_dir(EXTERNAL_PATH.'/content/'.$_POST['install_source']))
+                    if(!is_dir(EXTERNAL_PATH.'/infect/payloads/'.$_POST['install_source']))
                     {
-                        mkdir(EXTERNAL_PATH.'/content/'.$_POST['install_source'], $nMode, true);
+                        mkdir(EXTERNAL_PATH.'/infect/payloads/'.$_POST['install_source'], $nMode, true);
                     }
-                    $payload= EXTERNAL_PATH.'/content/'.$_POST['install_source'];
+                    $payload= EXTERNAL_PATH.'/infect/payloads/'.$_POST['install_source'];
                 }
                 else if($sFolderSource == 'content' && isset($_POST['install_source']) && $_POST['install_source'] == "new_folder" && !empty($sNewFolderName))
                 {
-                    if(!is_dir(EXTERNAL_PATH.'/content/'.$sNewFolderName))
+                    if(!is_dir(EXTERNAL_PATH.'/infect/payloads/'.$sNewFolderName))
                     {
-                        mkdir(EXTERNAL_PATH.'/content/'.$sNewFolderName, $nMode, true);
+                        mkdir(EXTERNAL_PATH.'/infect/payloads/'.$sNewFolderName, $nMode, true);
                     }  
-                    $payload = EXTERNAL_PATH.'/content/'.$sNewFolderName;
+                    $payload = EXTERNAL_PATH.'/infect/payloads/'.$sNewFolderName;
                 }
                 else if($sFolderSource == 'data' && isset($_POST['install_source']) && $_POST['install_source'] != "new_folder")
                 {
-                    if(!is_dir(EXTERNAL_PATH.'/data/'.$_POST['install_source']))
+                    if(!is_dir(EXTERNAL_PATH.'/infect/payloads/'.$_POST['install_source']))
                     {
-                        mkdir(EXTERNAL_PATH.'/data/'.$_POST['install_source'], $nMode, true);
+                        mkdir(EXTERNAL_PATH.'/infect/payloads/'.$_POST['install_source'], $nMode, true);
                     }
-                    $payload= EXTERNAL_PATH.'/data/'.$_POST['install_source'];
+                    $payload= EXTERNAL_PATH.'/infect/payloads/'.$_POST['install_source'];
                 }
                 else if($sFolderSource == 'data' && isset($_POST['install_source']) && $_POST['install_source'] == "new_folder" && !empty($sNewFolderName))
                 {
-                    if(!is_dir(EXTERNAL_PATH.'/data/'.$sNewFolderName))
+                    if(!is_dir(EXTERNAL_PATH.'/infect/payloads/'.$sNewFolderName))
                     {
-                        mkdir(EXTERNAL_PATH.'/data/'.$sNewFolderName, $nMode, true);
+                        mkdir(EXTERNAL_PATH.'/infect/payloads/'.$sNewFolderName, $nMode, true);
                     }  
-                    $payload = EXTERNAL_PATH.'/data/'.$sNewFolderName;
+                    $payload = EXTERNAL_PATH.'/infect/payloads/'.$sNewFolderName;
                 }
-                else if($sFolderSource == "/tv/play")
+                else if($sFolderSource == "/tv/play/")
                 {
-                    $payload = EXTERNAL_PATH.'/tv/play';
+                    $payload = EXTERNAL_PATH.'/tv/play/';
                 }
             }
             if(!empty($sPayloadGithub))
@@ -493,7 +510,7 @@
                     }
                     else
                     {
-                        exit('<h3>Payload $sDownloadFileName</h3><h4> Installed via $payload.DIRECTORY_SEPARATOR.$sDownloadFileName FAILED!!</h4><div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                        exit('<h3>Payload $sDownloadFileName</h3><h4> Installed via $payload.DIRECTORY_SEPARATOR.$sDownloadFileName FAILED!!</h4><div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                     }
                 }
                 else
@@ -525,7 +542,7 @@
                     }
                     else
                     {
-                        exit('<h3>Payload $sDownloadFileName</h3><h4> Installed via $payload.DIRECTORY_SEPARATOR.$sDownloadFileName FAILED!!</h4><div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                        exit('<h3>Payload $sDownloadFileName</h3><h4> Installed via $payload.DIRECTORY_SEPARATOR.$sDownloadFileName FAILED!!</h4><div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                     }
                 }
                 else
@@ -537,7 +554,7 @@
                 }
             }
           $zipfile = $payload.DIRECTORY_SEPARATOR.$sDownloadFileName;
-
+          
             //-----------
             // CHECK for Play Dir
             // -----------
@@ -572,7 +589,7 @@
             // Create payload directory if it doesn't exist:
             if (!makeDIR($payload,true,$nMode)) {
                     // failed to make directory so exit
-                    exit('<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                    exit('<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
             }
            
              // Check for IP param and set $ip if param provided
@@ -585,12 +602,8 @@
                 rrmdir($payload.'/'.$download_unzip_filename);
                 if ($debug)
                 { 
-                    echo "<p>The Payloads files have already been downloaded to: $zipfile</p>
-                    <p>This installation will use the existing file rather than downloading a new version of $sInfectUserName.</p>
-                    <p><b>Hint:</b> If you want to download a new version of Payload you will need to:</br>
-                    * delete the file: <b>$zipfile</b>.</br>
-                    * remove the <b>play</b> folder if it exists</br>
-                    * refresh/re-open <b>getpayload</b></p>"; 
+                    echo "<p>Won't download again : $zipfile</p>";
+                    
                 } // END Debug
             }
             
@@ -655,10 +668,25 @@
             (CHMOD == 1) ? chmod($zipfile, 0755) : '';
             if ($debug) {echo "<h2>Attempting to Unzip</h2><p>Zipped file:  $zipfile </p>";}
             $zipFlag = $zip->open($destination.DIRECTORY_SEPARATOR.$sDownloadFileName,true);
+            
             if ($zipFlag === TRUE && $copyflag == TRUE) 
             {
-
-               $sPayloadUrl = $payload;
+               if($sFolderSource == 'admin' || $sFolderSource == 'play')
+               {
+                    $sPayloadUrl = ROOT_DIR.'/tv/'.$sFolderSource.'/';
+               }
+               else if($sFolderSource == 'content' || $sFolderSource == 'data')
+                {
+                   $sPayloadUrl = ROOT_DIR.'/'.$sFolderSource.'/'.$sNewFolderName;
+                }
+                else if($sFolderSource == 'tv')
+                {
+                   $sPayloadUrl = ROOT_DIR.'/'.$sFolderSource.'/api/';
+                }
+                else 
+                {
+                    $sPayloadUrl = $payload;
+                }
                 // Create full temp sub_folder path
                $temp_unzip_path = $sPayloadUrl.DIRECTORY_SEPARATOR.uniqid('unzip_temp_', true).DIRECTORY_SEPARATOR;
 
@@ -666,7 +694,7 @@
 
                 // Make the new temp sub_folder for unzipped files
                 if (!mkdir($temp_unzip_path, $nMode, true)) {
-                    exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Failed because : File security or permissions issue?".'<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                    exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Failed because : File security or permissions issue?".'<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                 } else {
                     if($debug) { echo "<p>Temp unzip Folder Created! <br>"; }
                 }
@@ -678,7 +706,7 @@
                     {
                         rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
                         if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Failed because : Already installed?".'<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Failed because : Already installed?".'<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                         } else {
                             if($debug) { echo "<p>Folder Created! <br>"; }
                         }
@@ -686,7 +714,7 @@
                     else
                     {
                         if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Failed because : File security or permissions issue?".'<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Failed because : File security or permissions issue?".'<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                         } else {
                             if($debug) { echo "<p>Folder Created! <br>"; }
                         }        
@@ -701,11 +729,11 @@
                             if (is_dir($temp_unzip_path . $value))
                             {
                                 moveDIR($temp_unzip_path . $value,$sPayloadUrl.'/'.$download_unzip_filename,$debug);
-                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                                 fwrite($myfile, $sListContent);
                                 fclose($myfile);
 
-                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                                 fwrite($myfile, $sListContent);
                                 fclose($myfile);
                                 $relativePath = substr($destination.DIRECTORY_SEPARATOR.$sDownloadFileName.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$sDownloadFileName));
@@ -715,11 +743,11 @@
                             else if($sPayloadSource == 'file_browse')
                             {
                                 moveDIR($temp_unzip_path,$sPayloadUrl.'/'.$download_unzip_filename,$debug);
-                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                                 fwrite($myfile, $sListContent);
                                 fclose($myfile);
 
-                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                                $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                                 fwrite($myfile, $sListContent);
                                 fclose($myfile);
                                 $relativePath = substr($destination.DIRECTORY_SEPARATOR.$sDownloadFileName."list.txt", strlen($destination.DIRECTORY_SEPARATOR.$sDownloadFileName));
@@ -741,7 +769,7 @@
                     {
                         rrmdir($sPayloadUrl.'/'.$download_unzip_filename);
                         if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Failed because : Already installed?".'<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Failed because : Already installed?".'<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                         } else {
                             if($debug) { echo "<p>Folder Created! <br>"; }
                         }
@@ -749,7 +777,7 @@
                     else
                     {
                         if (!mkdir($sPayloadUrl.'/'.$download_unzip_filename, $nMode, true)) {
-                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Failed because : File security or permissions issue?".'<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                            exit("<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Failed because : File security or permissions issue?".'<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                         } else {
                             if($debug) { echo "<p>Folder Created! <br>"; }
                         }        
@@ -762,17 +790,18 @@
                        {
                           if (is_dir($temp_unzip_path . $value))
                           {
-                            moveDIR($temp_unzip_path . $value,$sPayloadUrl.DIRECTORY_SEPARATOR.$download_unzip_filename,$debug);
-                            $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                            echo moveDIR($temp_unzip_path . $value,$sPayloadUrl.DIRECTORY_SEPARATOR.$download_unzip_filename,$debug);exit;
+                            $myfile = fopen("$sPayloadUrl/$download_unzip_filename/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             fwrite($myfile, $sListContent);
                             fclose($myfile);
 
-                            $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
+                            $myfile = fopen("$destination/list.txt", "w") or die('Unable to open file! <div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>');
                             fwrite($myfile, $sListContent);
                             fclose($myfile);
                             echo $relativePath = substr($destination.DIRECTORY_SEPARATOR.$sDownloadFileName.$value."/list.txt", strlen($destination.DIRECTORY_SEPARATOR.$sDownloadFileName));exit;
                             // Add current file to archive
                             $zip->addFile($destination."/list.txt", $relativePath);
+                            
                           }
                        }
                     }
@@ -780,12 +809,12 @@
                     {
                         rrmdir($temp_unzip_path);
                     }
-                    rrmdir(ROOT_DIR."/admin/getpayload/".$payload);
+                    rrmdir(ROOT_DIR."/tv/admin/getpayload/".$payload);
                 }
             }
             $zip->close();
             unlink($destination."/list.txt");
-
+            
             if ($copyflag === FALSE) 
             { 
                 // try CURL    
@@ -803,7 +832,7 @@
                 if (!$fp) {
                     exit("<h3>Payload $download_unzip_filename</h3><h4>Installed via $geturl FAILED!!</h4>
                     <p>Failed because : File permission issue maybe?
-                    ".'<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>'); 
+                    ".'<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>'); 
                 }
 
                 // ** TO DO ** add catch exception for curl not installed (e.g. RPI)
@@ -850,7 +879,7 @@
                             echo "<p> Destination $zipfile file was created though</p>";
                         }   else {
                             echo "<p> Destination $zipfile file was <b>NOT</b> created - file permission issue? </p>";
-                            echo '<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>'; 
+                            echo '<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div><div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>'; 
                         }
 
                     } // END debug
@@ -866,19 +895,19 @@
                     if ($debug) { echo "<h2>Download with CURL failed</h2>";}
                     echo "<h3>Payload $download_unzip_filename</h3><h4> Installed via $geturl FAILED!!</h4><p>Failed because : Couldn't download with either copy or curl</p>";
                     echo '<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div>'
-                        . '<div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>';
+                        . '<div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>';
                     (file_exists($zipfile)) ? unlink($zipfile) : '';
                     die();
                     //promptForIP();
                 } // If Download failed using CURL 
             }// END else CURL
-
             echo "<h3>Payload $download_unzip_filename</h3><h4> Installed Successfully via $geturl</h4>";
             echo   '<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons/" class="btn btn-lg btn-primary color-white">Admin</a></div>'
-                . '<div class="play_img"><a href="'.$sSiteUrl.'tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>';
+                . '<div class="play_img"><a href="'.$sSiteUrl.'/tv/play/" class="btn btn-lg btn-primary color-white">Play</a></div>';
             die();
         } // END try alternative move approach
     }
+    
     if($_SESSION['isValidation']['flag'] == 1) 
         unset($_SESSION['isValidation']['user_name_required'],$_SESSION['isValidation']['repository_required'],$_SESSION['isValidation']['branch_required'],$_SESSION['isValidation']['device_address'],$_SESSION['isValidation']['infect_user_name'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['payload_url'],$_SESSION['isValidation']['payload_name'],$_SESSION['isValidation']['google_payload_name'],$_SESSION['isValidation']['google_drive_link'],$_SESSION['isValidation']['upload_file'],$_SESSION['isValidation']['payload_source'],$_SESSION['isValidation']['folder_source'],$_SESSION['isValidation']['new_folder']);
 
