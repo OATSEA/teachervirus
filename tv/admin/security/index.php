@@ -6,7 +6,7 @@
         $constant = explode(';',$protocol);
         $constantpath = $constant[1];
     }
-    require_once("../../../data/$constantpath/constants.php");
+    require_once("../../../$constantpath/constants.php");
     error_reporting(0);
     $sSiteUrl = SITE_URL;
     if(file_exists(ROOT_DIR.'/IP.txt'))
@@ -19,18 +19,18 @@
     if(session_status()!=PHP_SESSION_ACTIVE) session_start(); 
 ?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"> 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=320; user-scalable=no; initial-scale=1.0; maximum-scale=1.0" />
     <title>Pattern Lock</title>
 </head>
 <body class="main" >
-    <link rel="stylesheet" type="text/css" href="<?php echo $sSiteUrl; ?>/tv/admin/changePassword/_style/changePassword.css"/>
+    <link rel="stylesheet" type="text/css" href="<?php echo $sSiteUrl; ?>/tv/admin/security/_style/changePassword.css"/>
     <link href="<?php echo $sSiteUrl; ?>/tv/admin/buttons/buttons.css" rel="stylesheet">
     <link href="<?php echo $sSiteUrl; ?>/tv/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <script src="<?php echo $sSiteUrl; ?>/tv/admin/changePassword/_script/changePassword.js"></script>
-    <script src="<?php echo $sSiteUrl; ?>/tv/admin/changePassword/js/jquery-1.11.1.js"></script>
+    <script src="<?php echo $sSiteUrl; ?>/tv/admin/security/_script/changePassword.js"></script>
+    <script src="<?php echo $sSiteUrl; ?>/tv/admin/security/js/jquery-1.11.1.js"></script>
     <script>
         function submitform(){
            return true;
@@ -149,7 +149,7 @@
     }
     if(isset($_SESSION['password_changed']) && $_SESSION['password_changed'])
     {
-        $sDirName = ROOT_DIR."/data/$constantpath/admin/";
+        $sDirName = ROOT_DIR."/$constantpath/admin/";
         $username_password = 'username_password.php';
         unlink($sDirName.$username_password);
         $handle = fopen($sDirName.$username_password, 'w')or die('Cannot open file:  '.$username_password); ;

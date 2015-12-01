@@ -7,7 +7,7 @@
         $constantpath = $constant[1];
 
     }
-    require("../../../data/$constantpath/constants.php");
+    require("../../../$constantpath/constants.php");
     require(ROOT_DIR.'/tv/admin/buttons/checkLogin.php');
     error_reporting(0);
     $sSiteUrl = SITE_URL;

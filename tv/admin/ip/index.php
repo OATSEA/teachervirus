@@ -9,12 +9,12 @@
         $constant = explode(';',$protocol);
         $constantpath = $constant[1];
     }
-    require_once("../../../data/$constantpath/constants.php");
+    require_once("../../../$constantpath/constants.php");
     require(ROOT_DIR.'/tv/admin/buttons/checkLogin.php');
     $sSiteUrl = SITE_URL;
     if(isset($_SERVER["SERVER_ADDR"])){
       $myIP = $_SERVER['SERVER_ADDR'];
-    } else {
+    } else { 
       $myIP = "SERVER_ADDR not SET";
     } // END isset
     if(file_exists(ROOT_DIR.'/IP.txt'))

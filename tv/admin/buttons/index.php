@@ -24,13 +24,13 @@
         <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
         <link href="<?php echo $sSiteUrl; ?>/tv/admin/buttons/buttons.css" rel="stylesheet">
         <link href="<?php echo $sSiteUrl; ?>/tv/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="<?php echo $sSiteUrl; ?>/tv/admin/changePassword/_style/changePassword.css"/>
-        <script src="<?php echo $sSiteUrl; ?>/tv/admin/changePassword/js/jquery-1.11.1.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $sSiteUrl; ?>/tv/admin/security/_style/changePassword.css"/>
+        <script src="<?php echo $sSiteUrl; ?>/tv/admin/security/js/jquery-1.11.1.js"></script>
         <script src='<?php echo $sSiteUrl; ?>/tv/js/jquery.imagefit.js'></script>
         <script src="<?php echo $sSiteUrl; ?>/tv/admin/buttons/buttons.js"></script>
-        <script src="<?php echo $sSiteUrl; ?>/tv/admin/changePassword/_script/changePassword.js"></script>
+        <script src="<?php echo $sSiteUrl; ?>/tv/admin/security/_script/changePassword.js"></script>
     </head>
-    <body class="main" >
+    <body class="main">
         <?php
             if (@session_id() == "") @session_start();
 
@@ -53,7 +53,7 @@
                         $_SESSION['invalid_pattern'] = "Invalid pattern found please try again!!";
                     }
                 }
-
+                
                 if(isset($_SESSION['isLoggedIn']) && $_SESSION['isLoggedIn'] == "1")
                 {
                     $rootdir = preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , ROOT_DIR.'/tv/admin/' )."*";
