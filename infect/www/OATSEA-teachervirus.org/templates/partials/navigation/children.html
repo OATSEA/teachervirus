@@ -1,0 +1,9 @@
+{% if page.children %}
+  <ul class="dropdown-menu" role="menu">
+    {% for child in page.children %}
+      <li>
+        <a href="{{ child.url }}">{{ child.page_name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
