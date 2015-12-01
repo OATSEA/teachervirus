@@ -96,7 +96,7 @@ define('GETINFECTED_BRANCH','$sGetInfectedBranch');";
                 fclose($myfile);
                 echo '<h2>Settings Saved Successfully!!</h2>'
                     . '<div class="admin_img"><a href="'.$sSiteUrl.'/tv/admin/buttons" class="btn btn-lg btn-primary color-white">Admin</a></div>'
-                    . '<div class="play_img"><a href="'.$sSiteUrl.'/tv/play" class="btn btn-lg btn-primary color-white">Play</a></div>';
+                    . '<div class="play_img"><a href="'.$sSiteUrl.'/tv/play/teacherbot" class="btn btn-lg btn-primary color-white">Play</a></div>';
                 die();
             }
         }

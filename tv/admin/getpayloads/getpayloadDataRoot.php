@@ -385,16 +385,20 @@
             } // END displayRedirect
             
             $payload = $sFolderSource;
-            if(($sFolderSource == 'data' || $sFolderSource == 'content') && !empty($sNewFolderName))
+            if(($sFolderSource == 'content') && !empty($sNewFolderName))
             {
-                $payload = 'infect/payloads/'.$sNewFolderName;
+                $payload = 'infect/payloads/'.$sFolderSource.'/'.$sNewFolderName;
                 
+            }
+            else if(($sFolderSource == 'data') && !empty($sNewFolderName))
+            {
+                $payload = $sFolderSource.'/'.$sNewFolderName;
             }
             $isAdmin = strtoupper(substr($payload,0,1));
             
-            if($sFolderSource == 'admin' || $sFolderSource == 'play' || $sFolderSource == 'tv')
+            if($sFolderSource == 'admin' || $sFolderSource == 'play')
             {
-               $payload = ROOT_DIR.DIRECTORY_SEPARATOR.'infect/payloads';
+               $payload = ROOT_DIR.DIRECTORY_SEPARATOR.'infect/payloads/'.$payload;
                
             }
             else
@@ -404,45 +408,46 @@
             
             
             
-            if(EXTERNAL_TEXT == 1 && ($sFolderSource == "content" || $sFolderSource == "data"))
+            if(EXTERNAL_TEXT == 1 && ($sFolderSource == "/tv/play" || $sFolderSource == "content" || $sFolderSource == "data"))
             {
                 if(!is_dir(EXTERNAL_PATH))
                 {
                     mkdir(EXTERNAL_PATH, $nMode, true);
-                    mkdir(EXTERNAL_PATH.'/infect/payloads/', $nMode, true);
-                    mkdir(EXTERNAL_PATH.'/infect/payloads/', $nMode, true);
+                    mkdir(EXTERNAL_PATH.'/tv/play', $nMode, true);
+                    mkdir(EXTERNAL_PATH.'/infect/payloads/content', $nMode, true);
+                    mkdir(EXTERNAL_PATH.'/data', $nMode, true);
                 }
                 if($sFolderSource == 'content' && isset($_POST['install_source']) && $_POST['install_source'] != "new_folder")
                 {
-                    if(!is_dir(EXTERNAL_PATH.'/infect/payloads/'.$_POST['install_source']))
+                    if(!is_dir(EXTERNAL_PATH.'/infect/payloads/content/'.$_POST['install_source']))
                     {
-                        mkdir(EXTERNAL_PATH.'/infect/payloads/'.$_POST['install_source'], $nMode, true);
+                        mkdir(EXTERNAL_PATH.'/infect/payloads/content/'.$_POST['install_source'], $nMode, true);
                     }
-                    $payload= EXTERNAL_PATH.'/infect/payloads/'.$_POST['install_source'];
+                    $payload= EXTERNAL_PATH.'/infect/payloads/content/'.$_POST['install_source'];
                 }
                 else if($sFolderSource == 'content' && isset($_POST['install_source']) && $_POST['install_source'] == "new_folder" && !empty($sNewFolderName))
                 {
-                    if(!is_dir(EXTERNAL_PATH.'/infect/payloads/'.$sNewFolderName))
+                    if(!is_dir(EXTERNAL_PATH.'/infect/payloads/content/'.$sNewFolderName))
                     {
-                        mkdir(EXTERNAL_PATH.'/infect/payloads/'.$sNewFolderName, $nMode, true);
+                        mkdir(EXTERNAL_PATH.'/infect/payloads/content/'.$sNewFolderName, $nMode, true);
                     }  
-                    $payload = EXTERNAL_PATH.'/infect/payloads/'.$sNewFolderName;
+                    $payload = EXTERNAL_PATH.'/infect/payloads/content/'.$sNewFolderName;
                 }
                 else if($sFolderSource == 'data' && isset($_POST['install_source']) && $_POST['install_source'] != "new_folder")
                 {
-                    if(!is_dir(EXTERNAL_PATH.'/infect/payloads/'.$_POST['install_source']))
+                    if(!is_dir(EXTERNAL_PATH.'/data/'.$_POST['install_source']))
                     {
-                        mkdir(EXTERNAL_PATH.'/infect/payloads/'.$_POST['install_source'], $nMode, true);
+                        mkdir(EXTERNAL_PATH.'/data/'.$_POST['install_source'], $nMode, true);
                     }
-                    $payload= EXTERNAL_PATH.'/infect/payloads/'.$_POST['install_source'];
+                    $payload= EXTERNAL_PATH.'/data/'.$_POST['install_source'];
                 }
                 else if($sFolderSource == 'data' && isset($_POST['install_source']) && $_POST['install_source'] == "new_folder" && !empty($sNewFolderName))
                 {
-                    if(!is_dir(EXTERNAL_PATH.'/infect/payloads/'.$sNewFolderName))
+                    if(!is_dir(EXTERNAL_PATH.'/data/'.$sNewFolderName))
                     {
-                        mkdir(EXTERNAL_PATH.'/infect/payloads/'.$sNewFolderName, $nMode, true);
+                        mkdir(EXTERNAL_PATH.'/data/'.$sNewFolderName, $nMode, true);
                     }  
-                    $payload = EXTERNAL_PATH.'/infect/payloads/'.$sNewFolderName;
+                    $payload = EXTERNAL_PATH.'/data/'.$sNewFolderName;
                 }
                 else if($sFolderSource == "/tv/play/")
                 {
@@ -451,7 +456,7 @@
             }
             if(!empty($sPayloadGithub))
             {
-                $sDownloadFileName = $sPayloadGithub."-".$sRepository.".zip";
+                $sDownloadFileName = $sPayloadGithub.".zip";
                 $download_unzip_filename = $sPayloadGithub;
                 $sListContent = "github_payloads;$isAdmin;$sPayloadGithub";
             }
@@ -675,13 +680,9 @@
                {
                     $sPayloadUrl = ROOT_DIR.'/tv/'.$sFolderSource.'/';
                }
-               else if($sFolderSource == 'content' || $sFolderSource == 'data')
+               else if($sFolderSource == 'content')
                 {
                    $sPayloadUrl = ROOT_DIR.'/'.$sFolderSource.'/'.$sNewFolderName;
-                }
-                else if($sFolderSource == 'tv')
-                {
-                   $sPayloadUrl = ROOT_DIR.'/'.$sFolderSource.'/api/';
                 }
                 else 
                 {

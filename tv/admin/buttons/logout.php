@@ -17,5 +17,5 @@
     }
     session_start();
     session_destroy();
-    header("Location:".$sSiteUrl.'/tv/play');
+    header("Location:".$sSiteUrl.'/tv/play/teacherbot');
 ?>

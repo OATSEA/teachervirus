@@ -58,7 +58,7 @@
                 {
                     $rootdir = preg_replace( '~(\w)$~' , '$1' . DIRECTORY_SEPARATOR , ROOT_DIR.'/tv/admin/' )."*";
 
-                    $playURL = $sSiteUrl.'/tv/play';
+                    $playURL = $sSiteUrl.'/tv/play/teacherbot';
                     require(ROOT_DIR.'/tv/admin/buttons/header.php');
                     
                     foreach(glob($rootdir, GLOB_ONLYDIR) as $dir)
@@ -98,7 +98,7 @@
                     </script>
 
                     <div class="color-white">
-                        <a class="play_img" href="<?php echo $sSiteUrl.'/tv/play'; ?>">
+                        <a class="play_img" href="<?php echo $sSiteUrl.'/tv/play/teacherbot'; ?>">
                             <i class="mainNav fa fa-play-circle-o fa-3x"></i>
                         </a>
                         <h2>Please Login</h2>
