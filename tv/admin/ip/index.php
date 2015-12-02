@@ -11,6 +11,7 @@
     }
     require_once("../../../$constantpath/constants.php");
     require(ROOT_DIR.'/tv/admin/buttons/checkLogin.php');
+    error_reporting(0);
     $sSiteUrl = SITE_URL;
     if(isset($_SERVER["SERVER_ADDR"])){
       $myIP = $_SERVER['SERVER_ADDR'];
