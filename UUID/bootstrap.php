@@ -114,7 +114,7 @@ if(!defined('CHMOD'))
         
 define('TV_BRANCH','$sTvBranchName');
         
-define('GETINFECTED_BRANCH','master');
+define('GETINFECTED_BRANCH','dev');
         
 define('ADMIN_COG','1');
         
