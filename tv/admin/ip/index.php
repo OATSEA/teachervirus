@@ -27,11 +27,11 @@
 ?>
         <link href="<?php echo $sSiteUrl; ?>/tv/admin/buttons/buttons.css" rel="stylesheet">
         <link href="<?php echo $sSiteUrl; ?>/tv/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="<?php echo $sSiteUrl; ?>/tv/admin/changePassword/_style/changePassword.css"/>
-        <script src="<?php echo $sSiteUrl; ?>/tv/admin/changePassword/js/jquery-1.11.1.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $sSiteUrl; ?>/tv/admin/security/_style/changePassword.css"/>
+        <script src="<?php echo $sSiteUrl; ?>/tv/admin/security/js/jquery-1.11.1.js"></script>
         <script src='<?php echo $sSiteUrl; ?>/tv/js/jquery.imagefit.js'></script>
         <script src="<?php echo $sSiteUrl; ?>/tv/admin/buttons/buttons.js"></script>
-        <script src="<?php echo $sSiteUrl; ?>/tv/admin/changePassword/_script/changePassword.js"></script>
+        <script src="<?php echo $sSiteUrl; ?>/tv/admin/security/_script/changePassword.js"></script>
     </head>
     <body style="text-align: left;padding-left: 20px;">
         <div class="color-white">
@@ -103,8 +103,6 @@
       <h1>Be Infectious!</h1>
       <p>To infect another device provide the owner/administrator with the IP Address:</p>
       <p style='font-size:25px;'><b> $myIP</b></p>
-      <p>or</p>
-      <p style='font-size:25px;'><b> $myIP3 </b></p>
       <hr>
       </body></html>
       ";
