@@ -69,7 +69,7 @@
                         $sLogoUrl = $sSiteUrl."/tv/admin/$dir";
                         $imgTest = file_exists( $imgText);
                         
-                        if ($imgTest)
+                        if ($imgTest && $dir != 'buttons') 
                         {
                             echo '<div class="full-width"><a href="'.$sLogoUrl.'"><img class="mybutton" alt="'.$dir.'" src="'.$imgPath.'" />';
                             echo '<label class="payload-label">';
@@ -77,7 +77,7 @@
                             echo '</label></a>';
                             echo '</div>';
                         }
-                        else
+                        else if($dir != 'buttons')
                         {
                             // Icon provided so use the default
                             echo '<div class="full-width"><a href="'.$sLogoUrl.'"><img class="mybutton" alt="'.$dir.'" src="default.png" />';
