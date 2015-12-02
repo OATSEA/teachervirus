@@ -46,7 +46,7 @@
             echo '<div class="color-white"></div>';
         }
         if(glob($payloadsDir, GLOB_ONLYDIR)==FALSE){
-          $path = $sSiteUrl."/tv/admin/getpayload";
+          $path = $sSiteUrl."/tv/admin/getpayloads";
            echo '<div><h2> You have Not Installed Any Payloads Please <a href='.$path.'></h2></div><div><font size="6">Click Here</font></div></a>
                  <div><h2> To Install Payloads</h2></div>';
          
