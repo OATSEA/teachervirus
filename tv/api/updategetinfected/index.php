@@ -535,7 +535,7 @@
             // ------------------------------------
             if ($debug) { echo "<h2>Attempting to update Get Infected</h2>"; }
 
-            $sUpdateinfectedDir = ROOT_DIR.'/tv/admin/updatetv/';
+            $sUpdateinfectedDir = ROOT_DIR.'/tv/api/updategetinfected/';
             // default destination for downloaded zipped files
 
             
@@ -563,7 +563,7 @@
                 $download_unzip_filename = $aExplodeFileName[0];
             }
             $zipfile = $sUpdateinfectedDir.$download_filename;
-            $sUrl = (is_dir(ROOT_DIR."/tv/admin/updatetv")) ? $sSiteUrl."/tv/admin/updatetv" : ROOT_DIR."/getinfected.php";
+            $sUrl = (is_dir(ROOT_DIR."/tv/api/updategetinfected")) ? $sSiteUrl."/tv/api/updategetinfected" : ROOT_DIR."/getinfected.php";
             // Check for IP param and set $ip if param provided
             // ** TO DO **
             // Download file if OATSEA-teachervirus.zip doesn't already exist
@@ -581,7 +581,7 @@
                 // Identify directories
                 $sFolderPath = ROOT_DIR;
 
-                $destination = $sFolderPath.'/tv/admin/updatetv';
+                $destination = $sFolderPath.'/tv/api/updategetinfected';
                 if (!file_exists($destination))
                     mkdir($destination,0775,true);
 
@@ -606,7 +606,7 @@
                 $zipFlag = $zip->open($destination.'/'.$download_filename,true);
                 if ($zipFlag === TRUE) 
                 {
-                    $sUpdateInfectUrl = ROOT_DIR.'/tv/admin/updatetv';
+                    $sUpdateInfectUrl = ROOT_DIR.'/tv/api/updategetinfected';
                     // Create full temp sub_folder path
                     $temp_unzip_path = $sUpdateInfectUrl.'/'.uniqid('unzip_temp_', true)."/";
 
@@ -890,7 +890,7 @@
                 // Identify directories
                 $sFolderPath = ROOT_DIR;
 
-                $destination = $sFolderPath.'/tv/admin/updatetv';
+                $destination = $sFolderPath.'/tv/api/updategetinfected';
                 if (!file_exists($destination))
                     mkdir($destination,0775,true);
 
@@ -901,7 +901,7 @@
                 $zipFlag = $zip->open($destination.'/'.$download_filename,true);
                 if ($zipFlag === TRUE) 
                 {
-                    $sUpdateInfectUrl = ROOT_DIR.'/tv/admin/updatetv';
+                    $sUpdateInfectUrl = ROOT_DIR.'/tv/api/updategetinfected';
                     // Create full temp sub_folder path
                     $temp_unzip_path = $sUpdateInfectUrl.'/'.uniqid('unzip_temp_', true)."/";
 
