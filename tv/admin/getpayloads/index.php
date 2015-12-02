@@ -390,7 +390,7 @@
                 $payload = 'infect/payloads/'.$sNewFolderName;
                 
             }
-            $isAdmin = strtoupper(substr($payload,0,1));
+            $isAdmin = strtoupper(substr($sFolderSource,0,1));
             
             if($sFolderSource == 'admin' || $sFolderSource == 'play' || $sFolderSource == 'tv')
             {

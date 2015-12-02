@@ -6,7 +6,7 @@
         $constant = explode(';',$protocol);
         $constantpath = $constant[1];
     }
-    require_once("../../../data/$constantpath/constants.php");
+    require_once("../../../$constantpath/constants.php");
     require(ROOT_DIR.'/tv/admin/buttons/checkLogin.php');
     
     $_SESSION['isValidation']['flag'] = TRUE;
