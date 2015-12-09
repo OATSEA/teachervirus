@@ -42,7 +42,7 @@
                 //Checking for request method.
                 if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['pattern_password']))
                 {
-                    if(USER_NAME == md5($_POST['pattern_username']) && PASSWORD == md5($_POST['pattern_password']))
+                    if(USER_NAME == $sUserName && PASSWORD == md5($_POST['pattern_password']))
                     {
                         $_SESSION['isLoggedIn'] = true;
                         $_SESSION['pattern_password'] =  md5($_POST['pattern_password']);
