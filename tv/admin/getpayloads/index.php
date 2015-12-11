@@ -2,11 +2,11 @@
     if(file_exists('../../../.general.txt'))
     {
         $myfile = fopen('../../../.general.txt', "r") or die("Unable to open file!");
-        $protocol = fread($myfile,filesize('../../../.general.txt'));
-        $constant = explode(';',$protocol);
+        $suuid = fread($myfile,filesize('../../../.general.txt'));
+        $constant = explode(';',$suuid);
         $constantpath = $constant[1];
     }
-    require_once("../../../$constantpath/constants.php");
+    require_once("../../../data/$constantpath/constants.php");
     require(ROOT_DIR.'/tv/admin/buttons/checkLogin.php');
     PAYLOAD_INSTALL == 1;
     error_reporting(0);
@@ -451,8 +451,8 @@
             }
             if(!empty($sPayloadGithub))
             {
-                $sDownloadFileName = $sPayloadGithub."-".$sRepository.".zip";
-                $download_unzip_filename = $sPayloadGithub;
+                $sDownloadFileName = $sUserName."-".$sRepository.".zip";
+                $download_unzip_filename = $sPayloadGithub."-".$sRepository;
                 $sListContent = "github_payloads;$isAdmin;$sPayloadGithub";
             }
             else if(!empty($sUserName))

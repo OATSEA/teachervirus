@@ -2,11 +2,11 @@
     if(file_exists('../../../.general.txt'))
     {
         $myfile = fopen('../../../.general.txt', "r") or die("Unable to open file!");
-        $protocol = fread($myfile,filesize('../../../.general.txt'));
-        $constant = explode(';',$protocol);
+        $suuid = fread($myfile,filesize('../../../.general.txt'));
+        $constant = explode(';',$suuid);
         $constantpath = $constant[1];
     }
-    require_once("../../../$constantpath/constants.php");
+    require_once("../../../data/$constantpath/constants.php");
     error_reporting(0);
     $sSiteUrl = SITE_URL;
     if(file_exists(ROOT_DIR.'/IP.txt'))
@@ -36,9 +36,9 @@
 
             $_SESSION['password_generated'] = false;
             $nConfirmPasswordFlag = 0;
-            if (file_exists(ROOT_DIR."/$constantpath/admin/username_password.php")) 
+            if (file_exists(ROOT_DIR."/data/$constantpath/admin/username_password.php")) 
             {
-                require(ROOT_DIR."/$constantpath/admin/username_password.php");
+                require(ROOT_DIR."/data/$constantpath/admin/username_password.php");
                 //Checking for request method.
                 if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['pattern_password']))
                 {
@@ -157,8 +157,8 @@
                 }
                 if(isset($_SESSION['password_generated']) && $_SESSION['password_generated'])
                 {
-                    mkdir(ROOT_DIR."/$constantpath/admin");
-                    $username_password = ROOT_DIR."/$constantpath/admin/username_password.php";
+                    mkdir(ROOT_DIR."/data/$constantpath/admin");
+                    $username_password = ROOT_DIR."/data/$constantpath/admin/username_password.php";
                     $handle = fopen($username_password, 'w')or die('Cannot open file:  '.$username_password); ;
                     $sPassword = md5($_POST['confirm_password']);
                     $txt = '<?php
