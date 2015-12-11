@@ -3,9 +3,17 @@
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="refresh" content="1;url=infect/www/">
-        <script type="text/javascript">
-            window.location.href = "infect/www/"
-        </script>
+<?php   if (is_dir(getcwd()."/infect/www/"))   
+        { 
+            header('Location: /infect/www/');
+        }
+        else
+        {
+            header('Location: /tv/play/teacherbot/');
+        }
+        ?> 
+            
+  
         <title>Page Redirection</title>
     </head>
     <body>
