@@ -2,8 +2,8 @@
     if(file_exists('../../../.general.txt'))
     {
         $myfile = fopen('../../../.general.txt', "r") or die("Unable to open file!");
-        $suuid = fread($myfile,filesize('../../../.general.txt'));
-        $constant = explode(';',$suuid);
+        $protocol = fread($myfile,filesize('../../../.general.txt'));
+        $constant = explode(';',$protocol);
         $constantpath = $constant[1];
     }
     require_once("../../../data/$constantpath/constants.php");
@@ -164,7 +164,7 @@
                     $txt = '<?php
 
                     //Encrypted UserName and Password
-                    $sUserName = md5("admin");
+                    $sUserName = "admin";
                     $sPassword = "'.$sPassword.'";
 
                     // Defining UserName and Password to check against credentials
