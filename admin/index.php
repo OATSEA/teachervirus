@@ -37,13 +37,13 @@
 
             $_SESSION['password_generated'] = false;
             $nConfirmPasswordFlag = 0;
-            if (file_exists(ROOT_DIR."/data/admin/username_password.php")) 
+            if (file_exists(ROOT_DIR."/data/$constantpath/admin/username_password.php")) 
             {
-                require(ROOT_DIR."/data/admin/username_password.php");
+                require(ROOT_DIR."/data/$constantpath/admin/username_password.php");
                 //Checking for request method.
                 if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['pattern_password']))
                 {
-                    if(USER_NAME == md5($_POST['pattern_username']) && PASSWORD == md5($_POST['pattern_password']))
+                    if(USER_NAME == $sUserName && PASSWORD == md5($_POST['pattern_password']))
                     {
                         $_SESSION['isLoggedIn'] = true;
                         $_SESSION['pattern_password'] =  md5($_POST['pattern_password']);
@@ -158,8 +158,9 @@
                 }
                 if(isset($_SESSION['password_generated']) && $_SESSION['password_generated'])
                 {
-                    mkdir(ROOT_DIR."/data/admin");
-                    $username_password = ROOT_DIR."/data/admin/username_password.php";
+                    mkdir(ROOT_DIR."/data/$constantpath/admin");
+                    $username_password = ROOT_DIR."/data/$constantpath/admin/username_password.php";
+                    //echo $username_password;exit;
                     $handle = fopen($username_password, 'w')or die('Cannot open file:  '.$username_password); ;
                     $sPassword = md5($_POST['confirm_password']);
                     $txt = '<?php

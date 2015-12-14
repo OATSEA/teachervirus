@@ -10,6 +10,7 @@
                 $suuid = fread($myfile,filesize('../../.general.txt'));
                 $constant = explode(';',$suuid);
                 $constantpath = $constant[1];
+                //print_r($constantpath);exit;
             }
             require_once("../../data/$constantpath/constants.php");
             require(ROOT_DIR.'/admin/checkLogin.php');
@@ -20,7 +21,9 @@
                 $myfile = fopen(ROOT_DIR.'/IP.txt', "r") or die("Unable to open file!");
                 $protocol = fread($myfile,filesize(ROOT_DIR.'/IP.txt'));
                 $sSiteUrl = trim($protocol);
+
             }
+            //echo $sSiteUrl;exit;
         ?>
        <link href="<?php echo $sSiteUrl; ?>/css/bootstrap.min.css" rel="stylesheet">
        <link href="<?php echo $sSiteUrl; ?>/admin/buttons.css" rel="stylesheet">
@@ -56,7 +59,7 @@
             if($_SESSION['isValidation']['flag'] == 1)
             {
                 $sSiteUrl = (isset($_SERVER["HTTP_HOST"]) ? "http://".$_SERVER["HTTP_HOST"] : '');
-                $sDestination = ROOT_DIR.'/data/$constantpath/constants.php';
+                $sDestination = ROOT_DIR.'/data/'.$constantpath.'/constants.php';
                 if(file_exists(ROOT_DIR.'/IP.txt'))
                 {
                     $myfile = fopen(ROOT_DIR.'/IP.txt', "r") or die("Unable to open file!");
