@@ -1262,7 +1262,7 @@
                         </div>
                         <div id="branch_value" class="sources" style="<?php echo (INFECTED_RESOURCE == 'G') ? 'display:block' : 'display:none';?>">
                             <div class="full-width">
-                                <div class="branch-class" style="<?php echo (SHOW_TV == 1) ? 'display:block' : 'display:none'; ?>">
+                                <div class="branch-class" style="<?php echo (isset($_GET['b']) && ($_GET['b'] == 1) || (SHOW_TV == 1)) ? 'display:block' : 'display:none';?>">
                                     <div class="text-field">Branch?<font color="red">*</font></div>
                                     <input type="text" value="<?php echo isset($_POST['branch_name']) ? $_POST['branch_name'] : GETINFECTED_BRANCH; ?>" name="branch_name" id="branch_name">
                                     <div class="clear-button">
