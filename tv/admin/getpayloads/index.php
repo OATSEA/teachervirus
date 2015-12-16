@@ -452,7 +452,7 @@
             if(!empty($sPayloadGithub))
             {
                 $sDownloadFileName = $sUserName."-".$sRepository.".zip";
-                $download_unzip_filename = $sPayloadGithub."-".$sRepository;
+                $download_unzip_filename = $sPayloadGithub;
                 $sListContent = "github_payloads;$isAdmin;$sPayloadGithub";
             }
             else if(!empty($sUserName))
