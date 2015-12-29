@@ -2,7 +2,7 @@
 
 **Repo:** OATSEA/teachervirus
 
-**Version:** 0.2
+**Version:** 0.5
 
 **Doc Author:** Harry Longworth
 
@@ -21,36 +21,28 @@ That script fetches the core Teacher Virus files from either github or an infect
 
 **NOTE:** Teacher Virus is only viral from a philosophical perspective - it can not infect a device without the consent of the administrator/owner of the device (installation action required).
 
-At the heart of teachervirus is the installation and management of "payloads" which are our version of components/plugins/apps that server an educational purpose.
+At the heart of teachervirus is the installation and management of "payloads" which are our version of components/plugins/apps that serve an educational purpose.
 
 ##Assumptions
 To keep things simple we make the following assumptions at this point:
-* the webserver will be installed prior to installation.
-* getinfected.php will be in the root folder of the webserver.
-* Teacher Virus will be installed in the root of the webserver.
-* The system will not be used on production devices or on a "public" network.
+* the webserver will be installed prior to installation (or on Android will be using the Teacher Virus Android App which is based on DroidPHP).
+* getinfected.php will be in the root folder of the webserver (included in the Android Teacher Virus app).
+* Teacher Virus will be installed in the root of the webserver (although efforts have been made to allow subfolder installs).
+* The system will not be used on production devices or on a "public" network (additional security required such as the use of a .htaccess).
 * student's will have dedicated devices (i.e thus don't need to "Sign in")
 
 ##What's New? 
-With version 0.2 of Teacher Virus we introduce the following improvements:
-* pattern lock security of the admin backend with the ability to change the patternlock
-* ability to install user and admin payloads from a number of sources including GitHub, infected devices, a URL/website and Google Drive.
-* ability to access getinfected.php from the admin backend in order to reinstall and update.
-* interface and navigation improvements that allow movement between the user front end and the admin backend and the ability to sign in and out.
-* improved interface for mobile devices (tablets and phones).
-* improved error handling
-* ability to control debug comments so that they can be hidden or shown via advanced options.
-
-Additional Changes and Fixes after release:
-* added the original offline website back in as an admin payload so that device to device infection works again.  Means that if you browse to the device you will now see the offline teachervirus.org website and have the ability to get infected from the device. This payload can be "updated" by reinstalling the OATSEA / teachervirus.org repository.  This payload is an example of the use of teachervirus to deliver offline websites using a php file based website solution like Staceyapp
+With version 0.5 of Teacher Virus we introduce the following improvements:
+* Major restructure of the folders to support sync based distribution.
+* Online catalog based installation of payloads
+* Fix various bugs
 
 ##Wishlist / Future Development
 We are always looking for suggestions and feedback on each release so that we can prioritise functionality required for the next sprint.  At the moment we are looking at working on the following capabilities for the next phase of development:
 
-* ability to uninstall payloads.
+* ability to manage payloads.
 * ability to find out about new versions and update payloads.
-* ability to find and install payloads developed and shared by the community. (Along with associated development of the online community website at teachervirus.org)
-* ability to list payloads available on a infected device and install them.
+* ability to view a catalog of payloads available on a infected device and install them with a click.
 * ability to discover infected devices on the local network.
 * ability to install content separately from payloads.
 * ability to transfer "data" payloads between devices (e.g. student results).
@@ -71,8 +63,8 @@ We are always looking for suggestions and feedback on each release so that we ca
 * provide "shared services" as identified by payload creators
 
 ##Known Issues:
-* There known deployment issues with Android version 5 that we are investigating
-* Further investigation required into security aspects of use on public webservers
+* There known deployment issues with Android version 5 that we may not be able to resolve due to vendor and provider security constraints
+* Further investigation required into security aspects of use on public webservers (use .htaccess to increase security of admin area?)
 
 
 
